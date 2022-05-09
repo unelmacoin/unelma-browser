@@ -1,6 +1,9 @@
-body {
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+body {
   font-family: Lucida Grande, Arial, sans-serif;
 }
 
@@ -10,11 +13,14 @@ input {
 }
 
 #controls {
-  padding: 3px;
+  padding: 6px 3px;
   border-bottom: solid 1px #ccc;
-  background-color: #eee;
+  /* background-color: #eee; */
 }
-
+#controls .control-btns {
+  display: flex;
+  align-items: center;
+}
 #controls button,
 #controls input {
   font-size: 14px;
@@ -22,25 +28,35 @@ input {
   border-radius: 2px;
   padding: 0 6px;
 }
+#controls input {
+  background-color: #eee;
+}
+#controls .control-btn{
+  font-size: 20px;
+  cursor: pointer;
+}
+#controls #back {
+  transform: rotate(180deg);
+}
 
 button,
-input[type='submit'],
+input[type="submit"],
 button[disabled]:hover {
   border: solid 1px transparent;
   background: transparent;
 }
 
-button:hover,
+/* button:hover,
 input[type='submit']:hover {
   border-color: #ccc;
   background: -webkit-linear-gradient(bottom, #cccccc 0%, #f2f2f2 99%);
-}
+} */
 
-button:active,
+/* button:active,
 input[type='submit']:active {
   border-color: #bbb;
   background: -webkit-linear-gradient(bottom, #e2e2e2 0%, #bbbbbb 99%);
-}
+} */
 
 /* These glyphs are on the small side, make them look more natural when
 compared to the back/forward buttons */
@@ -124,7 +140,7 @@ compared to the back/forward buttons */
   z-index: 1;
 }
 
-#zoom-box input[type='submit'] {
+#zoom-box input[type="submit"] {
   font-size: 14px;
   margin: 2px 0px;
   padding: 0 2px 3px 2px;
@@ -240,3 +256,114 @@ case we use a different background color and label). */
 .killed #sad-webview #crashed-label {
   display: none;
 }
+
+/*menu bar style*/
+#menu-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #e9e8e8;
+  padding-left: 10px;
+  height: 35px;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+#menu-bar #tabs {
+  display: flex;
+  align-items: center;
+  height: 35px;
+}
+#menu-bar #tabs #actual-tabs {
+  display: flex;
+}
+#menu-bar #tabs .tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 6px 6px 6px;
+  width: 200px;
+  font-size: 12px;
+  border-right: 1px solid lightgray;
+  cursor: pointer;
+  height: 35px;
+  -webkit-app-region: no-drag;
+  -webkit-animation: add-tab 0.3s;
+  animation: add-tab 0.3s;
+}
+
+#menu-bar #tabs .tab .content {
+  overflow: hidden;
+  height: 35px;
+  word-wrap: normal;
+  line-height: 35px;
+  width: 100%;
+}
+
+#menu-bar #tabs .tab .close {
+  cursor: pointer;
+  font-size: 10px;
+  padding: 1px 3px;
+  border-radius: 50%;
+  -webkit-app-region: no-drag;
+}
+#menu-bar #tabs .tab .close:hover {
+  background-color: lightgray;
+}
+.active-tab {
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+}
+#menu-bar #tabs #add {
+  font-size: 20px;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+#menu-bar .left {
+  width: 90%;
+}
+#menu-bar .right {
+  height: 40px;
+  width: 10%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: top;
+}
+
+#menu-bar .right button {
+  font-size: 16px;
+  cursor: pointer;
+  width: 40px;
+  height: 30px;
+  -webkit-app-region: no-drag;
+}
+
+#menu-bar .right button:hover {
+  background-color: #ccc;
+}
+#menu-bar .right button#close-btn:hover {
+  background-color: rgb(230, 15, 15);
+  color: white;
+}
+
+@-webkit-keyframes add-tab {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 200px;
+  }
+}
+
+@keyframes add-tab {
+  0% {
+    width: 0px;
+  }
+  100% {
+    width: 200px;
+  }
+}
+
+/*menu bar style*/
