@@ -1,6 +1,6 @@
 {
-  "name": "unelma-browser",
-  "version": "1.0.0",
+  "name": "Unelma Browser",
+  "version": "1.0.1",
   "description": "A very basic Unelma.XYZ - Browser",
   "main": "main.js",
   "scripts": {
