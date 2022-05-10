@@ -15,7 +15,7 @@ If you want to contribute, feel free to open pull request and push changes. All 
 MIT
 
 # Contact
-Please send private message if you would need help to start masternode 
+Please send private message if you would need help or want to ask for feature requests
 <br>Website: https://unelmacoin.io
 <br>Email: support(at)unelmacoin.com 
 <br>Facebook: https://www.facebook.com/unelmacoin
