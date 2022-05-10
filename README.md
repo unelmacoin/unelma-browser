@@ -1,6 +1,6 @@
 # Unelma Browser
 
-A very simple Unelma.XYZ - browser
+A simple Unelma.XYZ - browser
 
 # Distribution
 
