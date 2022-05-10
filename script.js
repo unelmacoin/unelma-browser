@@ -50,6 +50,13 @@ window.addEventListener("DOMContentLoaded", function () {
     goToLocation(locationInput);
   });
   addTab(y, tabs, locationInput);
+  ipcRenderer.on("open-target",(_,url)=> {
+    addTab(y, tabs, locationInput,url);
+  });
+  ipcRenderer.on("getInfo", (_, { title, id }) => {
+    document.getElementById(id).children[0].textContent =
+      title.length > 25 ? `${title.slice(0, 25)}...` : title;
+  });
   addWindowControls(closeBtn, minimizeBtn);
   handleMaximization(unmaximizeBtn, maximizeBtn);
   add.addEventListener("click", () => {

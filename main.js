@@ -1,9 +1,73 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, BrowserView } = require("electron");
+const { app, BrowserWindow, ipcMain, BrowserView, shell } = require("electron");
 const path = require("path");
+
 let views = [];
-let currentView = 0;
 let yDim = 0;
+const createView = ({ y, mainWindow, id, e, url }) => {
+  yDim = y;
+  if (views.length > 0) {
+    views[views.length - 1].view.setBounds({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+    });
+  }
+  const view = new BrowserView();
+
+  // console.log("y", y);
+  view.setBounds({
+    x: 0,
+    y,
+    width: mainWindow.getBounds().width,
+    height: mainWindow.getBounds().height,
+  });
+  view.setAutoResize({
+    width: true,
+    horizontal: true,
+  });
+  view.webContents.addListener("did-start-loading", function () {
+    // e.reply("isLoading", {
+    //   loading: true,
+    //   id: views.find(({ currentTab }) => currentTab).tabId,
+    // });
+  });
+  view.webContents.addListener("did-finish-load", function () {
+    e.reply("getInfo", {
+      title: views
+        .find(({ currentTab }) => currentTab)
+        .view.webContents.getTitle(),
+      id: views.find(({ currentTab }) => currentTab).tabId,
+    });
+  });
+  view.webContents.addListener("page-title-updated", function () {
+    e.reply("getInfo", {
+      title: views
+        .find(({ currentTab }) => currentTab)
+        .view.webContents.getTitle(),
+      id: views.find(({ currentTab }) => currentTab).tabId,
+    });
+  });
+  view.webContents.addListener("did-navigate-in-page", function () {
+    e.reply("change-url", {
+      newURL: view.webContents.getURL(),
+    });
+  });
+  view.webContents.addListener("update-target-url", function () {
+    e.reply("change-urls", view.webContents.getURL());
+  });
+
+  views = views.map((v) => ({ ...v, currentTab: false }));
+  views.push({
+    view,
+    tabId: id,
+    currentTab: true,
+    previousTab: false,
+  });
+  view.webContents.loadURL(url);
+  return view;
+};
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -31,7 +95,7 @@ function createWindow() {
     mainWindow.minimize();
   });
   ipcMain.on("go-back", (e) => {
-    console.log("jkefssssss");
+    // console.log("jkefssssss");
     if (
       views.find(({ currentTab }) => currentTab).view.webContents.canGoBack()
     ) {
@@ -43,7 +107,7 @@ function createWindow() {
     }
   });
   ipcMain.on("go-forward", (e) => {
-    console.log("jkefssssss");
+    // console.log("jkefssssss");
     if (
       views.find(({ currentTab }) => currentTab).view.webContents.canGoForward()
     ) {
@@ -68,6 +132,7 @@ function createWindow() {
   });
   ipcMain.on("close-tab", (e, { tabId }) => {
     if (views.length === 1) {
+      views[0].view = null;
       mainWindow.close();
     } else {
       const targetTab = views.find((tab) => tab.tabId === tabId);
@@ -90,96 +155,65 @@ function createWindow() {
         });
       }
 
+      mainWindow
+        .getBrowserViews()
+        .find((v) => v === views[index].view)
+        .webContents.destroy();
+      mainWindow.removeBrowserView(
+        mainWindow.getBrowserViews().find((v) => v === views[index].view)
+      );
+      views[index].view = null;
+
+      views[index].currentTab = false;
       views.splice(index, 1);
-      currentView = index - 1;
+      // console.log(mainWindow.getBrowserViews());
     }
   });
   ipcMain.on("change-tab", (e, { id }) => {
-    views.find(({ tabId }) => tabId === id).currentTab = true;
-    views.forEach(({ view, tabId }) => {
-      if (tabId !== id) {
-        view.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+    // views.find((v) => v.tabId === id).currentTab = true
+
+    views.forEach((c) => {
+      if (c.tabId !== id) {
+        c.view.setBounds({ x: 0, y: 0, width: 0, height: 0 });
+        c.currentTab = false;
       } else {
-        view.setBounds({
+        c.currentTab = true;
+        c.view.setBounds({
           x: 0,
           y: yDim,
           width: mainWindow.getBounds().width,
           height: mainWindow.getBounds().height,
         });
-        e.reply("tab-info", { url: view.webContents.getURL() });
+        e.reply("tab-info", { url: c.view.webContents.getURL() });
         // currentView = tabOrder;
         // console.log(index, tabOrder);
       }
     });
+    //console.log(views);
   });
 
-  ipcMain.on("add", function (e, { id, y }) {
-    yDim = y;
-    if (views.length > 0) {
-      views[views.length - 1].view.setBounds({
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-      });
-    }
+  ipcMain.on("add", function (e, { id, y, url }) {
+    const view = createView({ y, mainWindow, id, e, url });
 
-    const view = new BrowserView();
+    view.webContents.setWindowOpenHandler((url) => {
+      //console.log(url);
+      // shell.openExternal(
+      //   "https://www.electronjs.org/docs/latest/api/web-contents"
+      // );
+      // let v = createView({ y, mainWindow, id, e });
+      // mainWindow.addBrowserView(v);
+      // v.webContents.loadURL(url.url);
+      e.reply("open-target", url.url);
+      e.reply("getInfo", {
+        title: views
+          .find(({ currentTab }) => currentTab)
+          .view.webContents.getTitle(),
+        id: views.find(({ currentTab }) => currentTab).tabId,
+      });
+      return {action:'deny'};
+    });
+
     mainWindow.addBrowserView(view);
-    // console.log("y", y);
-    view.setBounds({
-      x: 0,
-      y,
-      width: mainWindow.getBounds().width,
-      height: mainWindow.getBounds().height,
-    });
-    view.setAutoResize({
-      width: true,
-      horizontal: true,
-    });
-    // view.webContents.openDevTools();
-    view.webContents.addListener("did-start-loading", function () {
-      e.reply("isLoading", {
-        loading: true,
-        id: views.find(({ currentTab }) => currentTab).tabId,
-      });
-    });
-    view.webContents.addListener("did-finish-load",function(){
-      e.reply("getInfo", {
-        title: views
-          .find(({ currentTab }) => currentTab)
-          .view.webContents.getTitle(),
-        id: views.find(({ currentTab }) => currentTab).tabId,
-      });
-    })
-    view.webContents.addListener("page-title-updated", function () {
-      e.reply("getInfo", {
-        title: views
-          .find(({ currentTab }) => currentTab)
-          .view.webContents.getTitle(),
-        id: views.find(({ currentTab }) => currentTab).tabId,
-      });
-    });
-    view.webContents.addListener("did-navigate-in-page", function () {
-      e.reply("change-url", {
-        newURL: view.webContents.getURL(),
-      });
-    });
-    view.webContents.addListener("update-target-url", function () {
-      e.reply("change-urls", view.webContents.getURL());
-    });
-
-    views = views.map((v) => ({ ...v, currentTab: false }));
-
-    views.push({
-      view,
-      tabId: id,
-      currentTab: true,
-      previousTab: false,
-    });
-    console.log("views", views);
-    currentView = views.length - 1;
-    view.webContents.loadURL("https://www.unelma.xyz/");
   });
   // and load the index.html of the app.
   mainWindow.loadFile("index.html");
