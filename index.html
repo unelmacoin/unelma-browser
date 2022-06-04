@@ -4,62 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link href="./browser.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/font-awesome.css" rel="stylesheet" />
     <title>Unelma.XYZ - Browser</title>
     <script src="script.js" type="module"></script>
   </head>
   <body>
-    <div id="menu-bar">
-      <div class="left" role="menu">
-        <div id="tabs">
-          <div id="actual-tabs"></div>
-          <button id="add">&#43;</button>
-        </div>
-      </div>
-      <div class="right">
-        <button class="menubar-btn" id="minimize-btn">&#x2013;</button>
-        <button class="menubar-btn" id="maximize-btn">&#x2750;</button>
-        <button class="menubar-btn" id="unmaximize-btn">&#9744;</button>
-        <button class="menubar-btn" id="close-btn">&#x2715;</button>
-      </div>
-    </div>
-    <div id="controls">
-     <div class="control-btns">
-        <button id="back" class="control-btn" title="Go Back" >&#10140;</button>
-      <button id="forward" class="control-btn" title="Go Forward" >&#10140;</button>
-      <button id="home" class="control-btn" title="Go Home">&#8962;</button>
-      <button id="reload" class="control-btn" title="Reload">&#8635;</button>
-     </div>
-
-      <form id="location-form">
-        <div id="center-column">
-          <input id="location" type="text" value="https://www.unelma.xyz/" />
-        </div>
-        <!-- <button type="submit" >Go</button> -->
-      </form>
-
-      <!-- <button id="zoom" title="Change Zoom">&#128270;</button>
-      <button id="find" title="Find in Page">&#128294;</button> -->
-    </div>
-
-    <!-- <div id="zoom-box">
-      <form id="zoom-form">
-        <input id="zoom-text" type="text" />
-        <input type="submit" value="&#128270;" />
-        <button id="zoom-in">&#10133;</button>
-        <button id="zoom-out">&#10134;</button>
-      </form>
-    </div> -->
-
-    <div id="find-box">
-      <form id="find-form">
-        <input id="find-text" type="text" />
-        <div id="find-results"></div>
-        <input type="submit" style="position: absolute; visibility: hidden" />
-        <button id="match-case">aA</button>
-        <button id="find-backward">&#60;</button>
-        <button id="find-forward">&#62;</button>
-      </form>
-    </div>
+    <div id="root"></div>
   </body>
 </html>
