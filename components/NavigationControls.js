@@ -15,8 +15,8 @@ const NavigationControls = () => {
   navigationControls.appendChild(navigationControlsReload);
   navigationControlsBack.addEventListener("click", () => {
     const currentView = document.querySelector(".active-webview");
-    if (currentView.canGoForward()) {
-      currentView.canGoBack();
+    if (currentView.canGoBack()) {
+      currentView.goBack();
       document.getElementById("location-input").value = currentView.getURL();
     }
   });
@@ -27,7 +27,7 @@ const NavigationControls = () => {
       document.getElementById("location-input").value = currentView.getURL();
     }
   });
-  navigationControls.addEventListener("click", function () {
+  navigationControlsReload.addEventListener("click", function () {
     const currentView = document.querySelector(".active-webview");
     currentView.reload();
     document.getElementById("location-input").value = currentView.getURL();

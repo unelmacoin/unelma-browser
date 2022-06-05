@@ -28,9 +28,7 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^18.1.0",
-    "electron-builder": "^23.0.3",
-    "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "electron-builder": "^23.0.3"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"

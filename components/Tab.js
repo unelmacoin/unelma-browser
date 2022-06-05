@@ -34,7 +34,7 @@ const Tab = (input, id) => {
       const tabIndex = [...tabs].findIndex((t) => t.id.endsWith(id));
       const viewIndex = [...views].findIndex((t) => t.id.endsWith(id));
       if (tab.classList.contains("active-tab")) {
-        console.log("tests1");
+       
         tabs[tabIndex].remove();
         views[viewIndex].remove();
         tabs[tabIndex === 0 ? tabIndex + 1 : tabIndex - 1].classList.add(
@@ -44,7 +44,6 @@ const Tab = (input, id) => {
           "active-webview"
         );
       } else {
-        console.log("tests2");
         tabs[tabIndex].remove();
         views[viewIndex].remove();
       }
