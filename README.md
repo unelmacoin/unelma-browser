@@ -12,7 +12,7 @@ A simple Unelma.XYZ - browser based on Chromium open-source project that aims to
 If you want to contribute, feel free to open pull request and push changes. All changes is going through review process. 
 
 # License
-MIT
+Apache License 2.0
 
 # Contact
 Please send private message if you would need help or want to ask for feature requests
