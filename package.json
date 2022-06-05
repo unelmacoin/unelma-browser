@@ -1,7 +1,7 @@
 {
-  "name": "unelma-browser",
-  "version": "1.0.1",
-  "description": "A very basic Unelma.XYZ - Browser",
+  "name": "Unelma Browser",
+  "version": "1.0.2",
+  "description": "A simple and basic Unelma.XYZ - Browser",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -12,7 +12,7 @@
   "build": {
     "appId": "xyz.unelma.browser",
     "productName": "Unelma.XYZ - Browser",
-    "icon": "./img/unelma.png",
+    "icon": "./img/unp.png",
     "target": "nsis",
     "nsis": {
       "allowToChangeInstallationDirectory": true,
@@ -36,7 +36,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "./img/unelma.icns"
+        "icon": "./img/unp.icns"
       },
       "makers": [
         {
