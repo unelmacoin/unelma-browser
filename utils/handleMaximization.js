@@ -1,6 +1,6 @@
 const { ipcRenderer } = require("electron");
 
-const handleMaximization = (unmaximizeBtn, maximizeBtn) => {
+const handleMaximization = ( maximizeBtn,unmaximizeBtn, cancelBtn,minimizeBtn) => {
   const isMaximized = ipcRenderer.send("isMaximized", "check");
   unmaximizeBtn.style.display = !isMaximized ? "block" : "none";
   maximizeBtn.style.display = !isMaximized ? "none" : "block";
@@ -13,6 +13,12 @@ const handleMaximization = (unmaximizeBtn, maximizeBtn) => {
     ipcRenderer.send("maximize", true);
     maximizeBtn.style.display = "block";
     unmaximizeBtn.style.display = "none";
+  });
+  cancelBtn.addEventListener("click", () => {
+    ipcRenderer.send("close-window", true);
+  });
+  minimizeBtn.addEventListener("click", () => {
+    ipcRenderer.send("minimize", true);
   });
 };
 module.exports = handleMaximization;

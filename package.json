@@ -1,5 +1,5 @@
 {
-  "name": "Unelma Browser",
+  "name": "unelma-browser",
   "version": "1.0.1",
   "description": "A very basic Unelma.XYZ - Browser",
   "main": "main.js",
