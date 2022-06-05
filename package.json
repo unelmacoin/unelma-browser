@@ -1,5 +1,5 @@
 {
-  "name": "Unelma Browser",
+  "name": "Unelma-Browser",
   "version": "1.0.2",
   "description": "A simple and basic Unelma.XYZ - Browser",
   "main": "main.js",
@@ -7,8 +7,15 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder --win",
+    "pack": "electron-builder -mwl"
   },
+  "files": [
+    "package.json",
+    "app/**/*",
+    "node_modules"
+  ],
+  "postinstall": "electron-builder install-app-deps",
   "build": {
     "appId": "xyz.unelma.browser",
     "productName": "Unelma.XYZ - Browser",
@@ -28,12 +35,27 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "electron": "^18.1.0",
-    "electron-builder": "^23.0.3"
+    "electron-packager": "^15.5.1"
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0"
   },
   "config": {
+    "make_targets": {
+      "win32": [
+        "nsis"
+      ],
+      "darwin": [
+        "zip",
+        "dmg"
+      ],
+      "linux": [
+        "deb",
+        "rpm",
+        "flatpak",
+        "snap"
+      ]
+    },
     "forge": {
       "packagerConfig": {
         "icon": "./img/unp.icns"
@@ -42,7 +64,7 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "Unelma.XYZ - Browser"
+            "name": "Unelma_Browser"
           }
         },
         {
