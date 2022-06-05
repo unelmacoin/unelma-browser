@@ -33,7 +33,9 @@ function createWindow() {
     mainWindow.maximize();
   });
   ipcMain.on("close-window", () => {
-    mainWindow.close();
+    if (mainWindow.isClosable()) {
+      mainWindow.close();
+    }
   });
   ipcMain.on("unmaximize", () => {
     mainWindow.unmaximize();
