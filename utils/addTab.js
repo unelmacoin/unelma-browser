@@ -7,7 +7,7 @@ const addTab = (passedURL) => {
   const tabs = document.getElementById("actual-tabs");
   const views = document.getElementById("webviews-container");
   const locationInput = document.getElementById("location-input");
-  if (tabs.children.length < 25) {
+  if (tabs.children.length <= 500) {
     const newTab = Tab(locationInput, id);
     const newWebview = Webview(id, url);
     [...document.querySelectorAll(".active-tab")].forEach((t) => {
