@@ -1,9 +1,10 @@
 const Tab = require("../components/Tab");
 const Webview = require("../components/Webview");
-
-const addTab = (passedURL) => {
+const { getCurrentTabs, setCurrentTabs } = require("./handleLocalStorage");
+const newId = () => Math.round(Math.random() * 10000 * Math.random());
+const addTab = (passedURL, isNew, oldId) => {
+  const id = oldId || newId();
   const url = passedURL ? passedURL : "https://www.unelma.xyz/";
-  const id = Math.round(Math.random() * 10000 * Math.random());
   const tabs = document.getElementById("actual-tabs");
   const views = document.getElementById("webviews-container");
   const locationInput = document.getElementById("location-input");
@@ -18,9 +19,13 @@ const addTab = (passedURL) => {
     });
     newTab.classList.add("active-tab");
     newWebview.classList.add("active-webview");
-     newWebview.addEventListener("new-window", (e) => {
-       addTab(e.url);
-     });
+    const currentTabs = getCurrentTabs();
+    currentTabs.push({ id, url });
+    if (!isNew) setCurrentTabs(currentTabs);
+
+    newWebview.addEventListener("new-window", (e) => {
+      addTab(e.url);
+    });
     tabs.appendChild(newTab);
     views.appendChild(newWebview);
     locationInput.value = url;
