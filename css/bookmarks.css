@@ -1,0 +1,47 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: Lucida Grande, Arial, sans-serif;
+  background-color: transparent;
+}
+body::-webkit-scrollbar {
+  width: 0px;
+}
+button,
+input {
+  outline: none;
+  border: 0;
+  background: none;
+}
+button {
+    cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+#bookmarks {
+  border-radius: 7px;
+  display: flex;
+  padding: 30px;
+}
+#bookmarks ul {
+  display: flex;
+  list-style: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+#bookmarks ul li {
+  display: flex;
+  list-style: none;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(211, 211, 211, 0.781);
+  margin-bottom: 10px;
+}

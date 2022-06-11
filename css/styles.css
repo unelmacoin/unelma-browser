@@ -126,7 +126,8 @@ webview {
   margin: 20px 0;
   display: flex;
   align-items: center;
-  width: 100%;
+  width: 80%;
+  justify-content: space-between;
 }
 #root #app-sidebar.toggled-sidebar #navigation-controllers button {
   margin: 6px 0;
@@ -142,6 +143,18 @@ webview {
   border-radius: 8px;
   font-size: 13px;
   color: rgba(51, 51, 51, 0.699);
+}
+#root #app-sidebar .location-container button {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: rgba(51, 51, 51, 0.699);
+  cursor: pointer;
+}
+.location-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 #root #app-sidebar #location-form input::placeholder {
   color: rgba(51, 51, 51, 0.699);
@@ -242,5 +255,18 @@ input {
   transition: 0.3s;
 }
 #webviews-container.toggled-container {
-  width: 96%;
+  width: 95%;
+}
+#options-bar {
+  width: 100%;
+  margin-bottom: 15px;
+}
+button#history, button#bookmarks {
+  padding: 7px 10px;
+  border-radius: 5px;
+  background: #fff;
+  color: #333333c9;
+  cursor: pointer;
+  margin-right: 10px;
+  margin-bottom: 10px;
 }

@@ -12,7 +12,7 @@ const WindowControllers = () => {
   const windowControlsMaximize = document.createElement("button");
   windowControlsMaximize.id = "window-controls-maximize";
   windowControlsMaximize.innerHTML = '<i class="fa fa-expand"></i>';
- 
+
   const windowControlsUnmaximize = document.createElement("button");
   windowControlsUnmaximize.id = "window-controls-unmaximize";
   windowControlsUnmaximize.innerHTML = '<i class="fa fa-compress"></i>';
@@ -38,6 +38,9 @@ const WindowControllers = () => {
       document
         .getElementById("webviews-container")
         .classList.add("toggled-container");
+      document
+        .getElementById("options-bar")
+        .classList.add("toggled-options-bar");
     } else {
       document
         .getElementById("app-sidebar")
@@ -45,6 +48,12 @@ const WindowControllers = () => {
       document
         .getElementById("webviews-container")
         .classList.remove("toggled-container");
+      document
+        .getElementById("webviews-container")
+        .classList.remove("toggled-container");
+      document
+        .getElementById("options-bar")
+        .classList.remove("toggled-options-bar");
     }
   });
   return windowControls;

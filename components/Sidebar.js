@@ -1,5 +1,6 @@
 const LocationForm = require("./LocationForm");
 const NavigationControls = require("./NavigationControls");
+const OptionsBar = require("./OptionsBar");
 const TabsList = require("./TabsList");
 const WindowControllers = require("./WindowControllers");
 
@@ -12,6 +13,7 @@ const Sidebar = () => {
   controllers.appendChild(NavigationControls());
   appSidebar.appendChild(controllers);
   appSidebar.appendChild(LocationForm());
+  appSidebar.appendChild(OptionsBar());
   appSidebar.appendChild(TabsList());
   return appSidebar;
 };

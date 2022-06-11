@@ -2,6 +2,7 @@ const { ipcRenderer } = require("electron");
 const {
   setCurrentTabs,
   getCurrentTabs,
+  getBookmarks,
 } = require("../utils/handleLocalStorage");
 const Tab = (input, id) => {
   const tab = document.createElement("div");
@@ -27,7 +28,13 @@ const Tab = (input, id) => {
     const currentView = document.getElementById(`webview-${id}`);
     tab.classList.add("active-tab");
     currentView.classList.add("active-webview");
+    
     input.value = currentView.getURL();
+    const bookmarks = getBookmarks();
+    const bookmarkBtn = document.getElementById("bookmark-btn");
+    if (bookmarks.find((item) => item.url === input.value)) {
+      bookmarkBtn.style.color = "gold";
+    } else bookmarkBtn.style.color = "rgba(51, 51, 51, 0.699)";
   });
   closeTab.addEventListener("click", function () {
     const currentTabs = getCurrentTabs();
