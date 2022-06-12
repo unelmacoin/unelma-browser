@@ -3,7 +3,7 @@ window.addEventListener("DOMContentLoaded", function () {
   searchHistory.id = "search-history";
   var history = document.createElement("ul");
   history.className = "history";
-  JSON.parse(localStorage.getItem("search-history"))
+  JSON.parse(localStorage.getItem("search-history") || "[]")
     .reverse()
     .forEach(function ({ url, id }) {
       var li = document.createElement("li");

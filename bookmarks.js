@@ -3,8 +3,7 @@ window.addEventListener("DOMContentLoaded", function () {
   bookmarks.id = "bookmarks";
   var marks = document.createElement("ul");
   marks.className = "marks";
-  console.log(JSON.parse(localStorage.getItem("bookmarks")));
-  JSON.parse(localStorage.getItem("bookmarks"))
+  JSON.parse(localStorage.getItem("bookmarks") || "[]")
     .reverse()
     .forEach(function ({ url, id }) {
       var li = document.createElement("li");

@@ -21,6 +21,7 @@ webview {
 }
 
 #root {
+  position: relative;
   background: rgb(193, 194, 250);
   background: linear-gradient(
     90deg,
@@ -29,7 +30,7 @@ webview {
     rgba(240, 240, 178, 1) 100%
   );
   border-radius: 7px;
-  padding: 35px 10px 10px;
+  padding: 40px 10px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -37,10 +38,40 @@ webview {
   -webkit-user-select: none;
   user-select: none;
 }
+.top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  border-radius: inherit;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.top-bar button {
+  background-color: rgba(0, 0, 0, 0.1);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  font-size: 8px;
+  color: transparent;
+  margin: 0 4px;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+}
+
+.top-bar button:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
 #root #app-sidebar {
   -webkit-app-region: no-drag;
+  position: relative;
   border-radius: inherit;
-  width: 17%;
+  width: 20%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -58,6 +89,7 @@ webview {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
 }
 #root #app-sidebar.toggled-sidebar #controllers {
   flex-direction: column;
@@ -70,28 +102,6 @@ webview {
 
 #root #app-sidebar.toggled-sidebar #window-controllers {
   flex-direction: column;
-}
-
-#root #app-sidebar #controllers #window-controllers button:not(#toggle-btn) {
-  background-color: rgba(0, 0, 0, 0.1);
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  font-size: 8px;
-  color: transparent;
-  margin: 0 4px;
-  cursor: pointer;
-}
-#root #app-sidebar.toggled-sidebar #window-controllers button:not(#toggle-btn) {
-  margin: 4px 0 !important;
-}
-
-#root
-  #app-sidebar
-  #controllers
-  #window-controllers
-  button:not(#toggle-btn):hover {
-  color: rgba(255, 255, 255, 0.7);
 }
 
 #root #app-sidebar #controllers #toggle-btn {
@@ -117,20 +127,57 @@ webview {
   flex-direction: column;
 }
 #root #app-sidebar #navigation-controllers button {
-  font-size: 12px;
-  margin: 0 6px;
+  font-size: 16px;
+  margin-left: 17px;
+  margin-right: 2px;
   color: rgba(51, 51, 51, 0.67);
   cursor: pointer;
 }
+#menu-button {
+  margin: 0 5px;
+  color: rgba(51, 51, 51, 0.67);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#menu {
+  width: 200px;
+  border-radius: 7px;
+  background-color: #fff;
+  padding: 20px 0;
+  position: absolute;
+  top: 30px;
+  left: 0;
+  transform: scale(0, 0);
+  transition: 0.3s;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+#menu .menu-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 10px;
+  color: rgb(72, 82, 97);
+  cursor: pointer;
+}
+#menu .menu-item:hover {
+  background-color: rgba(211, 211, 211, 0.205);
+}
+#menu .menu-item i {
+  margin-right: 10px;
+}
+#menu.open {
+  transform: scale(1, 1);
+}
+
 #root #app-sidebar #location-form {
   margin: 20px 0;
   display: flex;
   align-items: center;
-  width: 80%;
+  width: 100%;
   justify-content: space-between;
 }
 #root #app-sidebar.toggled-sidebar #navigation-controllers button {
-  margin: 6px 0;
+  margin: 10px 0;
 }
 #root #app-sidebar.toggled-sidebar #location-form {
   display: none;
@@ -248,7 +295,7 @@ input {
 #webviews-container {
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   border-radius: 7px;
-  width: 82%;
+  width: 78%;
   height: 100%;
   overflow: hidden;
   -webkit-app-region: no-drag;
@@ -261,12 +308,15 @@ input {
   width: 100%;
   margin-bottom: 15px;
 }
-button#history, button#bookmarks {
-  padding: 7px 10px;
-  border-radius: 5px;
-  background: #fff;
-  color: #333333c9;
+
+#bookmark-btn {
+  margin: 0 5px;
   cursor: pointer;
-  margin-right: 10px;
-  margin-bottom: 10px;
+  color: rgba(51, 51, 51, 0.637);
+}
+#bookmark-btn.active {
+  color: gold !important;
+}
+#root #app-sidebar.toggled-sidebar  #bookmark-btn {
+  margin: 10px 0;
 }

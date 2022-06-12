@@ -1,6 +1,11 @@
 const Tab = require("../components/Tab");
 const Webview = require("../components/Webview");
-const { getCurrentTabs, setCurrentTabs, getBookmarks } = require("./handleLocalStorage");
+const {
+  getCurrentTabs,
+  setCurrentTabs,
+  getBookmarks,
+  addHistory,
+} = require("./handleLocalStorage");
 const newId = () => Math.round(Math.random() * 10000 * Math.random());
 const addTab = (passedURL, isNew, oldId) => {
   const id = oldId || newId();
@@ -28,29 +33,28 @@ const addTab = (passedURL, isNew, oldId) => {
     });
     tabs.appendChild(newTab);
     views.appendChild(newWebview);
+
     newWebview.addEventListener("dom-ready", () => {
-      const historyTab = getCurrentTabs().find(
-        (item) => item.url === "history.html"
-      );
-      // const bookmarksTab = getCurrentTabs().find(
-      //   (item) => item.url === "bookmarks.html"
-      // );
-      if (!historyTab) {
+      if (
+        url.endsWith("history.html") ||
+        url.endsWith("bookmarks.html")
+      ) {
         newWebview.executeJavaScript(
           "window.localStorage.setItem('search-history', JSON.stringify(JSON.parse(localStorage.getItem('search-history')||'[]')));"
         );
+        newWebview.executeJavaScript(
+          "window.localStorage.setItem('bookmarks', JSON.stringify(JSON.parse(localStorage.getItem('bookmarks')||'[]')));"
+        );
       }
-       newWebview.executeJavaScript(
-         "window.localStorage.setItem('bookmarks', JSON.stringify(JSON.parse(localStorage.getItem('bookmarks')||'[]')));"
-       );
-       
     });
-     const bookmarks = getBookmarks();
-     const bookmarkBtn = document.getElementById("bookmark-btn");
-     if (bookmarks.find((item) => item.url === url)) {
-       bookmarkBtn.style.color = "gold";
-     } else bookmarkBtn.style.color = "rgba(51, 51, 51, 0.699)";
+    const bookmarks = getBookmarks();
+    const bookmarkBtn = document.getElementById("bookmark-btn");
+    if (bookmarks.find((item) => item.url === url))
+      bookmarkBtn.classList.add("active");
+    else bookmarkBtn.classList.remove("active");
+
     locationInput.value = url;
   }
+  addHistory(url);
 };
 module.exports = addTab;

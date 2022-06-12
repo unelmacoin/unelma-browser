@@ -10,7 +10,6 @@ const Tab = (input, id) => {
   const closeTab = document.createElement("button");
   tab.classList.add("tab");
   tab.id = `tab-${id}`;
-  setTimeout(() => (tabContent.textContent = "Unelma Search"), 300);
   closeTab.innerHTML = "&#10006;";
   tabContent.classList.add("content");
   closeTab.classList.add("close");
@@ -30,11 +29,11 @@ const Tab = (input, id) => {
     currentView.classList.add("active-webview");
     
     input.value = currentView.getURL();
-    const bookmarks = getBookmarks();
-    const bookmarkBtn = document.getElementById("bookmark-btn");
-    if (bookmarks.find((item) => item.url === input.value)) {
-      bookmarkBtn.style.color = "gold";
-    } else bookmarkBtn.style.color = "rgba(51, 51, 51, 0.699)";
+     const bookmarks = getBookmarks();
+     const bookmarkBtn = document.getElementById("bookmark-btn");
+     if (bookmarks.find((item) => item.url === input.value))
+       bookmarkBtn.classList.add("active");
+     else bookmarkBtn.classList.remove("active");
   });
   closeTab.addEventListener("click", function () {
     const currentTabs = getCurrentTabs();
@@ -61,6 +60,11 @@ const Tab = (input, id) => {
         views[viewIndex].remove();
       }
     }
+    const bookmarks = getBookmarks();
+    const bookmarkBtn = document.getElementById("bookmark-btn");
+    if (bookmarks.find((item) => item.url === input.value))
+      bookmarkBtn.classList.add("active");
+    else bookmarkBtn.classList.remove("active");
   });
   return tab;
 };

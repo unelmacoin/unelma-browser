@@ -1,36 +1,11 @@
-const handleMaximization = require("../utils/handleMaximization");
-
 const WindowControllers = () => {
   const windowControls = document.createElement("div");
-  windowControls.id = "window-controllers";
-  const windowControlsClose = document.createElement("button");
-  windowControlsClose.id = "window-controls-close";
-  windowControlsClose.innerHTML = '<i class="fa fa-times"></i>';
-  const windowControlsMinimize = document.createElement("button");
-  windowControlsMinimize.id = "window-controls-minimize";
-  windowControlsMinimize.innerHTML = '<i class="fa fa-minus"></i>';
-  const windowControlsMaximize = document.createElement("button");
-  windowControlsMaximize.id = "window-controls-maximize";
-  windowControlsMaximize.innerHTML = '<i class="fa fa-expand"></i>';
-
-  const windowControlsUnmaximize = document.createElement("button");
-  windowControlsUnmaximize.id = "window-controls-unmaximize";
-  windowControlsUnmaximize.innerHTML = '<i class="fa fa-compress"></i>';
-
-  windowControls.appendChild(windowControlsClose);
-  windowControls.appendChild(windowControlsMinimize);
-  windowControls.appendChild(windowControlsMaximize);
-  windowControls.appendChild(windowControlsUnmaximize);
+  windowControls.id = "window-controllers"
   const toggleBtn = document.createElement("button");
   toggleBtn.id = "toggle-btn";
   toggleBtn.innerHTML = '<img src="img/sidebar.png" alt="toggle" />';
   windowControls.appendChild(toggleBtn);
-  handleMaximization(
-    windowControlsUnmaximize,
-    windowControlsMaximize,
-    windowControlsClose,
-    windowControlsMinimize
-  );
+  
   toggleBtn.addEventListener("click", () => {
     const sidebar = document.getElementById("app-sidebar");
     if (!sidebar.classList.contains("toggled-sidebar")) {
@@ -38,9 +13,6 @@ const WindowControllers = () => {
       document
         .getElementById("webviews-container")
         .classList.add("toggled-container");
-      document
-        .getElementById("options-bar")
-        .classList.add("toggled-options-bar");
     } else {
       document
         .getElementById("app-sidebar")
@@ -48,12 +20,6 @@ const WindowControllers = () => {
       document
         .getElementById("webviews-container")
         .classList.remove("toggled-container");
-      document
-        .getElementById("webviews-container")
-        .classList.remove("toggled-container");
-      document
-        .getElementById("options-bar")
-        .classList.remove("toggled-options-bar");
     }
   });
   return windowControls;
