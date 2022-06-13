@@ -1,5 +1,5 @@
 const newId = () => Math.round(Math.random() * 10000 * Math.random());
-
+const dateTime = () => new Date(Date.now())
 module.exports = {
   getCurrentTabs: () => {
     return JSON.parse(localStorage.getItem("current-tabs") || "[]");
@@ -22,7 +22,7 @@ module.exports = {
       !history.find((item) => item.url === url)
     ) {
       const id = newId();
-      history.push({ id, url });
+      history.push({ id, url, time: dateTime() });
       localStorage.setItem("search-history", JSON.stringify(history));
     }
   },
@@ -40,7 +40,7 @@ module.exports = {
       !url.endsWith("history.html")
     ) {
       const id = newId();
-      bookmarks.push({ id, url });
+      bookmarks.push({ id, url, time: dateTime() });
       localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
     }
   },
