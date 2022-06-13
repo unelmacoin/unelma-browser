@@ -1,5 +1,7 @@
 const Sidebar = require("./components/Sidebar");
 const addTab = require("./utils/addTab");
+const TopBar = require("./components/TopBar");
+const { getCurrentTabs } = require("./utils/handleLocalStorage");
 
 window.addEventListener("DOMContentLoaded", function () {
   const root = document.getElementById("root");
@@ -10,6 +12,7 @@ window.addEventListener("DOMContentLoaded", function () {
   const sidebar = Sidebar();
   root.appendChild(sidebar);
   root.appendChild(content);
+  root.appendChild(TopBar());
   const controllers = document.getElementById("controllers");
   const actualTabs = document.getElementById("actual-tabs");
   const LocationForm = document.getElementById("location-form");
@@ -28,5 +31,13 @@ window.addEventListener("DOMContentLoaded", function () {
       115
     }px`;
   });
-  addTab();
+  const currentTabs = getCurrentTabs();
+  if (currentTabs.length === 0) {
+    addTab();
+  } else {
+    currentTabs.forEach((tab) => {
+      addTab(tab.url, true, tab.id);
+    });
+  }
+  
 });

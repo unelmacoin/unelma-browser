@@ -52,9 +52,9 @@ function createWindow() {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on("web-contents-created", function (webContentsCreatedEvent, contents) {
+app.on("web-contents-created", function (_, contents) {
   if (contents.getType() === "webview") {
-    contents.addListener("new-window", function (newWindowEvent, url) {
+    contents.addListener("new-window", function (newWindowEvent, _) {
       newWindowEvent.preventDefault();
     });
   }

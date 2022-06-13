@@ -9,7 +9,7 @@ const NavigationControls = () => {
   navigationControlsForward.innerHTML = '<i class="fa fa-arrow-right"></i>';
   const navigationControlsReload = document.createElement("button");
   navigationControlsReload.id = "navigation-controls-reload";
-  navigationControlsReload.innerHTML = '<i class="fa fa-refresh"></i>';
+  navigationControlsReload.innerHTML = '<i class="fa fa-rotate-right"></i>';
   navigationControls.appendChild(navigationControlsBack);
   navigationControls.appendChild(navigationControlsForward);
   navigationControls.appendChild(navigationControlsReload);

@@ -17,14 +17,17 @@ const Webview = (id, url) => {
     const currentTab = document.getElementById(`tab-${id}`);
     currentTab.children[0].textContent = "Loading...";
   });
+ 
   webview.addEventListener("did-finish-load", () => {
     const currentTab = document.getElementById(`tab-${id}`);
-    currentTab.children[0].textContent = webview.getTitle()
+    currentTab.children[0].textContent = webview.getTitle();
+   
   });
   webview.addEventListener("did-frame-finish-load", () => {
     const currentTab = document.getElementById(`tab-${id}`);
     currentTab.children[0].textContent = webview.getTitle();
      document.getElementById("location-input").value = webview.getURL();
+     
   });
   return webview;
 };

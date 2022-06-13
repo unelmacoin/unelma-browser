@@ -1,11 +1,15 @@
 const { ipcRenderer } = require("electron");
+const {
+  setCurrentTabs,
+  getCurrentTabs,
+  getBookmarks,
+} = require("../utils/handleLocalStorage");
 const Tab = (input, id) => {
   const tab = document.createElement("div");
   const tabContent = document.createElement("div");
   const closeTab = document.createElement("button");
   tab.classList.add("tab");
   tab.id = `tab-${id}`;
-  setTimeout(() => (tabContent.textContent = "Unelma Search"), 300);
   closeTab.innerHTML = "&#10006;";
   tabContent.classList.add("content");
   closeTab.classList.add("close");
@@ -19,13 +23,22 @@ const Tab = (input, id) => {
     [...document.querySelectorAll(".active-webview")].forEach((t) => {
       t.classList.remove("active-webview");
     });
-   
+
     const currentView = document.getElementById(`webview-${id}`);
     tab.classList.add("active-tab");
     currentView.classList.add("active-webview");
-     input.value = currentView.getURL();
+    
+    input.value = currentView.getURL();
+     const bookmarks = getBookmarks();
+     const bookmarkBtn = document.getElementById("bookmark-btn");
+     if (bookmarks.find((item) => item.url === input.value))
+       bookmarkBtn.classList.add("active");
+     else bookmarkBtn.classList.remove("active");
   });
   closeTab.addEventListener("click", function () {
+    const currentTabs = getCurrentTabs();
+    const newTabs = currentTabs.filter((tab) => tab.id !== id);
+    setCurrentTabs(newTabs);
     const tabs = document.getElementById("actual-tabs").children;
     if (tabs.length === 1) {
       ipcRenderer.send("close-window");
@@ -34,7 +47,6 @@ const Tab = (input, id) => {
       const tabIndex = [...tabs].findIndex((t) => t.id.endsWith(id));
       const viewIndex = [...views].findIndex((t) => t.id.endsWith(id));
       if (tab.classList.contains("active-tab")) {
-       
         tabs[tabIndex].remove();
         views[viewIndex].remove();
         tabs[tabIndex === 0 ? tabIndex + 1 : tabIndex - 1].classList.add(
@@ -48,6 +60,11 @@ const Tab = (input, id) => {
         views[viewIndex].remove();
       }
     }
+    const bookmarks = getBookmarks();
+    const bookmarkBtn = document.getElementById("bookmark-btn");
+    if (bookmarks.find((item) => item.url === input.value))
+      bookmarkBtn.classList.add("active");
+    else bookmarkBtn.classList.remove("active");
   });
   return tab;
 };
