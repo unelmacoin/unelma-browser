@@ -33,9 +33,11 @@ window.addEventListener("DOMContentLoaded", function () {
     category.appendChild(categoryTitle);
     const categoryList = document.createElement("ul");
     categoryList.className = "category-list";
+    const history = document.createElement("ul");
     categories[key].forEach((item) => {
-      const history = document.createElement("ul");
       const itemLi = document.createElement("li");
+      const itemContent = document.createElement("div");
+      itemContent.className = "item-content";
       itemLi.className = "item";
       const itemLink = document.createElement("a");
       const time = document.createElement("div");
@@ -49,6 +51,9 @@ window.addEventListener("DOMContentLoaded", function () {
         ).filter((i) => i.id !== item.id);
         localStorage.setItem("search-history", JSON.stringify(sHistory));
         itemLi.remove();
+        if (history.children.length === 0) {
+          category.remove();
+        }
         if (categoriesList.children.length === 0) {
           let li = document.createElement("li");
           li.textContent = "No search history";
@@ -61,13 +66,14 @@ window.addEventListener("DOMContentLoaded", function () {
         item.url.indexOf("/", item.url.indexOf("//") + 2)
       );
       itemLink.target = "_blank";
-      itemLi.appendChild(itemLink);
-      itemLi.appendChild(time);
+      itemContent.appendChild(time);
+      itemContent.appendChild(itemLink);
+      itemLi.appendChild(itemContent);
       itemLi.appendChild(button);
       history.appendChild(itemLi);
-      category.appendChild(history);
-      categoriesList.appendChild(category);
     });
+    category.appendChild(history);
+    categoriesList.appendChild(category);
   });
 
   if (categoriesList.children.length === 0) {
