@@ -22,8 +22,7 @@ button {
 a {
   text-decoration: none;
   color: rgb(73, 87, 107);
-  display: block;
-    width: 200px;
+  
 }
 ul {
   list-style: none;
@@ -65,7 +64,11 @@ ul {
   justify-content: space-between;
   align-items: center;
   padding: 15px 20px;
-  
+}
+.item-content {
+  display: flex;
+  align-items: center;
+  width: 80%;
 }
 h4 {
   border-bottom: 1px solid rgba(211, 211, 211, 0.575);
@@ -75,5 +78,6 @@ h4 {
 }
 .time {
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
+  width: 100px;
 }
