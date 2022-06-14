@@ -1,6 +1,6 @@
 {
   "name": "Unelma-Browser",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A simple and basic Unelma.XYZ - Browser",
   "main": "main.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "postinstall": "electron-builder install-app-deps",
   "build": {
     "appId": "xyz.unelma.browser",
-    "productName": "Unelma.XYZ - Browser",
+    "productName": "Unelma Browser",
     "icon": "./img/unp.png",
     "target": "nsis",
     "nsis": {
@@ -26,7 +26,7 @@
       "oneClick": false
     }
   },
-  "author": "Unelma.XYZ",
+  "author": "Unelma Platforms Inc.",
   "license": "Apache 2.0",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.63",
