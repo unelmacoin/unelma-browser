@@ -1,7 +1,14 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, BrowserView, shell } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  ipcMain,
+  BrowserView,
+  session,
+} = require("electron");
 const path = require("path");
-
+const fetch = require("cross-fetch");
+const { ElectronBlocker } = require("@cliqz/adblocker-electron");
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -61,6 +68,11 @@ app.on("web-contents-created", function (_, contents) {
 });
 
 app.whenReady().then(() => {
+  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch)
+    .then((blocker) => {
+      blocker.enableBlockingInSession(session.defaultSession);
+    })
+    .catch(console.error);
   createWindow();
 
   app.on("activate", function () {
