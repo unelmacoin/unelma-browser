@@ -9,7 +9,8 @@ A simple Unelma.XYZ - browser based on Chromium open-source project that aims to
 
 # Features
 
-- Ad blocker, browser web without any ads and don't let anyone track you
+- Ad blocker support, browse web without any ads
+  and don't let anyone track you (this is enabled by default)
 - Bookmarks and History manager support
 - Totally revolutionary design (unlike traditional tabs)
 - More features coming soon...
