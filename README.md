@@ -7,17 +7,27 @@ A simple Unelma.XYZ - browser based on Chromium open-source project that aims to
 1. For macOS, `npm run make`
 2. For windows, `npm run dist`
 
+# Features
+
+- Ad blocker, browser web without any ads and don't let anyone track you
+- Bookmarks and History manager support
+- Totally revolutionary design (unlike traditional tabs)
+- More features coming soon...
+
 # Contribution
 
-If you want to contribute, feel free to open pull request and push changes. All changes is going through review process. 
+If you want to contribute, feel free to open pull request and push changes. All changes is going through review process.
 
 # License
+
 Apache License 2.0
 
 # Contact
+
 Please send private message if you would need help or want to ask for feature requests
+
 <br>Website: https://unelmacoin.io
-<br>Email: support(at)unelmacoin.com 
+<br>Email: support(at)unelmacoin.com
 <br>Facebook: https://www.facebook.com/unelmaplatforms
 <br>Discord: https://discord.gg/dccbXPKGRH
 <br>Twitter: https://twitter.com/unelmaplatforms
