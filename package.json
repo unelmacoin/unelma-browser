@@ -28,18 +28,21 @@
   },
   "author": "Unelma Platforms Inc.",
   "license": "Apache 2.0",
-  "devDependencies": {
+  "dependencies": {
     "@cliqz/adblocker-electron": "^1.23.8",
     "@electron-forge/cli": "^6.0.0-beta.63",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
+    "@cliqz/adblocker-electron-preload": "^1.23.8",
     "cross-fetch": "^3.1.5",
-    "electron": "^19.0.0",
     "electron-notarize": "^1.2.1",
     "electron-packager": "^15.5.1",
     "electron-squirrel-startup": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "^19.0.0"
   },
   "config": {
     "make_targets": {
