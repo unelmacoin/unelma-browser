@@ -45,7 +45,7 @@ const Tab = (input, id) => {
     setCurrentTabs(newTabs);
     const tabs = document.getElementById("actual-tabs").children;
     if (tabs.length === 1) {
-      ipcRenderer.send("close-window");
+      ipcRenderer.send("close-window", window.id);
     } else {
       const views = document.getElementById("webviews-container").children;
       const tabIndex = [...tabs].findIndex((t) => t.id.endsWith(id));
