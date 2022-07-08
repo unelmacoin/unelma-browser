@@ -10,7 +10,7 @@ const goToLocation = (input) => {
   const id = +activeWebview.id.split("-")[1];
   activeWebview.src = handleSearch(input.value);
   input.value = handleSearch(input.value);
-  const currentTabs = JSON.parse(localStorage.getItem("current-tabs"));
+  const currentTabs = JSON.parse(localStorage.getItem("current-tabs"))[window.id];
   const indexOfCurrentTab = currentTabs.findIndex((tab) => tab.id === id);
   currentTabs[indexOfCurrentTab].url = handleSearch(input.value);
   setCurrentTabs(currentTabs);

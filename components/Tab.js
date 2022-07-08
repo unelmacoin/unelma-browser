@@ -6,16 +6,20 @@ const {
 } = require("../utils/handleLocalStorage");
 const Tab = (input, id) => {
   const tab = document.createElement("div");
+  const favIcon = document.createElement("img");
   const tabContent = document.createElement("div");
+  const tabContentContainer = document.createElement("div");
   const closeTab = document.createElement("button");
   tab.classList.add("tab");
   tab.id = `tab-${id}`;
   closeTab.innerHTML = "&#10006;";
-  tabContent.classList.add("content");
+  tabContentContainer.classList.add("content");
   closeTab.classList.add("close");
-  tab.appendChild(tabContent);
+  tabContentContainer.appendChild(favIcon);
+  tabContentContainer.appendChild(tabContent);
+  tab.appendChild(tabContentContainer);
   tab.appendChild(closeTab);
-  tabContent.addEventListener("click", () => {
+  tabContentContainer.addEventListener("click", () => {
     [...document.querySelectorAll(".active-tab")].forEach((t) => {
       t.classList.remove("active-tab");
     });
@@ -27,13 +31,13 @@ const Tab = (input, id) => {
     const currentView = document.getElementById(`webview-${id}`);
     tab.classList.add("active-tab");
     currentView.classList.add("active-webview");
-    
+
     input.value = currentView.getURL();
-     const bookmarks = getBookmarks();
-     const bookmarkBtn = document.getElementById("bookmark-btn");
-     if (bookmarks.find((item) => item.url === input.value))
-       bookmarkBtn.classList.add("active");
-     else bookmarkBtn.classList.remove("active");
+    const bookmarks = getBookmarks();
+    const bookmarkBtn = document.getElementById("bookmark-btn");
+    if (bookmarks.find((item) => item.url === input.value))
+      bookmarkBtn.classList.add("active");
+    else bookmarkBtn.classList.remove("active");
   });
   closeTab.addEventListener("click", function () {
     const currentTabs = getCurrentTabs();

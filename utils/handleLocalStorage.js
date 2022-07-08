@@ -1,11 +1,19 @@
 const newId = () => Math.round(Math.random() * 10000 * Math.random());
-const dateTime = () => new Date(Date.now())
+const dateTime = () => new Date(Date.now());
 module.exports = {
   getCurrentTabs: () => {
-    return JSON.parse(localStorage.getItem("current-tabs") || "[]");
+    const tabs = JSON.parse(localStorage.getItem("current-tabs") || "{}")[
+      window.id
+    ];
+    return tabs ? tabs : [];
   },
   setCurrentTabs: (tabs) => {
-    localStorage.setItem("current-tabs", JSON.stringify(tabs));
+    let newTabs = JSON.parse(localStorage.getItem("current-tabs") || "{}");
+    newTabs[window.id] = tabs;
+    localStorage.setItem("current-tabs", JSON.stringify({ ...newTabs }));
+  },
+  resetTabs: () => {
+    localStorage.setItem("current-tabs", JSON.stringify({}));
   },
   getSearchHistory: () => {
     return JSON.parse(localStorage.getItem("search-history") || "[]");
@@ -51,7 +59,7 @@ module.exports = {
   },
   removeFromSearchHistroy: (url) => {
     let history = JSON.parse(localStorage.getItem("bookmarks") || "[]");
-    
+
     history = history.filter((item) => item.url !== url);
     localStorage.setItem("search-history", JSON.stringify(history));
   },

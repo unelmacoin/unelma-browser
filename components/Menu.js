@@ -1,5 +1,5 @@
 const addTab = require("../utils/addTab");
-const { getCurrentTabs } = require("../utils/handleLocalStorage");
+const { getCurrentTabs, resetTabs } = require("../utils/handleLocalStorage");
 
 const menuItems = [
   {
@@ -42,6 +42,15 @@ const Menu = () => {
     });
     menuList.appendChild(menuItem);
   });
+  const tabsItem = document.createElement("li");
+
+  tabsItem.textContent = "Clear Tabs";
+  tabsItem.classList.add("menu-item");
+  tabsItem.addEventListener('click',()=> {
+     menu.classList.remove("open");
+    resetTabs()
+  })
+  menuList.appendChild(tabsItem);
   menu.appendChild(menuList);
   return menu;
 };

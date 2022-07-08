@@ -14,7 +14,7 @@ const addTab = (passedURL, isNew, oldId) => {
   const views = document.getElementById("webviews-container");
   const locationInput = document.getElementById("location-input");
   if (tabs.children.length < 500) {
-    const newTab = Tab(locationInput, id);
+    const newTab = Tab(locationInput, id,url);
     const newWebview = Webview(id, url);
     [...document.querySelectorAll(".active-tab")].forEach((t) => {
       t.classList.remove("active-tab");

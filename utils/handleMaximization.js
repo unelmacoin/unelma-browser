@@ -5,20 +5,20 @@ const handleMaximization = ( maximizeBtn,unmaximizeBtn, cancelBtn,minimizeBtn) =
   unmaximizeBtn.style.display = !isMaximized ? "block" : "none";
   maximizeBtn.style.display = !isMaximized ? "none" : "block";
   maximizeBtn.addEventListener("click", () => {
-    ipcRenderer.send("unmaximize", true);
+    ipcRenderer.send("unmaximize", window.id);
     maximizeBtn.style.display = "none";
     unmaximizeBtn.style.display = "block";
   });
   unmaximizeBtn.addEventListener("click", () => {
-    ipcRenderer.send("maximize", true);
+    ipcRenderer.send("maximize", window.id);
     maximizeBtn.style.display = "block";
     unmaximizeBtn.style.display = "none";
   });
   cancelBtn.addEventListener("click", () => {
-    ipcRenderer.send("close-window", true);
+    ipcRenderer.send("close-window", window.id);
   });
   minimizeBtn.addEventListener("click", () => {
-    ipcRenderer.send("minimize", true);
+    ipcRenderer.send("minimize", window.id);
   });
 };
 module.exports = handleMaximization;

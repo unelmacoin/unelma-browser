@@ -1,14 +1,10 @@
 // Modules to control application life and create native browser window
-const {
-  app,
-  BrowserWindow,
-  ipcMain,
-  BrowserView,
-  session,
-} = require("electron");
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 const path = require("path");
 const fetch = require("cross-fetch");
+const contextMenu = require("electron-context-menu");
 const { ElectronBlocker } = require("@cliqz/adblocker-electron");
+const url = require("url");
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -29,38 +25,70 @@ function createWindow() {
       contextIsolation: false,
     },
   });
-  ipcMain.on("isMaximized", (event) => {
-    event.returnValue = mainWindow.isMaximized;
-  });
-  ipcMain.on("minimize", () => {
-    mainWindow.minimize();
-  });
-
-  ipcMain.on("maximize", () => {
-    mainWindow.maximize();
-  });
-  ipcMain.on("close-window", () => {
-    if (mainWindow.isClosable()) {
-      mainWindow.close();
-    }
-  });
-  ipcMain.on("unmaximize", () => {
-    mainWindow.unmaximize();
-  });
 
   // and load the index.html of the app.
-  mainWindow.loadFile("index.html");
+  mainWindow.loadURL(
+    url.format({
+      protocol: "file",
+      slashes: true,
+      pathname: require("path").join(__dirname, "index.html"),
+    })
+  );
+  mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.webContents.send("window-ready", mainWindow.id);
+    mainWindow.webContents.send("isMaximized", mainWindow.isMaximized());
+  });
   mainWindow.setMenu(null);
 
+  mainWindow.webContents.openDevTools();
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools();
 }
+
+ipcMain.on("minimize", (_,id) => {
+  BrowserWindow.getAllWindows()
+    .find((w) => w.id === id)
+    .minimize();
+});
+
+ipcMain.on("maximize", (_,id) => {
+  BrowserWindow.getAllWindows()
+    .find((w) => w.id === id)
+    .maximize();
+});
+ipcMain.on("close-window", (_,id) => {
+  if (
+    BrowserWindow.getAllWindows()
+      .find((w) => w.id === id)
+      .isClosable()
+  ) {
+    BrowserWindow.getAllWindows()
+      .find((w) => w.id === id)
+      .close();
+  }
+});
+ipcMain.on("unmaximize", (_,id) => {
+  BrowserWindow.getAllWindows()
+    .find((w) => w.id === id)
+    .unmaximize();
+});
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on("web-contents-created", function (_, contents) {
   if (contents.getType() === "webview") {
+    contextMenu({
+      window: contents,
+      showInspectElement: true,
+      prepend: () => [
+        {
+          label: "New window",
+          click: () => {
+            createWindow();
+          },
+        },
+      ],
+    });
     contents.addListener("new-window", function (newWindowEvent, _) {
       newWindowEvent.preventDefault();
     });

@@ -270,8 +270,16 @@ input {
   animation: add-tab 0.3s;
   border-radius: 4px;
 }
-
 .tab .content {
+  display: flex;
+  align-items: center;
+}
+.tab .content img {
+  width: 18px;
+  height: 18px;
+  margin: 0 10px;
+}
+.tab .content div {
   overflow: hidden;
   height: 35px;
   word-wrap: normal;
