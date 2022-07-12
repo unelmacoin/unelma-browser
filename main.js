@@ -46,6 +46,9 @@ ipcMain.on("minimize", (_, id) => {
     .find((w) => w.id === id)
     .minimize();
 });
+ipcMain.on("create-window", () => {
+  createWindow();
+});
 
 ipcMain.on("maximize", (_, id) => {
   BrowserWindow.getAllWindows()
@@ -69,9 +72,6 @@ ipcMain.on("unmaximize", (_, id) => {
     .unmaximize();
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on("web-contents-created", function (_, contents) {
   if (contents.getType() === "webview") {
     contextMenu({

@@ -12,7 +12,12 @@ module.exports = {
     newTabs[window.id] = tabs;
     localStorage.setItem("current-tabs", JSON.stringify({ ...newTabs }));
   },
-  resetTabs: () => {
+  resetWindowTabs: () => {
+    const tabs = JSON.parse(localStorage.getItem("current-tabs") || "{}");
+    tabs[window.id] = [];
+    localStorage.setItem("current-tabs", JSON.stringify(tabs));
+  },
+  resetAllTabs: () => {
     localStorage.setItem("current-tabs", JSON.stringify({}));
   },
   getSearchHistory: () => {

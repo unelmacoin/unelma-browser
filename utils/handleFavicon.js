@@ -1,7 +1,7 @@
 const handleFavicon = (url) => {
   const settingsTabs = ["bookmark", "history"];
   const settingTab = settingsTabs.find((tab) => url.includes(tab));
-  return url === "https://www.unelma.xyz/"
+  return url.endsWith("unelma.xyz/")
     ? "img/unp.png"
     : settingTab
     ? `img/${settingTab}.png`
