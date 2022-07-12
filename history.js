@@ -11,7 +11,6 @@ window.addEventListener("DOMContentLoaded", function () {
     localStorage.getItem("search-history") || "[]"
   );
   const categories = categorizeByDate(searchHistoryArray);
-  console.log(categories);
 
   const sortedKeys = Object.keys(categories).sort((a, b) => {
     if (a.includes("Today")) return -1;

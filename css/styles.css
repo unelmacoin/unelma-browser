@@ -141,7 +141,7 @@ webview {
 }
 
 #menu {
-  width: 200px;
+  width: 225px;
   border-radius: 7px;
   background-color: #fff;
   padding: 20px 0;
@@ -155,7 +155,7 @@ webview {
 #menu .menu-item {
   display: flex;
   align-items: center;
-  padding: 14px 10px;
+  padding: 14px 25px;
   color: rgb(72, 82, 97);
   cursor: pointer;
 }
@@ -262,7 +262,6 @@ input {
   padding: 8px;
   width: 100%;
   font-size: 12px;
-
   cursor: pointer;
   height: 35px;
   -webkit-app-region: no-drag;
@@ -270,8 +269,17 @@ input {
   animation: add-tab 0.3s;
   border-radius: 4px;
 }
-
 .tab .content {
+  display: flex;
+  align-items: center;
+  width: 90%;
+}
+.tab .content img {
+  width: 18px;
+  height: 18px;
+  margin: 0 10px;
+}
+.tab .content div {
   overflow: hidden;
   height: 35px;
   word-wrap: normal;

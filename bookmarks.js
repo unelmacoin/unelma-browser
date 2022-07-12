@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", function () {
     localStorage.getItem("bookmarks") || "[]"
   );
   const categories = categorizeByDate(searchHistoryArray);
-  console.log(categories);
+  
 
   const sortedKeys = Object.keys(categories).sort((a, b) => {
     if (a.includes("Today")) return -1;
