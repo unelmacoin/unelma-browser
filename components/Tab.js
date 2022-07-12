@@ -48,11 +48,6 @@ const Tab = (input, id) => {
     currentView.classList.add("active-webview");
     input.value = currentView.getURL();
     handleBookmarksUI();
-    this.addEventListener('mousemove',(event)=> {
-      this.parentElement.style.position = 'absolute';
-      this.parentElement.style.top = `${event.y}px`
-      console.log()
-    })
   };
   closeTab.addEventListener("click", handleCloseTab);
   tabContentContainer.addEventListener("click", handleActivateTab);
