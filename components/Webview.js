@@ -1,4 +1,5 @@
 const handleFavicon = require("../utils/handleFavicon");
+const { handleBookmarksUI } = require("../utils/handleNavigationsUI");
 
 const Webview = (id, url) => {
   const webview = document.createElement("webview");
@@ -24,13 +25,16 @@ const Webview = (id, url) => {
     const currentTab = document.getElementById(`tab-${id}`);
     currentTab.children[0].children[1].textContent = webview.getTitle();
     currentTab.children[0].children[0].src = handleFavicon(webview.getURL());
+    handleBookmarksUI()
   });
   webview.addEventListener("did-frame-finish-load", () => {
     const currentTab = document.getElementById(`tab-${id}`);
     currentTab.children[0].children[1].textContent = webview.getTitle();
     document.getElementById("location-input").value = webview.getURL();
     currentTab.children[0].children[0].src = handleFavicon(webview.getURL());
+    handleBookmarksUI();
   });
+  
   return webview;
 };
 module.exports = Webview;

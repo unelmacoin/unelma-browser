@@ -39,23 +39,20 @@ function createWindow() {
     mainWindow.webContents.send("isMaximized", mainWindow.isMaximized());
   });
   mainWindow.setMenu(null);
-
-  mainWindow.webContents.openDevTools();
-  // Open the DevTools.
 }
 
-ipcMain.on("minimize", (_,id) => {
+ipcMain.on("minimize", (_, id) => {
   BrowserWindow.getAllWindows()
     .find((w) => w.id === id)
     .minimize();
 });
 
-ipcMain.on("maximize", (_,id) => {
+ipcMain.on("maximize", (_, id) => {
   BrowserWindow.getAllWindows()
     .find((w) => w.id === id)
     .maximize();
 });
-ipcMain.on("close-window", (_,id) => {
+ipcMain.on("close-window", (_, id) => {
   if (
     BrowserWindow.getAllWindows()
       .find((w) => w.id === id)
@@ -66,7 +63,7 @@ ipcMain.on("close-window", (_,id) => {
       .close();
   }
 });
-ipcMain.on("unmaximize", (_,id) => {
+ipcMain.on("unmaximize", (_, id) => {
   BrowserWindow.getAllWindows()
     .find((w) => w.id === id)
     .unmaximize();

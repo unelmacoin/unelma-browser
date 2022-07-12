@@ -262,7 +262,6 @@ input {
   padding: 8px;
   width: 100%;
   font-size: 12px;
-
   cursor: pointer;
   height: 35px;
   -webkit-app-region: no-drag;
@@ -273,6 +272,7 @@ input {
 .tab .content {
   display: flex;
   align-items: center;
+  width: 90%;
 }
 .tab .content img {
   width: 18px;

@@ -1,8 +1,8 @@
 const {
   setCurrentTabs,
-  getBookmarks,
   addHistory,
 } = require("./handleLocalStorage");
+const { handleBookmarksUI } = require("./handleNavigationsUI");
 const handleSearch = require("./handleSearch");
 
 const goToLocation = (input) => {
@@ -15,11 +15,7 @@ const goToLocation = (input) => {
   currentTabs[indexOfCurrentTab].url = handleSearch(input.value);
   setCurrentTabs(currentTabs);
   addHistory(handleSearch(input.value));
-  const bookmarks = getBookmarks();
-  const bookmarkBtn = document.getElementById("bookmark-btn");
-  if (bookmarks.find((item) => item.url === handleSearch(input.value)))
-    bookmarkBtn.classList.add("active");
-  else bookmarkBtn.classList.remove("active");
+  handleBookmarksUI()
 };
 
 module.exports = goToLocation;

@@ -2,8 +2,9 @@ const { ipcRenderer } = require("electron");
 const {
   setCurrentTabs,
   getCurrentTabs,
-  getBookmarks,
 } = require("../utils/handleLocalStorage");
+const { handleBookmarksUI } = require("../utils/handleNavigationsUI");
+const { getCorrectSibling, removeClass } = require("../utils/tabs");
 const Tab = (input, id) => {
   const tab = document.createElement("div");
   const favIcon = document.createElement("img");
@@ -19,57 +20,42 @@ const Tab = (input, id) => {
   tabContentContainer.appendChild(tabContent);
   tab.appendChild(tabContentContainer);
   tab.appendChild(closeTab);
-  tabContentContainer.addEventListener("click", () => {
-    [...document.querySelectorAll(".active-tab")].forEach((t) => {
-      t.classList.remove("active-tab");
-    });
+  const currentView = document.getElementById(`webview-${id}`);
 
-    [...document.querySelectorAll(".active-webview")].forEach((t) => {
-      t.classList.remove("active-webview");
-    });
-
-    const currentView = document.getElementById(`webview-${id}`);
-    tab.classList.add("active-tab");
-    currentView.classList.add("active-webview");
-
-    input.value = currentView.getURL();
-    const bookmarks = getBookmarks();
-    const bookmarkBtn = document.getElementById("bookmark-btn");
-    if (bookmarks.find((item) => item.url === input.value))
-      bookmarkBtn.classList.add("active");
-    else bookmarkBtn.classList.remove("active");
-  });
-  closeTab.addEventListener("click", function () {
+  const handleCloseTab = function () {
     const currentTabs = getCurrentTabs();
     const newTabs = currentTabs.filter((tab) => tab.id !== id);
     setCurrentTabs(newTabs);
-    const tabs = document.getElementById("actual-tabs").children;
-    if (tabs.length === 1) {
+    if (tab.parentElement.children.length === 1) {
       ipcRenderer.send("close-window", window.id);
     } else {
-      const views = document.getElementById("webviews-container").children;
-      const tabIndex = [...tabs].findIndex((t) => t.id.endsWith(id));
-      const viewIndex = [...views].findIndex((t) => t.id.endsWith(id));
+      const tabSibling = getCorrectSibling(tab);
+      const viewSibling = getCorrectSibling(currentView);
       if (tab.classList.contains("active-tab")) {
-        tabs[tabIndex].remove();
-        views[viewIndex].remove();
-        tabs[tabIndex === 0 ? tabIndex + 1 : tabIndex - 1].classList.add(
-          "active-tab"
-        );
-        views[tabIndex === 0 ? viewIndex + 1 : viewIndex - 1].classList.add(
-          "active-webview"
-        );
-      } else {
-        tabs[tabIndex].remove();
-        views[viewIndex].remove();
+        tabSibling.classList.add("active-tab");
+        viewSibling.classList.add("active-webview");
       }
+      input.value = viewSibling.getURL();
+      tab.remove();
+      currentView.remove();
+      handleBookmarksUI();
     }
-    const bookmarks = getBookmarks();
-    const bookmarkBtn = document.getElementById("bookmark-btn");
-    if (bookmarks.find((item) => item.url === input.value))
-      bookmarkBtn.classList.add("active");
-    else bookmarkBtn.classList.remove("active");
-  });
+  };
+  const handleActivateTab = function (e) {
+    removeClass("active-tab");
+    removeClass("active-webview");
+    tab.classList.add("active-tab");
+    currentView.classList.add("active-webview");
+    input.value = currentView.getURL();
+    handleBookmarksUI();
+    this.addEventListener('mousemove',(event)=> {
+      this.parentElement.style.position = 'absolute';
+      this.parentElement.style.top = `${event.y}px`
+      console.log()
+    })
+  };
+  closeTab.addEventListener("click", handleCloseTab);
+  tabContentContainer.addEventListener("click", handleActivateTab);
   return tab;
 };
 
