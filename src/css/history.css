@@ -1,31 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  font-family: Lucida Grande, Arial, sans-serif;
-  background-color: transparent;
-}
-body::-webkit-scrollbar {
+
+#search-history::-webkit-scrollbar {
   width: 0px;
-}
-button,
-input {
-  outline: none;
-  border: 0;
-  background: none;
-}
-button {
-  cursor: pointer;
-}
-a {
-  text-decoration: none;
-  color: rgb(73, 87, 107);
-  
-}
-ul {
-  list-style: none;
 }
 #search-history {
   width: 0;
@@ -40,6 +15,7 @@ ul {
   display: flex;
   opacity: 1 !important;
   background: white;
+  overflow-y: scroll;
 }
 #categories-list {
   width: 100%;
@@ -85,7 +61,7 @@ h4 {
   text-transform: capitalize;
 }
 .time {
-  font-weight: bold;
   font-size: 13px;
   width: 100px;
+  color: #646464;
 }

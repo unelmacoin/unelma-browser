@@ -5,7 +5,7 @@ const optionsIcons = { bookmarks, history };
 export const handleFavicon = (url, type) => {
   return url?.endsWith("unelma.xyz/")
     ? unelmaLogo
-    : type
+    : type === "bookmarks" || type === "history"
     ? optionsIcons[type]
     : `https://s2.googleusercontent.com/s2/favicons?domain_url=${url}`;
 };

@@ -37,10 +37,12 @@
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
     "@electron-forge/maker-zip": "^6.0.0-beta.63",
     "cross-fetch": "^3.1.5",
+    "dateformat": "^5.0.3",
     "electron-context-menu": "^3.3.0",
     "electron-notarize": "^1.2.1",
     "electron-packager": "^15.5.1",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",

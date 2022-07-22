@@ -1,11 +1,11 @@
 import React from "react";
 import "../css/history.css";
-import { categorizeByDate } from "../utils/categorize";
-import { getSearchHistory, removeFromSearchHistroy } from "../utils/handleLocalStorage";
 import { FaTimes } from "react-icons/fa";
+const { ipcRenderer } = window.require("electron/renderer");
 import { ADD_TAB } from "../utils/actions";
 import { generateId } from "../utils/generateId";
-const History = ({ active, tabsDispatch, searchHistory, setHistory }) => {
+import dateFormat from "dateformat";
+const History = ({ active, tabsDispatch, searchHistory }) => {
   const sortedKeys = Object.keys(searchHistory).sort((a, b) => {
     if (a.includes("Today")) return -1;
     if (b.includes("Today")) return 1;
@@ -21,7 +21,7 @@ const History = ({ active, tabsDispatch, searchHistory, setHistory }) => {
     items.map(({ id, url, time }) => (
       <li key={id} className="item">
         <div className="item-content">
-          <p className="time">{new Date(time).toLocaleTimeString()}</p>
+          <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button
             onClick={() => {
               tabsDispatch({
@@ -36,16 +36,15 @@ const History = ({ active, tabsDispatch, searchHistory, setHistory }) => {
               });
             }}
           >
-            {url}
+            {url.length > 40 ? `${url.slice(0, 40)}...` : url}
           </button>
         </div>
         <button
           onClick={() => {
-            removeFromSearchHistroy(id);
-            setHistory(categorizeByDate(getSearchHistory()));
+            ipcRenderer.send("remove-from-search-histroy", id);
           }}
         >
-          <FaTimes />
+          <FaTimes fontSize="10px" />
         </button>
       </li>
     ));

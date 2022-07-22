@@ -1,8 +1,6 @@
+const { ipcRenderer } = window.require("electron");
 import React, { useEffect, useRef } from "react";
 import { UPDATE_TAB } from "../utils/actions";
-import { categorizeByDate } from "../utils/categorize";
-import { handleFavicon } from "../utils/handleFavicon";
-import { addHistory, getSearchHistory } from "../utils/handleLocalStorage";
 
 const Webview = ({ id, url, active, tabsDispatch, setSearchHistory }) => {
   const webviewRef = useRef();
@@ -21,12 +19,10 @@ const Webview = ({ id, url, active, tabsDispatch, setSearchHistory }) => {
       tab: {
         id,
         title: webviewRef.current.getTitle(),
-        favIcon: handleFavicon(webviewRef.current.getURL()),
         url: webviewRef.current.getURL(),
         loading: false,
       },
     });
-   
   };
   useEffect(() => {
     webviewRef.current.addEventListener("dom-ready", () => {
@@ -44,8 +40,7 @@ const Webview = ({ id, url, active, tabsDispatch, setSearchHistory }) => {
 
     webviewRef.current.addEventListener("did-finish-load", () => {
       handleFinishLoading();
-       addHistory(webviewRef.current.getURL());
-       setSearchHistory(categorizeByDate(getSearchHistory()));
+      ipcRenderer.send("add-history", webviewRef.current.getURL());
     });
     webviewRef.current.addEventListener("did-frame-finish-load", () => {
       handleFinishLoading();

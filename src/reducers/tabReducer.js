@@ -7,18 +7,18 @@ import {
   UPDATE_TAB,
   SET_TABS,
 } from "../utils/actions";
-import { setCurrentTabs } from "../utils/handleLocalStorage";
+// import { setCurrentTabs } from "../utils/handleLocalStorage";
 
 const tabReducer = (state, action) => {
   let result = [];
   switch (action.type) {
     case SET_TABS: {
-      setCurrentTabs(action.tabs);
+      // ipcRenderer.send("set-current-tabs" + window.id, action.tabs);
       return action.tabs;
     }
     case ADD_TAB: {
       result = [...state].map((tab) => ({ ...tab, active: false }));
-      setCurrentTabs([...result, action.tab]);
+      ipcRenderer.send("set-current-tabs" + window.id, [...result, action.tab]);
       return [...result, action.tab];
     }
     case REMOVE_TAB: {
@@ -32,16 +32,17 @@ const tabReducer = (state, action) => {
         if (elmIndex === 0) {
           result[elmIndex + 1].active = true;
           result = result.filter((tab) => tab.id !== action.id);
-          setCurrentTabs(result);
+            ipcRenderer.send("set-current-tabs" + window.id, result);
+         
           return result;
         }
         result[elmIndex - 1].active = true;
         result = result.filter((tab) => tab.id !== action.id);
-        setCurrentTabs(result);
+         ipcRenderer.send("set-current-tabs" + window.id, result);
         return result;
       }
       result = state.filter((tab) => tab.id !== action.id);
-      setCurrentTabs(result);
+      ipcRenderer.send("set-current-tabs" + window.id, result);
       return result;
     }
     case UPDATE_TAB: {
@@ -53,7 +54,7 @@ const tabReducer = (state, action) => {
             }
           : tab
       );
-      setCurrentTabs(result);
+    ipcRenderer.send("set-current-tabs" + window.id, result);
       return result;
     }
     case ACTIVATE_TAB: {
@@ -63,7 +64,7 @@ const tabReducer = (state, action) => {
             ? { ...tab, active: true }
             : { ...tab, active: false }
         );
-        setCurrentTabs(result);
+        ipcRenderer.send("set-current-tabs" + window.id, result);
         return result;
       } else {
         result = [...state].map((tab) =>
@@ -71,7 +72,7 @@ const tabReducer = (state, action) => {
             ? { ...tab, active: true }
             : { ...tab, active: false }
         );
-        setCurrentTabs(result);
+       ipcRenderer.send("set-current-tabs" + window.id, result);
         return result;
       }
     }
@@ -79,7 +80,7 @@ const tabReducer = (state, action) => {
       result = [...state].map((tab) =>
         tab.active ? { ...tab, url: action.url } : tab
       );
-      setCurrentTabs(result);
+    ipcRenderer.send("set-current-tabs" + window.id, result);
       return result;
     }
     default:

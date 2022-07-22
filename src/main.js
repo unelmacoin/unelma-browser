@@ -1,9 +1,10 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain, session } = require("electron");
+const { app, BrowserWindow, session } = require("electron");
 const path = require("path");
 const fetch = require("cross-fetch");
 const contextMenu = require("electron-context-menu");
 const { ElectronBlocker } = require("@cliqz/adblocker-electron");
+const { handleWindowControls, handleGetData, handleStoreData } = require("./modules/ipc");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
@@ -32,41 +33,13 @@ function createWindow() {
   mainWindow.webContents.on("did-finish-load", () => {
     mainWindow.webContents.send("window-ready", mainWindow.id);
     mainWindow.webContents.send("is-maximized", mainWindow.isMaximized());
+    handleGetData(mainWindow);
+    handleStoreData(mainWindow);
   });
   mainWindow.setMenu(null);
 }
 
-ipcMain.on("minimize", (_, id) => {
-  BrowserWindow.getAllWindows()
-    .find((w) => w.id === id)
-    .minimize();
-});
-ipcMain.on("create-window", () => {
-  createWindow();
-});
-
-ipcMain.on("maximize", (_, id) => {
-  BrowserWindow.getAllWindows()
-    .find((w) => w.id === id)
-    .maximize();
-});
-ipcMain.on("close-window", (_, id) => {
-  if (
-    BrowserWindow.getAllWindows()
-      .find((w) => w.id === id)
-      .isClosable()
-  ) {
-    BrowserWindow.getAllWindows()
-      .find((w) => w.id === id)
-      .close();
-  }
-});
-ipcMain.on("unmaximize", (_, id) => {
-  BrowserWindow.getAllWindows()
-    .find((w) => w.id === id)
-    .unmaximize();
-   
-});
+handleWindowControls();
 
 app.on("web-contents-created", function (_, contents) {
   if (contents.getType() === "webview") {
@@ -89,10 +62,9 @@ app.on("web-contents-created", function (_, contents) {
 });
 
 app.whenReady().then(() => {
-  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch)
-    .then((blocker) => {
-      blocker.enableBlockingInSession(session.defaultSession);
-    })
+  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then((blocker) => {
+    blocker.enableBlockingInSession(session.defaultSession);
+  });
   createWindow();
 
   app.on("activate", function () {

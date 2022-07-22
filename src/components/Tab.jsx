@@ -1,8 +1,9 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
 import { ACTIVATE_TAB, REMOVE_TAB } from "../utils/actions";
+import { handleFavicon } from "../utils/handleFavicon";
 import LoadingIndicator from "./LoadingIndicator.jsx";
-const Tab = ({ id, favIcon, title, active, tabsDispatch, loading }) => {
+const Tab = ({ id, title, active, tabsDispatch, loading,url,type }) => {
   const handleClose = () => {
     tabsDispatch({ type: REMOVE_TAB, id });
   };
@@ -20,7 +21,7 @@ const Tab = ({ id, favIcon, title, active, tabsDispatch, loading }) => {
       onClick={handleActivateTab}
       className={`tab ${active && "active-tab"}`}
     >
-      {loading ? <LoadingIndicator /> : <img src={favIcon} alt="favicon" />}
+      {loading ? <LoadingIndicator /> : <img src={handleFavicon(url,type)} alt="favicon" />}
       <p>{title}</p>
       <button className="close">
         <FaTimes />

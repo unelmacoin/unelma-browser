@@ -17,27 +17,28 @@ const TabsList = ({ tabs, tabsDispatch }) => {
 
     tabsDispatch({ type: SET_TABS, tabs: items });
   }
-    const renderTabs = () =>
-      tabs.map(({ id, active, title, favIcon, loading }, index) => (
-        <Draggable key={id} draggableId={`${id}`} index={index}>
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-            >
-              <Tab
-                id={id}
-                active={active}
-                title={title}
-                favIcon={favIcon}
-                tabsDispatch={tabsDispatch}
-                loading={loading}
-              />
-            </div>
-          )}
-        </Draggable>
-      ));
+  const renderTabs = () =>
+    tabs.map(({ id, active, title, url, type, loading }, index) => (
+      <Draggable key={id} draggableId={`${id}`} index={index}>
+        {(provided) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <Tab
+              id={id}
+              active={active}
+              title={title}
+              tabsDispatch={tabsDispatch}
+              loading={loading}
+              url={url}
+              type={type}
+            />
+          </div>
+        )}
+      </Draggable>
+    ));
 
   return (
     <div id="tabs">

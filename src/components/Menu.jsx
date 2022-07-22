@@ -4,10 +4,9 @@ import { BsWindowSidebar } from "react-icons/bs";
 import { IoBookmarksOutline, IoClose } from "react-icons/io5";
 import { AiOutlineClear } from "react-icons/ai";
 import { ACTIVATE_TAB, ADD_TAB } from "../utils/actions";
-import { handleFavicon } from "../utils/handleFavicon";
 import { generateId } from "../utils/generateId";
 import { closeTabs } from "../utils/tabs";
-import { resetAllTabs } from "../utils/handleLocalStorage";
+
 const { ipcRenderer } = window.require("electron");
 const menuItems = (tabs, dispatcher) => [
   {
@@ -25,7 +24,6 @@ const menuItems = (tabs, dispatcher) => [
               url: null,
               active: true,
               loading: false,
-              favIcon: handleFavicon(null, "bookmarks"),
             },
           })
         : dispatcher({
@@ -49,7 +47,6 @@ const menuItems = (tabs, dispatcher) => [
               url: null,
               active: true,
               loading: false,
-              favIcon: handleFavicon(null, "history"),
             },
           })
         : dispatcher({
@@ -76,7 +73,7 @@ const menuItems = (tabs, dispatcher) => [
     label: "Clear all tabs",
     icon: <AiOutlineClear fontSize="20" />,
     action: () => {
-      resetAllTabs();
+     ipcRenderer.send("reset-all-tabs");
     },
   },
 ];

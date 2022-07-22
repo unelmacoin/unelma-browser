@@ -1,11 +1,6 @@
+const { ipcRenderer } = window.require("electron/renderer");
 import React from "react";
 import { HiStar } from "react-icons/hi";
-import { categorizeByDate } from "../utils/categorize";
-import {
-  addBookmark,
-  getBookmarks,
-  removeFromBookmarks,
-} from "../utils/handleLocalStorage";
 
 const BookmarkBtn = ({ tabs, setBookmarks, bookmarks }) => {
   const activeTab = tabs.find((tab) => tab.active);
@@ -19,11 +14,12 @@ const BookmarkBtn = ({ tabs, setBookmarks, bookmarks }) => {
   const handleClick = () => {
     const activeTab = tabs.find((tab) => tab.active);
     if (!basicBookmarks.find((item) => item.url === activeTab.url)) {
-      addBookmark(activeTab.url, activeTab?.type);
-      setBookmarks(categorizeByDate(getBookmarks()));
+      // addBookmark(activeTab.url, activeTab?.type);
+      ipcRenderer.send("add-bookmark", [activeTab.url, activeTab?.type])
+      
     } else {
-      removeFromBookmarks(activeTab.url);
-      setBookmarks(categorizeByDate(getBookmarks()));
+     
+      ipcRenderer.send("remove-from-bookmarks", activeTab.url);
     }
   };
   return (

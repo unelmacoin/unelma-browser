@@ -1,14 +1,14 @@
+const { ipcRenderer } = window.require("electron/renderer");
 import { UPDATE_ACTIVE_TAB } from "./actions";
 import { generateId } from "./generateId";
 import { handleFavicon } from "./handleFavicon";
-import { resetWindowTabs } from "./handleLocalStorage";
+// import { resetWindowTabs } from "./handleLocalStorage";
 
 export const defaultTab = () => ({
   id: generateId(),
   url: "https://unelma.xyz/",
   active: true,
   title: "Unelma Search",
-  favIcon: handleFavicon("https://unelma.xyz/"),
   loading: false,
   type: "webview",
 });
@@ -17,7 +17,7 @@ export const closeTabs = (dispatcher) => {
   closeBtns.forEach((btn, index) => {
     if (index !== 0) btn.click();
   });
-  resetWindowTabs()
+  ipcRenderer.send("reset-window-tabs" + window.id);
   dispatcher({
     type: UPDATE_ACTIVE_TAB,
     url: "https://unelma.xyz/",

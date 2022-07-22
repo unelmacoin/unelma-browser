@@ -1,11 +1,11 @@
 import React from "react";
 import "../css/bookmarks.css";
-import { categorizeByDate } from "../utils/categorize";
-import { getBookmarks, removeFromBookmarks } from "../utils/handleLocalStorage";
 import { FaTimes } from "react-icons/fa";
+const { ipcRenderer } = window.require("electron/renderer");
 import { ADD_TAB } from "../utils/actions";
 import { generateId } from "../utils/generateId";
-const Bookmarks = ({ active, tabsDispatch, bookmarks, setBookmarks }) => {
+import dateFormat from "dateformat";
+const Bookmarks = ({ active, tabsDispatch, bookmarks }) => {
   const sortedKeys = Object.keys(bookmarks).sort((a, b) => {
     if (a.includes("Today")) return -1;
     if (b.includes("Today")) return 1;
@@ -21,7 +21,7 @@ const Bookmarks = ({ active, tabsDispatch, bookmarks, setBookmarks }) => {
     items.map(({ id, url, time }) => (
       <li key={id} className="item">
         <div className="item-content">
-          <p className="time">{new Date(time).toLocaleTimeString()}</p>
+          <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button
             onClick={() => {
               tabsDispatch({
@@ -41,11 +41,10 @@ const Bookmarks = ({ active, tabsDispatch, bookmarks, setBookmarks }) => {
         </div>
         <button
           onClick={() => {
-            removeFromBookmarks(url);
-            setBookmarks(categorizeByDate(getBookmarks()));
+            ipcRenderer.send("remove-from-bookmarks", url);
           }}
         >
-          <FaTimes />
+          <FaTimes fontSize="10px" />
         </button>
       </li>
     ));

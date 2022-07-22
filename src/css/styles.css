@@ -13,6 +13,9 @@ body::-webkit-scrollbar {
 ul {
   list-style: none;
 }
+button {
+  cursor: pointer;
+}
 webview {
   height: 0;
   width: 0;
@@ -122,16 +125,19 @@ webview {
 #root #app-sidebar #navigation-controllers {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 42%;
+  transition: 0.3s;
 }
 #root #app-sidebar.toggled-sidebar #navigation-controllers {
   flex-direction: column;
+  width: 100%;
 }
 #root #app-sidebar #navigation-controllers button {
   font-size: 16px;
-  margin-left: 17px;
-  margin-right: 2px;
   color: rgba(51, 51, 51, 0.67);
   cursor: pointer;
+  transition: 0.3s;
 }
 #menu-button {
   margin: 0 5px;
@@ -301,6 +307,7 @@ input {
   overflow: hidden;
   -webkit-app-region: no-drag;
   transition: 0.3s;
+  background-color: white;
 }
 #webviews-container.toggled-container {
   width: 95%;
@@ -325,15 +332,14 @@ input {
   /* border: 1px solid red; */
   width: 20px;
   height: 20px;
-  animation: loading .2s infinite;
+  animation: loading 0.2s infinite;
 }
 
 @keyframes loading {
-  0%{
+  0% {
     transform: rotate(0deg);
   }
-  100%{
+  100% {
     transform: rotate(360deg);
   }
- 
 }
