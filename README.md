@@ -14,7 +14,7 @@ A simple Unelma.XYZ - browser based on Chromium open-source project that aims to
 - Bookmarks and History manager support
 - Totally revolutionary design (unlike traditional tabs)
 - Context menu added: New window, Inspect element, Copy
-- More features coming soon...
+- Drag and Drop of tabs
 
 # Contribution
 
