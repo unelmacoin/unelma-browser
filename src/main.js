@@ -10,7 +10,7 @@ if (require("electron-squirrel-startup")) {
 }
 function createWindow() {
   // Create the browser window.
-  let mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     transparent: true,
     title: "Unelma.XYZ - Browser",
     width: 1024,
@@ -36,9 +36,7 @@ function createWindow() {
     handleGetData(mainWindow);
     handleStoreData(mainWindow);
   });
-  mainWindow.on("closed", function () {
-    mainWindow = null;
-  });
+ 
 
   mainWindow.setMenu(null);
 }

@@ -59,51 +59,59 @@ export const handleGetData = (window) => {
 export const handleStoreData = (window) => {
   ipcMain.on("set-current-tabs" + window.id, (_, tabs) => {
     setCurrentTabs(tabs, window.id);
-    window.webContents.send(
-      "get-current-tabs" + window.id,
-      getCurrentTabs(window.id)
-    );
+    if (!window.isDestroyed())
+        {
+          window.webContents.send(
+            "get-current-tabs" + window.id,
+            getCurrentTabs(window.id)
+          );
+        }
   });
   ipcMain.on("reset-window-tabs" + window.id, () => {
     resetWindowTabs(window.id);
-    window.webContents.send(
+    if (!window.isDestroyed()) {window.webContents.send(
       "get-current-tabs" + window.id,
       getCurrentTabs(window.id)
-    );
-    window.webContents.send(
-      "get-current-tabs" + window.id,
-      getCurrentTabs(window.id)
-    );
+    );}
+    
   });
   ipcMain.on("reset-all-tabs", () => {
     resetAllTabs();
-    window.webContents.send(
+    if (!window.isDestroyed())
+      window.webContents.send(
       "get-current-tabs" + window.id,
       getCurrentTabs(window.id)
     );
   });
   ipcMain.on("set-search-history", (_, searchHistory) => {
     setSearchHistory(searchHistory);
-    window.webContents.send("get-search-history", getSearchHistory());
+    if (!window.isDestroyed())
+      window.webContents.send("get-search-history", getSearchHistory());
   });
   ipcMain.on("add-history", (_, url) => {
-    addHistory(url);
-    window.webContents.send("get-search-history", getSearchHistory());
+    
+      addHistory(url);
+      if (!window.isDestroyed())
+         window.webContents.send("get-search-history", getSearchHistory());
   });
   ipcMain.on("set-bookmarks", (_, bookmarks) => {
     setBookmarks(bookmarks);
-    window.webContents.send("get-bookmarks", getBookmarks());
+    if (!window.isDestroyed())
+      window.webContents.send("get-bookmarks", getBookmarks());
   });
   ipcMain.on("add-bookmark", (_, args) => {
     addBookmark(...args);
-    window.webContents.send("get-bookmarks", getBookmarks());
+    if (!window.isDestroyed())
+      window.webContents.send("get-bookmarks", getBookmarks());
   });
   ipcMain.on("remove-from-bookmarks", (_, url) => {
     removeFromBookmarks(url);
-    window.webContents.send("get-bookmarks", getBookmarks());
+    if (!window.isDestroyed())
+       window.webContents.send("get-bookmarks", getBookmarks());
   });
   ipcMain.on("remove-from-search-histroy", (_, url) => {
     removeFromSearchHistroy(url);
-    window.webContents.send("get-search-history", getSearchHistory());
+    if (!window.isDestroyed())
+      window.webContents.send("get-search-history", getSearchHistory());
   });
 };

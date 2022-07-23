@@ -78,7 +78,7 @@
     },
     "forge": {
       "packagerConfig": {
-        "icon": "./img/unp.icns"
+        "icon": "./src/img/unp.icns"
       },
       "makers": [
         {
