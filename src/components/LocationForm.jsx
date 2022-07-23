@@ -5,7 +5,7 @@ import { handleSearch } from "../utils/handleSearch";
 const LocationForm = ({ tabsDispatch, tabs }) => {
   const activeTabURL = tabs.find((tab) => tab.active)?.url;
   const [location, setLocation] = useState(
-      "https://www.unelma.xyz/"
+      "https://www.unelmas.com/"
     );
   const handleChange = (e) => {
     setLocation(e.target.value);

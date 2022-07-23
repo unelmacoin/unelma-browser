@@ -6,7 +6,7 @@ import { handleFavicon } from "./handleFavicon";
 
 export const defaultTab = () => ({
   id: generateId(),
-  url: "https://unelma.xyz/",
+  url: "https://unelmas.com/",
   active: true,
   title: "Unelma Search",
   loading: false,
@@ -20,6 +20,6 @@ export const closeTabs = (dispatcher) => {
   ipcRenderer.send("reset-window-tabs" + window.id);
   dispatcher({
     type: UPDATE_ACTIVE_TAB,
-    url: "https://unelma.xyz/",
+    url: "https://unelmas.com/",
   });
 };

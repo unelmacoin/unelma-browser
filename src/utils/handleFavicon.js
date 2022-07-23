@@ -3,7 +3,7 @@ import bookmarks from "../img/bookmark.png";
 import history from "../img/history.png";
 const optionsIcons = { bookmarks, history };
 export const handleFavicon = (url, type) => {
-  return url?.endsWith("unelma.xyz/")
+  return url?.endsWith("unelmas.com/")
     ? unelmaLogo
     : type === "bookmarks" || type === "history"
     ? optionsIcons[type]

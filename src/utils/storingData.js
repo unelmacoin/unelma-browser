@@ -29,7 +29,7 @@ export function setSearchHistory(history) {
   store.set("search-history", history);
 }
 export function addHistory(url) {
-  if (url !== "https://www.unelma.xyz/" && url !== "https://unelma.xyz/") {
+  if (url !== "https://www.unelmas.com/" && url !== "https://unelmas.com/") {
     let history = store.get("search-history") || [];
     const id = newId();
     history.push({ id, url, time: dateTime() });
