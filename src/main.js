@@ -10,7 +10,7 @@ if (require("electron-squirrel-startup")) {
 }
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  let mainWindow = new BrowserWindow({
     transparent: true,
     title: "Unelma.XYZ - Browser",
     width: 1024,
