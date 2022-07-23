@@ -36,6 +36,10 @@ function createWindow() {
     handleGetData(mainWindow);
     handleStoreData(mainWindow);
   });
+  mainWindow.on("closed", function () {
+    mainWindow = null;
+  });
+
   mainWindow.setMenu(null);
 }
 
