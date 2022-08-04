@@ -32,6 +32,6 @@ module.exports = {
       handleStoreData(mainWindow);
     });
     mainWindow.setMenu(null);
-    mainWindow.webContents.openDevTools({ mode: "detach" });
+
   },
 };
