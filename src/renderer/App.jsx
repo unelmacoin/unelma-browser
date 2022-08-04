@@ -1,24 +1,3 @@
-// [TODO] Program icon
-// [TODO] Fix ad-blocker preload
-// [TODO] fix production preload
-// [TODO] Change url -> new url
-// [TODO] Add encryption file to modules folder - handle ES6 //next version
-// [TODO] Split Css code to files // next version
-// [TODO] Electron-webpack // next version
-// [TODO] creating id in reducers //next version
-// [TODO] use fromId method //next version
-// [TODO] ADD ESlint // next version
-// [TODO] REMOVE LOGs //DONE
-// [TODO] Tab animation //DONE
-// [TODO] Fix open tabs method //DONE
-// [TODO] Change history storing method //DONE
-// [TODO] Fix history reptation //DONE
-// [TODO] Create passwords reducer //DONE
-// [TODO] Create Bookmarks - history reducers //DONE
-// [TODO] Open taget _blank links //DONE
-// [TODO] Don't repeat password //DONE
-// [TODO] FIX preload path - FIle::// protocol //DONE
-
 import React, { useEffect, useReducer, useState } from "react";
 import SavePasswordDialog from "./components/SavePasswordDialog.jsx";
 import Sidebar from "./components/Sidebar.jsx";
