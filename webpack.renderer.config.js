@@ -6,9 +6,7 @@ rules.push({
 });
 
 module.exports = {
-  // Put your normal webpack config below here
   module: {
-    rules,
-    
+    rules,  
   },
 };
