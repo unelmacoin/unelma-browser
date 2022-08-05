@@ -39,7 +39,7 @@ app.whenReady().then(() => {
         getTabsWindows().forEach((windowId) => {
           createWindow(windowId);
         });
-      else createWindow();;
+      else createWindow();
   });
 });
 

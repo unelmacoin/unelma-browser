@@ -94,7 +94,7 @@ const Webview = ({
       webpreferences="nativeWindowOpen=true"
       allowpopups="true"
       ref={webviewRef}
-      preload={UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY}
+      preload={`file://${window.api.dirname()}/preload.js`}
     ></webview>
   );
 };

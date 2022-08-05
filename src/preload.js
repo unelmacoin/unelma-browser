@@ -40,6 +40,7 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
+  dirname: () => __dirname,
 });
 window.addEventListener("DOMContentLoaded", () => {
   const commonInputnames = ["login", "user", "email"];

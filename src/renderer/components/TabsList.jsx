@@ -20,7 +20,12 @@ const TabsList = ({ tabs, tabsDispatch }) => {
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    tabsDispatch({ type: SET_TABS, tabs: items });
+    tabsDispatch({
+      type: SET_TABS,
+      payload: {
+        tabs: items,
+      },
+    });
   }
   const renderTabs = () =>
     tabs.map(({ id, active, title, url, type, loading }, index) => (

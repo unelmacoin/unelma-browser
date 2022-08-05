@@ -66,7 +66,7 @@ export const handleGetData = (window) => {
   window.webContents.send("get-auth-info", getAuthInfo());
 };
 
-export const handleStoreData = (window) => {
+export const handleStoreData = () => {
   ipcMain.on("reset-window-tabs", (_, windowId) => {
     resetWindowTabs(windowId);
   });

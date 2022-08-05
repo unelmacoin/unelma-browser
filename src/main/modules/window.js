@@ -16,7 +16,7 @@ module.exports = {
       minHeight: 600,
       minWidth: 1000,
       webPreferences: {
-        nodeIntegration: true,
+        nodeIntegration: false,
         webviewTag: true,
         devTools: true,
         contextIsolation: true,
