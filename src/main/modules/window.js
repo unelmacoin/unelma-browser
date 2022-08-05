@@ -6,7 +6,7 @@ module.exports = {
   createWindow: (windowId) => {
     const mainWindow = new BrowserWindow({
       transparent: true,
-      title: "Unelma.XYZ - Browser",
+      title: "UnelmaSearch - Browser",
       width: 1024,
       height: 768,
       backgroundColor: "rgba(0,0,0,0)",

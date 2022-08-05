@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { UPDATE_ACTIVE_TAB } from "../../constants/renderer/actions";
 import { handleSearch } from "../utils/handleSearch";
 
 const LocationForm = ({ tabsDispatch, tabs }) => {
   const activeTabURL = tabs.find((tab) => tab.active)?.url;
-  const [location, setLocation] = useState("https://www.unelma.xyz/");
+  const [location, setLocation] = useState(UNELMA_DEFAULT_URL);
   const handleChange = (e) => {
     setLocation(e.target.value);
   };
@@ -17,7 +18,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
     setLocation(handleSearch(location));
   };
   useEffect(() => {
-    setLocation(activeTabURL || "https://www.unelma.xyz/");
+    setLocation(activeTabURL || UNELMA_DEFAULT_URL);
   }, [tabs]);
   return (
     <div className="location-container">
