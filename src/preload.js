@@ -60,7 +60,7 @@ window.addEventListener("DOMContentLoaded", () => {
       if (password) {
         ipcRenderer.sendToHost("get-login-info", {
           password,
-          username: username.value,
+          username: username?.value,
           site: window.location.href,
         });
       }
