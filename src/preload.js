@@ -44,23 +44,34 @@ contextBridge.exposeInMainWorld("api", {
 });
 window.addEventListener("DOMContentLoaded", () => {
   const commonInputnames = ["login", "user", "email"];
-  const recognizeUsername = (inpytName) => {
-    const lowerCaseInputName = inpytName.toLowerCase();
-    return !!commonInputnames.find((name) =>
-      lowerCaseInputName?.includes(name)
+  const commoninputPass = ["pas", "pass", "password"];
+  const recognizeInputFieldByKeywords = (keywords) => (inputField) => {
+    const attrValues = inputField
+      .getAttributeNames()
+      .map((name) => inputField.getAttribute(name));
+    return attrValues.find((attrValue) =>
+      keywords.find((name) => attrValue.toLowerCase().includes(name))
     );
   };
   const getUsername = (inputs) =>
-    inputs.find((input) => recognizeUsername(input?.name));
+    inputs.find((input) =>
+      recognizeInputFieldByKeywords(commonInputnames)(input)
+    );
+  const getPassword = (inputs) =>
+    inputs.find((input) =>
+      recognizeInputFieldByKeywords(commoninputPass)(input)
+    );
   ipcRenderer.on("ready", () => {
     const submitListener = () => {
       const inputs = [...document.querySelectorAll("input")];
-      const username = getUsername(inputs);
-      const password = document.querySelector('input[type="password"]').value;
+      const username = getUsername(inputs)?.value;
+      const password = getPassword(inputs)?.value;
+      localStorage.setItem("username", username);
+      localStorage.setItem("password", password);
       if (password) {
         ipcRenderer.sendToHost("get-login-info", {
           password,
-          username: username?.value,
+          username,
           site: window.location.href,
         });
       }
