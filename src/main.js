@@ -10,7 +10,7 @@ if (require("electron-squirrel-startup")) {
   app.quit();
 }
 require("dotenv").config();
-
+console.log('app.getAppPath',app.getAppPath)
 handleWindowControls(createWindow);
 
 app.on("web-contents-created", function (_, contents) {

@@ -45,6 +45,7 @@ const Webview = ({
   useEffect(() => {
     webviewRef.current.addEventListener("dom-ready", () => {
       webviewRef.current.addEventListener("new-window", (e) => {
+        console.log('added')
         tabsDispatch({
           type: ADD_TAB,
           payload: { tab: { ...defaultTab(window.id), url: e.url } },

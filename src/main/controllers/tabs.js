@@ -25,7 +25,7 @@ module.exports = {
     return store.get("tabs").filter((tab) => tab.windowId === windowId);
   },
   getTabsWindows: () => {
-    const tabs = store.get("tabs");
+    const tabs = store.get("tabs") || [];
     return [...new Set(tabs.map((tab) => tab.windowId))];
   },
   addTab: (tab) => {
