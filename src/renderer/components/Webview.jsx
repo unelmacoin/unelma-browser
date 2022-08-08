@@ -17,6 +17,7 @@ const Webview = ({
   searchHistoryDispatcher,
 }) => {
   const webviewRef = useRef();
+  const newWindow = useRef(true);
   const handleStartLoading = () => {
     tabsDispatch({
       type: UPDATE_TAB,
@@ -45,10 +46,16 @@ const Webview = ({
   useEffect(() => {
     webviewRef.current.addEventListener("dom-ready", () => {
       webviewRef.current.addEventListener("new-window", (e) => {
-        tabsDispatch({
-          type: ADD_TAB,
-          payload: { tab: { ...defaultTab(window.id), url: e.url } },
-        });
+        if (newWindow.current) {
+          tabsDispatch({
+            type: ADD_TAB,
+            payload: { tab: { ...defaultTab(window.id), url: e.url } },
+          });
+          newWindow.current = false;
+          setTimeout(() => {
+            newWindow.current = true;
+          }, 0);
+        }
       });
       webviewRef.current.send("ready");
       const info = passwords.find(
