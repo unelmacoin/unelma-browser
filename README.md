@@ -15,6 +15,7 @@ A simple Unelma.XYZ - browser based on Chromium open-source project that aims to
 - Totally revolutionary design (unlike traditional tabs)
 - Context menu added: New window, Inspect element, Copy
 - Drag and Drop of tabs
+- Password manager support
 
 # Contribution
 
