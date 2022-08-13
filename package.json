@@ -30,22 +30,7 @@
   "license": "Apache 2.0",
   "dependencies": {
     "@cliqz/adblocker-electron": "^1.23.8",
-    "@cliqz/adblocker-electron-preload": "^1.23.8",
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-deb": "^6.0.0-beta.63",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@electron-forge/maker-zip": "^6.0.0-beta.63",
-    "cross-fetch": "^3.1.5",
-    "crypto-js": "^4.1.1",
-    "dateformat": "^5.0.3",
-    "dotenv": "^16.0.1",
-    "electron-context-menu": "^3.3.0",
-    "electron-notarize": "^1.2.1",
-    "electron-packager": "^15.5.1",
-    "electron-squirrel-startup": "^1.0.0",
-    "electron-store": "^8.0.2",
-    "uniqid": "^5.4.0"
+    "@cliqz/adblocker-electron-preload": "^1.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
@@ -61,7 +46,22 @@
     "react-dom": "^16.13.1",
     "react-icons": "^4.4.0",
     "style-loader": "^3.3.1",
-    "url-loader": "^4.1.1"
+    "url-loader": "^4.1.1",
+    "cross-fetch": "^3.1.5",
+    "crypto-js": "^4.1.1",
+    "dateformat": "^5.0.3",
+    "dotenv": "^16.0.1",
+    "electron-context-menu": "^3.3.0",
+    "electron-notarize": "^1.2.1",
+    "electron-packager": "^15.5.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-store": "^8.0.2",
+    "uniqid": "^5.4.0",
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-deb": "^6.0.0-beta.63",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@electron-forge/maker-zip": "^6.0.0-beta.63"
   },
   "config": {
     "make_targets": {
