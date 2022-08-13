@@ -1,0 +1,20 @@
+#settings {
+  width: 0;
+  height: 0;
+  opacity: 0;
+}
+#settings-content {
+  width: 78%;
+  height: 100%;
+  padding: 15px;
+}
+.active-settings {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 30px;
+  border-radius: 7px;
+  display: flex;
+  opacity: 1 !important;
+  background: white;
+  overflow-y: scroll;
+}

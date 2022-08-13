@@ -1,78 +1,52 @@
 // Modules to control application life and create native browser window
 const { app, BrowserWindow, session } = require("electron");
-const path = require("path");
 const fetch = require("cross-fetch");
-const contextMenu = require("electron-context-menu");
 const { ElectronBlocker } = require("@cliqz/adblocker-electron");
-const { handleWindowControls, handleGetData, handleStoreData } = require("./modules/ipc");
+const { handleWindowControls } = require("./main/modules/ipc");
+const { createWindow } = require("./main/modules/window");
+const { addContextMenu } = require("./main/modules/contextMenu");
+const { getTabsWindows } = require("./main/controllers/tabs");
+const PRELOAD_PATH = require.resolve("@cliqz/adblocker-electron-preload");
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
-function createWindow() {
-  // Create the browser window.
-  const mainWindow = new BrowserWindow({
-    transparent: true,
-    title: "Unelma.XYZ - Browser",
-    width: 1024,
-    height: 768,
-    backgroundColor: "rgba(0,0,0,0)",
-    icon: path.join(__dirname, "./img/unelma.ico"),
-    frame: false,
-    titleBarStyle: "hidden",
-    minHeight: 600,
-    minWidth: 1000,
-    webPreferences: {
-      nodeIntegration: true,
-      webviewTag: true,
-      devTools: true,
-      contextIsolation: false,
-      // preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
-    },
-  });
-  mainWindow.loadURL(UNELMA_BROWSER_WEBPACK_ENTRY);
-  mainWindow.webContents.on("did-finish-load", () => {
-    mainWindow.webContents.send("window-ready", mainWindow.id);
-    mainWindow.webContents.send("is-maximized", mainWindow.isMaximized());
-    handleGetData(mainWindow);
-    handleStoreData(mainWindow);
-  });
- 
-
-  mainWindow.setMenu(null);
-}
-
-handleWindowControls();
+require("dotenv").config();
+handleWindowControls(createWindow);
 
 app.on("web-contents-created", function (_, contents) {
   if (contents.getType() === "webview") {
-    contextMenu({
-      window: contents,
-      showInspectElement: true,
-      prepend: () => [
-        {
-          label: "New window",
-          click: () => {
-            createWindow();
-          },
-        },
-      ],
-    });
-    contents.addListener("new-window", function (newWindowEvent, _) {
-      newWindowEvent.preventDefault();
+    addContextMenu(contents);
+    contents.addListener("new-window", function (e, _) {
+      e.preventDefault();
     });
   }
 });
 
 app.whenReady().then(() => {
-  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch).then((blocker) => {
-    blocker.enableBlockingInSession(session.defaultSession);
-  });
-  createWindow();
-
+  session.defaultSession.clearStorageData()
+  ElectronBlocker.fromPrebuiltAdsAndTracking(fetch)
+    .then((blocker) => {
+      blocker.enableBlockingInSession(session.defaultSession);
+      session.defaultSession.setPreloads([PRELOAD_PATH]);
+      console.log(session.defaultSession.getPreloads());
+    })
+    .catch((err) => {
+      console.log("error---", err);
+    });
+  if (getTabsWindows().length > 0)
+    getTabsWindows().forEach((windowId) => {
+      createWindow(windowId);
+    });
+  else createWindow();
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0)
+      if (getTabsWindows().length > 0)
+        getTabsWindows().forEach((windowId) => {
+          createWindow(windowId);
+        });
+      else createWindow();
   });
 });
 
