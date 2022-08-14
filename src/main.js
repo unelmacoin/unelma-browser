@@ -7,6 +7,7 @@ const { createWindow } = require("./main/modules/window");
 const { addContextMenu } = require("./main/modules/contextMenu");
 const { getTabsWindows } = require("./main/controllers/tabs");
 const PRELOAD_PATH = require.resolve("@cliqz/adblocker-electron-preload");
+const path = require('path')
 if (require("electron-squirrel-startup")) {
   app.quit();
 }
@@ -23,11 +24,12 @@ app.on("web-contents-created", function (_, contents) {
 });
 
 app.whenReady().then(() => {
+  
   session.defaultSession.clearStorageData()
   ElectronBlocker.fromPrebuiltAdsAndTracking(fetch)
     .then((blocker) => {
       blocker.enableBlockingInSession(session.defaultSession);
-      session.defaultSession.setPreloads([PRELOAD_PATH]);
+      session.defaultSession.setPreloads([path.join(__dirname, "..","..",'node_modules',"@cliqz","adblocker-electron-preload","dist","preload.cjs.js"),path.join(__dirname, "..","..",'node_modules',"@cliqz","adblocker-electron-preload","dist","preload.es6.js")]);
       console.log(session.defaultSession.getPreloads());
     })
     .catch((err) => {
