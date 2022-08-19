@@ -78,9 +78,14 @@ window.addEventListener("DOMContentLoaded", () => {
     };
 
     ipcRenderer.on("login-info", (_, info) => {
-      document.querySelector('input[type="password"]').value = info.password;
-      getUsername([...document.querySelectorAll("input")]).value =
-        info.username;
+      const passwordInput = document.querySelector('input[type="password"]');
+      passwordInput.value = info.password;
+      const usernameInput = getUsername([...document.querySelectorAll("input")])
+      usernameInput.value = info.username;
+      passwordInput.dispatchEvent(new Event('input'));
+      passwordInput.dispatchEvent(new Event("change"));
+      usernameInput.dispatchEvent(new Event("input"));
+      usernameInput.dispatchEvent(new Event("change"));
     });
     document.body.addEventListener("submit", submitListener);
   });
