@@ -1,17 +1,14 @@
 import React from "react";
 import "../css/bookmarks.css";
 import { FaTimes } from "react-icons/fa";
-import { ADD_TAB, REMOVE_BOOKMARK } from "../../constants/renderer/actions";
+import {  REMOVE_BOOKMARK } from "../../constants/renderer/actions";
 import uniqid from "uniqid";
 import dateFormat from "dateformat";
 import { categorizeByDate } from "../utils/categorize";
 import EmptyList from "../components/EmptyList/EmptyList.jsx";
-const Bookmarks = ({
-  active,
-  tabsDispatch,
-  bookmarks,
-  bookmarksDispatcher,
-}) => {
+import BackwardBtn from "../components/BackwardBtn/BackwardBtn.jsx";
+import Layout from "../components/Layout/Layout.jsx";
+const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
   const sortedKeys = Object.keys(categorizeByDate(bookmarks)).sort((a, b) => {
     if (a.includes("Today")) return -1;
     if (b.includes("Today")) return 1;
@@ -30,19 +27,8 @@ const Bookmarks = ({
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button
             onClick={() => {
-              tabsDispatch({
-                type: ADD_TAB,
-                payload: {
-                  tab: {
-                    id: uniqid(),
-                    url,
-                    type: "webview",
-                    active: true,
-                    title: "loading...",
-                    windowId: window.id,
-                  },
-                },
-              });
+              window.api.send("add-view" + window.id, { id: uniqid(), url });
+              document.querySelector(".backward-btn a").click();
             }}
           >
             {url.length > 40 ? `${url.slice(0, 40)}...` : url}
@@ -76,9 +62,12 @@ const Bookmarks = ({
       <EmptyList label="Bookmark" />
     );
   return (
-    <div id="bookmarks" className={`${active && "active-bookmarks"}`}>
-      <ul id="categories-list">{renderBookmarksCategories()}</ul>
-    </div>
+    <Layout>
+      <div id="bookmarks" className="active-bookmarks">
+        <BackwardBtn />
+        <ul id="categories-list">{renderBookmarksCategories()}</ul>
+      </div>
+    </Layout>
   );
 };
 

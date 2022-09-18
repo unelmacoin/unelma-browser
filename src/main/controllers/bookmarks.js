@@ -2,12 +2,9 @@ const Store = require("electron-store");
 const store = new Store();
 module.exports = {
   getBookmarks: () => store.get("bookmarks") || [],
-  addBookmark: (bookmark, type) => {
+  addBookmark: (bookmark) => {
     let bookmarks = store.get("bookmarks") || [];
-    if (
-      !bookmarks.find((item) => item.url === bookmark.url) &&
-      type === "webview"
-    ) {
+    if (!bookmarks.find((item) => item.url === bookmark.url)) {
       store.set("bookmarks", [bookmark, ...bookmarks]);
     }
   },

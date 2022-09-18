@@ -6,10 +6,12 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Tab from "./Tab.jsx";
 const TabsList = ({ tabs, tabsDispatch }) => {
   const handleAddTab = () => {
+    const newTab = defaultTab(window.id);
+    window.api.send("add-view" + window.id, { ...newTab });
     tabsDispatch({
       type: ADD_TAB,
       payload: {
-        tab: { ...defaultTab(window.id) },
+        tab: { ...newTab },
       },
     });
   };
@@ -28,7 +30,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
     });
   }
   const renderTabs = () =>
-    tabs.map(({ id, active, title, url, type, loading }, index) => (
+    tabs.map(({ id, active, title, url, type, loading, fail }, index) => (
       <Draggable key={id} draggableId={`${id}`} index={index}>
         {(provided) => (
           <div
@@ -44,6 +46,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
               loading={loading}
               url={url}
               type={type}
+              fail={fail}
             />
           </div>
         )}

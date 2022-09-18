@@ -1,12 +1,22 @@
-import React from 'react'
+import React from "react";
 import {
   TbLayoutSidebarRightExpand,
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
 
-const WindowControllers = ({ openSidebar, setOpenSidebar }) => {
+const WindowControllers = ({
+  openSidebar,
+  setOpenSidebar,
+  setMenu,
+  setLoginDialogInfo,
+}) => {
   const handleClick = () => {
-    setOpenSidebar(!openSidebar)
+    setOpenSidebar(!openSidebar);
+    window.api.send("toggle-window", window.id);
+    if (openSidebar) {
+      setMenu(false);
+      setLoginDialogInfo(null);
+    }
   };
   return (
     <div id="window-controllers">
@@ -21,4 +31,4 @@ const WindowControllers = ({ openSidebar, setOpenSidebar }) => {
   );
 };
 
-export default WindowControllers
+export default WindowControllers;

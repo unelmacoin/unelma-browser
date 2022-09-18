@@ -16,6 +16,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
       payload: { tab: { url: handleSearch(location) } },
     });
     setLocation(handleSearch(location));
+    window.api.send("go-to-location" + window.id, handleSearch(location));
   };
   useEffect(() => {
     setLocation(activeTabURL || UNELMA_DEFAULT_URL);

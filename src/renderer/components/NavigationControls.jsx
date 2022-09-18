@@ -7,28 +7,21 @@ const navigationControls = () => {
       id: "navigation-controls-back",
       icon: <FiChevronLeft fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        if (currentView?.canGoBack()) {
-          currentView?.goBack();
-        }
+        window.api.send("go-back" + window.id);
       },
     },
     {
       id: "navigation-controls-forward",
       icon: <FiChevronRight fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        if (currentView?.canGoForward()) {
-          currentView?.goForward();
-        }
+        window.api.send("go-forward" + window.id);
       },
     },
     {
       id: "navigation-controls-reload",
       icon: <IoMdRefresh fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        currentView?.reload();
+        window.api.send("reload" + window.id);
       },
     },
   ];

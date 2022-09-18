@@ -5,7 +5,6 @@ import {
 } from "../../constants/renderer/actions.js";
 
 const passwordsReducer = (state, action) => {
-  //   let result;
   switch (action.type) {
     case SET_PASSWORDS:
       return [...action.payload.passwords];

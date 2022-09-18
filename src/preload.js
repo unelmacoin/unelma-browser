@@ -21,8 +21,19 @@ contextBridge.exposeInMainWorld("api", {
       "update-tab",
       "activate-tab",
       "update-active-tab",
+      "go-to-location",
+      "activate-view",
+      "add-view",
+      "remove-view",
+      "toggle-window",
+      "hide-views",
+      "show-views",
+      "go-forward",
+      "go-back",
+      "reload",
+      "save-login-info",
     ];
-    if (validChannels.includes(channel)) {
+    if (validChannels.find((c) => channel.includes(c))) {
       ipcRenderer.send(channel, data);
     }
   },
@@ -35,6 +46,8 @@ contextBridge.exposeInMainWorld("api", {
       "get-auth-info",
       "is-maximized",
       "get-windows-number",
+      "catch-login-info",
+      "get-login-info",
     ];
     if (validChannels.find((c) => channel.includes(c))) {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
@@ -66,10 +79,8 @@ window.addEventListener("DOMContentLoaded", () => {
       const inputs = [...document.querySelectorAll("input")];
       const username = getUsername(inputs)?.value;
       const password = getPassword(inputs)?.value;
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
       if (password) {
-        ipcRenderer.sendToHost("get-login-info", {
+        ipcRenderer.send("get-login-info", {
           password,
           username,
           site: window.location.href,
@@ -80,9 +91,11 @@ window.addEventListener("DOMContentLoaded", () => {
     ipcRenderer.on("login-info", (_, info) => {
       const passwordInput = document.querySelector('input[type="password"]');
       passwordInput.value = info.password;
-      const usernameInput = getUsername([...document.querySelectorAll("input")])
+      const usernameInput = getUsername([
+        ...document.querySelectorAll("input"),
+      ]);
       usernameInput.value = info.username;
-      passwordInput.dispatchEvent(new Event('input'));
+      passwordInput.dispatchEvent(new Event("input"));
       passwordInput.dispatchEvent(new Event("change"));
       usernameInput.dispatchEvent(new Event("input"));
       usernameInput.dispatchEvent(new Event("change"));

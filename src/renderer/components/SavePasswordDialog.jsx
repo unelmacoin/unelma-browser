@@ -1,25 +1,12 @@
 import React, { useState } from "react";
-import { ADD_PASSWORD } from "../../constants/renderer/actions";
-import uniqid from "uniqid";
-const SavePasswordDialog = ({
-  info,
-  setLoginDialogInfo,
-  passwordsDispatch,
-}) => {
+
+const SavePasswordDialog = ({ info, setLoginDialogInfo }) => {
   const [username, setUsername] = useState(info.username);
   const [password, setPassword] = useState(info.password);
   const handleSubmit = (e) => {
     e.preventDefault();
-    passwordsDispatch({
-      type: ADD_PASSWORD,
-      payload: {
-        password: {
-          id: uniqid(),
-          ...info,
-        },
-      },
-    });
     setLoginDialogInfo(null);
+    window.api.send("save-login-info" + window.id, info);
   };
   const handleCancel = () => {
     setLoginDialogInfo(null);

@@ -11,18 +11,4 @@ export const defaultTab = (windowId) => ({
   loading: false,
   type: "webview",
 });
-export const closeTabs = (dispatcher) => {
-  const closeBtns = [...document.querySelectorAll(".close")];
-  closeBtns.forEach((btn, index) => {
-    if (index !== 0) btn.click();
-  });
-  window.api.send("reset-window-tabs" + window.id);
-  dispatcher({
-    type: UPDATE_ACTIVE_TAB,
-    payload: {
-      tab: {
-        url: UNELMA_DEFAULT_URL,
-      },
-    },
-  });
-};
+

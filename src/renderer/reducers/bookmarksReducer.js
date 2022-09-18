@@ -5,16 +5,12 @@ import {
 } from "../../constants/renderer/actions.js";
 
 const bookmarksReducer = (state, action) => {
-  //   let result;
   switch (action.type) {
     case SET_BOOKMARKS:
       return [...action.payload.bookmarks];
     case ADD_BOOKMARK: {
-      window.api.send("add-bookmark", [
-        action.payload.bookmark,
-        action.payload.type,
-      ]);
-      return [action.payload.bookmark,...state];
+      window.api.send("add-bookmark", action.payload.bookmark);
+      return [action.payload.bookmark, ...state];
     }
     case REMOVE_BOOKMARK: {
       window.api.send("remove-from-bookmarks", action.payload.url);
