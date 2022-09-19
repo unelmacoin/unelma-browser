@@ -2,25 +2,26 @@ const Store = require("electron-store");
 const store = new Store();
 module.exports = {
   setTabs: (tabs, windowId) => {
-    let currentTabs = store.get("tabs") || {};
+    let currentViews = store.get("views") || {};
+  
     if (tabs.length > 0) {
-      currentTabs[windowId] = tabs;
-    } else delete currentTabs[windowId];
-    store.set("tabs", currentTabs);
+      currentViews[windowId] = tabs;
+    } else delete currentViews[windowId];
+    store.set("views", currentViews);
   },
   getWindowTabs: (windowId) => {
-    return store.get("tabs")[windowId] || [];
+    return store.get("views") ? store.get("views")[windowId] : [];
   },
   getTabsWindows: () => {
-    const tabs = store.get("tabs") || {};
+    const tabs = store.get("views") || {};
     return Object.keys(tabs) || [];
   },
   resetWindowTabs: (windowId) => {
-    let tabs = store.get("tabs") || {};
+    let tabs = store.get("views") || {};
     delete tabs[windowId];
-    store.set("tabs", tabs);
+    store.set("views", tabs);
   },
   resetAllTabs: () => {
-    store.set("tabs", {});
+    store.set("views", {});
   },
 };
