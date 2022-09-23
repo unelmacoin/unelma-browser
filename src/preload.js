@@ -32,6 +32,7 @@ contextBridge.exposeInMainWorld("api", {
       "go-back",
       "reload",
       "save-login-info",
+      "reorder-tabs",
     ];
     if (validChannels.find((c) => channel.includes(c))) {
       ipcRenderer.send(channel, data);

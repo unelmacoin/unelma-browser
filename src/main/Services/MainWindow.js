@@ -4,9 +4,7 @@ import { getBookmarks } from "../controllers/bookmarks";
 import { addAuthInfo, getAuthInfo } from "../controllers/passwords";
 import { addHistory, getSearchHistory } from "../controllers/searchHistory";
 import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
-import {
-  handleWindowsControlsMessaging,
-} from "../utils/ipc";
+import { handleWindowsControlsMessaging } from "../utils/ipc";
 import { View } from "./View";
 const uniqid = require("uniqid");
 const path = require("path");
@@ -51,6 +49,9 @@ export class MainWindow {
     ipcMain.on("save-login-info" + this.window.windowId, (_, info) => {
       addAuthInfo(info);
       this.contents.send("get-auth-info", getAuthInfo());
+    });
+    ipcMain.on("reorder-tabs" + this.window.windowId, (_, tabs) => {
+      this.reOrderViews(tabs);
     });
     ipcMain.on("reset-window-tabs" + this.window.windowId, () => {
       resetWindowTabs(this.window.windowId);
@@ -268,6 +269,17 @@ export class MainWindow {
         loading,
         fail,
       })
+    );
+  }
+  reOrderViews(tabs) {
+    const newOrderedList = tabs.map(( id ) =>
+      this.views.find((v) => v.id === id)
+    );
+    this.setViews(newOrderedList);
+    setTabs(this.mapViews(), this.window.windowId);
+    this.send(
+      "get-current-tabs" + this.window.windowId,
+      getWindowTabs(this.window.windowId)
     );
   }
   hideAllViews() {

@@ -28,6 +28,10 @@ const TabsList = ({ tabs, tabsDispatch }) => {
         tabs: items,
       },
     });
+    window.api.send(
+      "reorder-tabs" + window.id,
+      items.map(({ id }) => id)
+    );
   }
   const renderTabs = () =>
     tabs.map(({ id, active, title, url, type, loading, fail }, index) => (
