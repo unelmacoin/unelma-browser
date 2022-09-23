@@ -9,7 +9,7 @@ const BackwardBtn = () => {
   return (
     <button className="backward-btn" onClick={handleClick}>
       <Link exact to="/">
-        <HiArrowLeft />
+        <HiArrowLeft fontSize='20px'/>
       </Link>
     </button>
   );

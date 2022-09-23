@@ -4,7 +4,8 @@
 }
 #search-history {
   width: 100% !important;
-  height: 100% !important;
+  height: 97% !important;
+  margin-top: 10px;
   padding: 30px;
   border-radius: 7px;
   opacity: 1 !important;

@@ -10,7 +10,11 @@ module.exports = {
     store.set("views", currentViews);
   },
   getWindowTabs: (windowId) => {
-    return store.get("views") ? store.get("views")[windowId] : [];
+     return store.get("views")
+       ? store.get("views")[windowId]
+         ? store.get("views")[windowId]
+         : []
+       : [];
   },
   getTabsWindows: () => {
     const tabs = store.get("views") || {};
