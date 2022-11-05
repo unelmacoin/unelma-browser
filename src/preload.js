@@ -1,63 +1,26 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const {
+  RECIEVE_CHANNELS,
+  GET_LOGIN_INFO,
+  LOGIN_INFO,
+  SEND_CHANNELS,
+  REQUEST_START,
+} = require("./constants/global/channels");
 
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data) => {
-    let validChannels = [
-      "create-window",
-      "reset-all-tabs",
-      "maximize",
-      "unmaximize",
-      "minimize",
-      "close-window",
-      "add-bookmark",
-      "remove-from-bookmarks",
-      "add-auth-info",
-      "remove-from-auth-info",
-      "add-history",
-      "remove-from-search-histroy",
-      "reset-window-tabs",
-      "add-tab",
-      "remove-tab",
-      "update-tab",
-      "activate-tab",
-      "update-active-tab",
-      "go-to-location",
-      "activate-view",
-      "add-view",
-      "remove-view",
-      "toggle-window",
-      "hide-views",
-      "show-views",
-      "go-forward",
-      "go-back",
-      "reload",
-      "save-login-info",
-      "reorder-tabs",
-    ];
-    if (validChannels.find((c) => channel.includes(c))) {
+    if (SEND_CHANNELS.find((c) => channel.includes(c))) {
       ipcRenderer.send(channel, data);
     }
   },
   receive: (channel, func) => {
-    let validChannels = [
-      "window-ready",
-      "get-current-tabs",
-      "get-search-history",
-      "get-bookmarks",
-      "get-auth-info",
-      "is-maximized",
-      "get-windows-number",
-      "catch-login-info",
-      "get-login-info",
-    ];
-    if (validChannels.find((c) => channel.includes(c))) {
+    if (RECIEVE_CHANNELS.find((c) => channel.includes(c))) {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
-  dirname: () => __dirname,
 });
 window.addEventListener("DOMContentLoaded", () => {
-  const commonInputnames = ["login", "user", "email"];
+  const commonInputnames = ["user", "email", "login", "phone"];
   const commoninputPass = ["pas", "pass", "password"];
   const recognizeInputFieldByKeywords = (keywords) => (inputField) => {
     const attrValues = inputField
@@ -75,32 +38,44 @@ window.addEventListener("DOMContentLoaded", () => {
     inputs.find((input) =>
       recognizeInputFieldByKeywords(commoninputPass)(input)
     );
-  ipcRenderer.on("ready", () => {
-    const submitListener = () => {
-      const inputs = [...document.querySelectorAll("input")];
-      const username = getUsername(inputs)?.value;
-      const password = getPassword(inputs)?.value;
-      if (password) {
-        ipcRenderer.send("get-login-info", {
-          password,
-          username,
-          site: window.location.href,
-        });
-      }
-    };
 
-    ipcRenderer.on("login-info", (_, info) => {
-      const passwordInput = document.querySelector('input[type="password"]');
+  const submitListener = (_, site) => {
+    const inputs = [...document.querySelectorAll("input")];
+    const username = getUsername(inputs)?.value;
+    const password = getPassword(inputs)?.value;
+    if (password) {
+      ipcRenderer.send(GET_LOGIN_INFO, {
+        password,
+        username,
+        site,
+      });
+    }
+  };
+
+  ipcRenderer.on(LOGIN_INFO, (_, info) => {
+    const passwordInput = getPassword([...document.querySelectorAll("input")]);
+    const usernameInput = getUsername([...document.querySelectorAll("input")]);
+    if (passwordInput) {
       passwordInput.value = info.password;
-      const usernameInput = getUsername([
-        ...document.querySelectorAll("input"),
-      ]);
+      ["input", "click", "change", "blur"].forEach((event) => {
+        const changeEvent = new Event(event, {
+          bubbles: true,
+          cancelable: true,
+        });
+        passwordInput.dispatchEvent(changeEvent);
+      });
+    }
+    if (usernameInput) {
       usernameInput.value = info.username;
-      passwordInput.dispatchEvent(new Event("input"));
-      passwordInput.dispatchEvent(new Event("change"));
-      usernameInput.dispatchEvent(new Event("input"));
-      usernameInput.dispatchEvent(new Event("change"));
-    });
-    document.body.addEventListener("submit", submitListener);
+      ["input", "click", "change", "blur"].forEach((event) => {
+        const changeEvent = new Event(event, {
+          bubbles: true,
+          cancelable: true,
+        });
+        usernameInput.dispatchEvent(changeEvent);
+      });
+    }
   });
+  // document.body.addEventListener("submit", submitListener);
+  ipcRenderer.on(REQUEST_START, submitListener);
 });

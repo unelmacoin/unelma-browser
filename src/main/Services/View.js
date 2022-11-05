@@ -18,13 +18,15 @@ export class View {
   fail;
   loading;
   y;
+  hidden;
   constructor({ url, parentWindow, id, isActive }) {
     this.parentWindow = parentWindow;
     this.id = id;
+    this.hidden = false;
     this.loading = true;
     this.fail = false;
     this.url = url;
-    this.title = "";
+    this.title = url;
     this.isActive = isActive || true;
     this.width =
       Math.floor(this.parentWindow.getBounds().width * 0.8) -
@@ -102,13 +104,14 @@ export class View {
     });
   }
   loadURL(url) {
-    this.view.webContents.loadURL(url);
+    this.contents.loadURL(url);
     this.url = url;
   }
-  destroy() {
-    this.view.webContents.destroy();
-  }
+  // destroy() {
+  //   this.contents.destroy();
+  // }
   hide() {
+    this.hidden = true;
     this.view.setBounds({
       x: 0,
       y: 0,
@@ -117,6 +120,7 @@ export class View {
     });
   }
   show() {
+    this.hidden = false;
     this.view.setBounds({
       x: this.x,
       y: this.y,
@@ -128,29 +132,29 @@ export class View {
     this.loading = true;
   }
   finishLoad() {
-    this.url = this.view.webContents.getURL();
+    this.url = this.contents.getURL();
     this.loading = false;
-    this.title = this.view.webContents.getTitle() || this.url;
-    this.fail = this.url === this.title || false;
+    this.title = this.contents.getTitle() || this.url;
+    this.fail = false;
   }
   failLoad() {
-    this.url = this.view.webContents.getURL();
+    this.url = this.contents.getURL();
     this.loading = false;
-    this.title = this.view.webContents.getTitle() || this.url;
+    this.title = this.contents.getTitle() || this.url;
     this.fail = true;
   }
   goBack() {
-    if (this.view.webContents.canGoBack()) this.view.webContents.goBack();
+    if (this.contents.canGoBack()) this.contents.goBack();
   }
   goForward() {
-    if (this.view.webContents.canGoForward()) this.view.webContents.goForward();
+    if (this.contents.canGoForward()) this.contents.goForward();
   }
   reload() {
-    this.view.webContents.reload();
+    this.contents.reload();
   }
   destroy() {
-    if (!this.view.webContents.isDestroyed()) {
-      this.view.webContents.destroy();
+    if (!this.contents.isDestroyed()) {
+      this.contents.destroy();
       this.view.setBounds({ x: 0, y: 0, width: 0, height: 0 });
       this.view = null;
     }

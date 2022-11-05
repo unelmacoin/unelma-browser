@@ -7,9 +7,7 @@ export class ContextMenu {
       prepend: () => [
         {
           label: "New window",
-          click: () => {
-            addWindow();
-          },
+          click: () => addWindow(),
         },
       ],
     });

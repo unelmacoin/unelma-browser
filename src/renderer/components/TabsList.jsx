@@ -4,10 +4,15 @@ import { ADD_TAB, SET_TABS } from "../../constants/renderer/actions";
 import { defaultTab } from "../utils/tabs";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Tab from "./Tab.jsx";
+import {
+  ADD_VIEW,
+  mergeChannel,
+  RE_ORDER_VIEWS,
+} from "../../constants/global/channels";
 const TabsList = ({ tabs, tabsDispatch }) => {
   const handleAddTab = () => {
     const newTab = defaultTab(window.id);
-    window.api.send("add-view" + window.id, { ...newTab });
+    window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
     tabsDispatch({
       type: ADD_TAB,
       payload: {
@@ -29,7 +34,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
       },
     });
     window.api.send(
-      "reorder-tabs" + window.id,
+      mergeChannel(RE_ORDER_VIEWS, window.id),
       items.map(({ id }) => id)
     );
   }

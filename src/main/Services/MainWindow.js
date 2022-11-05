@@ -1,4 +1,30 @@
-import { BrowserWindow, ipcMain } from "electron";
+import { BrowserWindow, ipcMain, session } from "electron";
+import {
+  ACTIVATE_VIEW,
+  ADD_VIEW,
+  GET_AUTH_INFO,
+  GET_BOOKMARKS,
+  GET_CURRENT_TABS,
+  GET_LOGIN_INFO,
+  GET_SEARCH_HISTORY,
+  GO_BACK,
+  GO_FORWARD,
+  GO_TO_LOCATION,
+  HIDE_VIEWS,
+  IS_MAXIMIZED,
+  LOGIN_INFO,
+  mergeChannel,
+  OPEN_SIDEBAR,
+  RELOAD,
+  REMOVE_VIEW,
+  REQUEST_START,
+  RESET_WINDOW_TABS,
+  RE_ORDER_VIEWS,
+  SAVE_LOGIN_INFO,
+  SHOW_VIEWS,
+  TOGGLE_WINDOW,
+  WINDOW_READY,
+} from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { getBookmarks } from "../controllers/bookmarks";
 import { addAuthInfo, getAuthInfo } from "../controllers/passwords";
@@ -39,80 +65,88 @@ export class MainWindow {
     this.window.loadURL(UNELMA_BROWSER_WEBPACK_ENTRY);
     handleWindowsControlsMessaging(this.window);
 
-    ipcMain.on("add-view" + this.window.windowId, (_, tab) => {
+    ipcMain.on(mergeChannel(ADD_VIEW, this.window.windowId), (_, tab) => {
       this.addView({
         url: tab.url,
         parentWindow: this.window,
         id: tab.id,
       });
     });
-    ipcMain.on("save-login-info" + this.window.windowId, (_, info) => {
-      addAuthInfo(info);
-      this.contents.send("get-auth-info", getAuthInfo());
-    });
-    ipcMain.on("reorder-tabs" + this.window.windowId, (_, tabs) => {
-      this.reOrderViews(tabs);
-    });
-    ipcMain.on("reset-window-tabs" + this.window.windowId, () => {
+    ipcMain.on(
+      mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
+      (_, info) => {
+        addAuthInfo(info);
+        this.contents.send(GET_AUTH_INFO, getAuthInfo());
+      }
+    );
+    ipcMain.on(
+      mergeChannel(RE_ORDER_VIEWS, this.window.windowId),
+      (_, tabs) => {
+        this.reOrderViews(tabs);
+      }
+    );
+    ipcMain.on(mergeChannel(RESET_WINDOW_TABS, this.window.windowId), () => {
       resetWindowTabs(this.window.windowId);
       this.close();
     });
-    ipcMain.on("go-back" + this.window.windowId, () => {
+    ipcMain.on(mergeChannel(GO_BACK, this.window.windowId), () => {
       this.goBack();
     });
-    ipcMain.on("go-forward" + this.window.windowId, () => {
+    ipcMain.on(mergeChannel(GO_FORWARD, this.window.windowId), () => {
       this.goForward();
     });
-    ipcMain.on("reload" + this.window.windowId, () => {
+    ipcMain.on(mergeChannel(RELOAD, this.window.windowId), () => {
       this.reload();
     });
-    ipcMain.on("hide-views" + this.window.windowId, () => {
+    ipcMain.on(mergeChannel(HIDE_VIEWS, this.window.windowId), () => {
       this.hideAllViews();
     });
-    ipcMain.on("show-views" + this.window.windowId, () => {
+    ipcMain.on(mergeChannel(SHOW_VIEWS, this.window.windowId), () => {
       this.showViews();
     });
-    ipcMain.on("activate-view" + this.window.windowId, (_, id) => {
+    ipcMain.on(mergeChannel(ACTIVATE_VIEW, this.window.windowId), (_, id) => {
       this.activeView(id);
     });
-    ipcMain.on("toggle-window", (_, windowId) => {
+    ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
       if (this.window.windowId === windowId) {
         this.views.find((v) => v.isActive).fit(this.isToggled);
         this.isToggled = !this.isToggled;
       }
     });
-    ipcMain.on("go-to-location" + this.window.windowId, (_, url) => {
+    ipcMain.on(mergeChannel(GO_TO_LOCATION, this.window.windowId), (_, url) => {
       this.goToLocation(url);
     });
-    ipcMain.on("get-login-info", (_, v) => {
+    ipcMain.on(GET_LOGIN_INFO, (_, v) => {
       const isExist = () =>
         getAuthInfo().find(
           ({ site, password, username }) =>
-            site === v.site &&
+            new URL(site).origin === new URL(v.site).origin &&
             username === v.username &&
             password === v.password
         );
       if (!isExist()) {
-        this.contents.send("get-login-info" + this.window.windowId, v);
+        this.contents.send(
+          mergeChannel(GET_LOGIN_INFO, this.window.windowId),
+          v
+        );
       }
     });
-    ipcMain.on("remove-view" + this.window.windowId, (_, id) => {
+    ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
       this.removeView(id);
     });
     this.contents.on("did-finish-load", () => {
       this.window.addListener("resize", () => {
-        this.views.find((v) => v.isActive)?.fit(!this.isToggled);
+        this.views.find((v) => v.isActive && !v.hidden)?.fit(!this.isToggled);
       });
-      this.contents.send("window-ready", this.window.windowId);
-      this.contents.addListener("ipc-message", (event) => {});
-      this.contents.send("is-maximized", this.window.isMaximized());
-      this.send(
-        "get-current-tabs" + this.window.windowId,
-        getWindowTabs(this.window.windowId)
-      );
-      this.send("get-search-history", getSearchHistory());
-      this.send("get-bookmarks", getBookmarks());
-      this.send("get-auth-info", getAuthInfo());
+      this.send(WINDOW_READY, this.window.windowId);
+      this.send(IS_MAXIMIZED, this.window.isMaximized());
+      this.sendTabs();
+      this.send(GET_SEARCH_HISTORY, getSearchHistory());
+      this.send(GET_BOOKMARKS, getBookmarks());
+      this.send(GET_AUTH_INFO, getAuthInfo());
+      this.window.on("closed", () => {
+        this.window = null;
+      });
     });
     this.window.setMenu(null);
     this.window.maximize();
@@ -134,6 +168,14 @@ export class MainWindow {
         });
       });
     }
+    session.defaultSession.webRequest.onSendHeaders(
+      { urls: ["https://*/*"] },
+      function ({ webContents }) {
+        if (webContents.getType() === "browserView") {
+          webContents.send(REQUEST_START, webContents.getURL());
+        }
+      }
+    );
   }
   addView(props) {
     this.views.forEach((v) => v.deActive());
@@ -142,49 +184,36 @@ export class MainWindow {
     this.window.addBrowserView(view.view);
     view.contents.addListener("did-start-loading", () => {
       view.startLoad();
-      setTabs(this.mapViews(), this.window.windowId);
-      this.send(
-        "get-current-tabs" + this.window.windowId,
-        getWindowTabs(this.window.windowId)
-      );
+      this.sendTabs();
     });
     view.contents.addListener("did-fail-load", () => {
       view.failLoad();
-      setTabs(this.mapViews(), this.window.windowId);
-      this.send(
-        "get-current-tabs" + this.window.windowId,
-        getWindowTabs(this.window.windowId)
-      );
+      this.sendTabs();
     });
     view.contents.addListener("did-finish-load", (e) => {
       view.finishLoad();
-      setTabs(this.mapViews(), this.window.windowId);
+      this.sendTabs();
       addHistory({
         id: uniqid(),
         url: e.sender.getURL(),
         time: new Date(Date.now()),
       });
-      if (getAuthInfo().find((v) => v.site === e.sender.getURL())) {
-        view.contents.send(
-          "login-info",
-          getAuthInfo().find((v) => v.site === e.sender.getURL())
-        );
+      const authInfo = getAuthInfo().find(
+        (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
+      );
+      if (authInfo) {
+        view.contents.send(LOGIN_INFO, authInfo);
       }
-      this.send("get-search-history", getSearchHistory());
-      this.send(
-        "get-current-tabs" + this.window.windowId,
-        getWindowTabs(this.window.windowId)
-      );
+      this.send(GET_SEARCH_HISTORY, getSearchHistory());
     });
-    view.contents.addListener("did-frame-finish-load", () => {
+    view.contents.addListener("did-frame-finish-load", (e) => {
       view.finishLoad();
-      setTabs(this.mapViews(), this.window.windowId);
-      this.send(
-        "get-current-tabs" + this.window.windowId,
-        getWindowTabs(this.window.windowId)
-      );
+      this.sendTabs();
     });
     view.contents.setWindowOpenHandler(({ url }) => {
+      this.send(OPEN_SIDEBAR);
+      this.views.find((v) => v.isActive).fit(this.isToggled);
+      this.isToggled = !this.isToggled;
       this.addView({
         url,
         parentWindow: this.window,
@@ -192,20 +221,12 @@ export class MainWindow {
       });
       return { action: "deny" };
     });
-    setTabs(this.mapViews(), this.window.windowId);
-    this.send(
-      "get-current-tabs" + this.window.windowId,
-      getWindowTabs(this.window.windowId)
-    );
+    this.sendTabs();
   }
   activeView(id) {
     this.views.forEach((view) => view.deActive());
     this.views.find((view) => view.id === id).active();
-    setTabs(this.mapViews(), this.window.windowId);
-    this.send(
-      "get-current-tabs" + this.window.windowId,
-      getWindowTabs(this.window.windowId)
-    );
+    this.sendTabs();
   }
   removeView(id) {
     if (
@@ -223,26 +244,18 @@ export class MainWindow {
           ? this.getNextView(id)
           : this.getPrevView(id)
         : null;
-    if (newActiveView) newActiveView.active();
+    newActiveView?.active();
     this.setViews(this.views.filter((elm) => elm.id !== id));
     this.window?.removeBrowserView(view.view);
     view.destroy();
-    setTabs(this.mapViews(), this.window.windowId);
-    this.send(
-      "get-current-tabs" + this.window.windowId,
-      getWindowTabs(this.window.windowId)
-    );
+    this.sendTabs();
   }
   setViews(views) {
     this.views = views;
   }
   goToLocation(url) {
     this.views.find((v) => v.isActive).loadURL(url);
-    setTabs(this.mapViews(), this.window.windowId);
-    this.send(
-      "get-current-tabs" + this.window.windowId,
-      getWindowTabs(this.window.windowId)
-    );
+    this.sendTabs();
   }
   getViews() {
     return this.views;
@@ -272,15 +285,11 @@ export class MainWindow {
     );
   }
   reOrderViews(tabs) {
-    const newOrderedList = tabs.map(( id ) =>
+    const newOrderedList = tabs.map((id) =>
       this.views.find((v) => v.id === id)
     );
     this.setViews(newOrderedList);
-    setTabs(this.mapViews(), this.window.windowId);
-    this.send(
-      "get-current-tabs" + this.window.windowId,
-      getWindowTabs(this.window.windowId)
-    );
+    this.sendTabs();
   }
   hideAllViews() {
     this.views.forEach((view) => view.hide());
@@ -289,15 +298,11 @@ export class MainWindow {
     const activeView = this.views.find((v) => v.isActive);
     activeView.show();
   }
-  mapView({ id, url, isActive, parentWindow, loading, title, fail }) {
+  mapView(props) {
     return {
-      id,
-      url,
-      active: isActive,
-      windowId: parentWindow.windowId,
-      title,
-      loading,
-      fail,
+      ...props,
+      active: props.isActive,
+      windowId: props.parentWindow.windowId,
     };
   }
   goForward() {
@@ -309,22 +314,18 @@ export class MainWindow {
   reload() {
     this.views.find((view) => view.isActive).reload();
   }
-  destroy() {
-    if (!this.window.isDestroyed()) {
-      this.window.destroy();
-      this.window = null;
-    }
-  }
   close() {
-    if (this.window.isClosable()) {
-      this.window.close();
-      this.destroy();
-    }
+    if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed()) {
-      this.contents.send(channel, data);
-    }
+    if (!this.window.isDestroyed()) this.contents.send(channel, data);
+  }
+  sendTabs() {
+    setTabs(this.mapViews(), this.window.windowId);
+    this.send(
+      mergeChannel(GET_CURRENT_TABS, this.window.windowId),
+      getWindowTabs(this.window.windowId)
+    );
   }
   get windowId() {
     return this.window?.windowId;

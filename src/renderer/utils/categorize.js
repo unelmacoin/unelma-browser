@@ -13,7 +13,7 @@ export function categorizeByDate(arr) {
         : date.getTime() > yesterday.getTime()
         ? `Yesterday - ${date.toDateString()}`
         : date.getTime() > older.getTime()
-        ? `Last 7 days`
+        ? `Last Week`
         : `Older`;
     if (!acc[category]) {
       acc[category] = [];

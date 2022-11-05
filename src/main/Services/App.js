@@ -1,10 +1,19 @@
+const { app, BrowserWindow, ipcMain, session } = require("electron");
 import { getTabsWindows, resetAllTabs } from "../controllers/tabs";
 import { ContextMenu } from "./ContextMenu";
 import { MainWindow } from "./MainWindow";
 import { addBookmark, removeFromBookmarks } from "../controllers/bookmarks";
 import { addAuthInfo, removeFromAuthInfo } from "../controllers/passwords";
 import { removeFromSearchHistroy } from "../controllers/searchHistory";
-const { app, BrowserWindow, ipcMain } = require("electron");
+import {
+  ADD_AUTH_INFO,
+  ADD_BOOKMARK,
+  CREATE_WINDOW,
+  REMOVE_FROM_AUTH_INFO,
+  REMOVE_FROM_BOOKMARKS,
+  REMOVE_FROM_SEARCH_HISTORY,
+  RESET_ALL_TABS,
+} from "../../constants/global/channels";
 
 export class App {
   windows;
@@ -16,7 +25,7 @@ export class App {
         new ContextMenu(contents, addWindow);
       }
     });
-
+   
     app.whenReady().then(() => {
       if (getTabsWindows().length > 0)
         getTabsWindows().forEach((windowId) => {
@@ -31,34 +40,35 @@ export class App {
             });
           else this.addWindow();
       });
+      
     });
 
     app.on("window-all-closed", function () {
       if (process.platform !== "darwin") app.quit();
     });
 
-    ipcMain.on("reset-all-tabs", (_, windowId) => {
+    ipcMain.on(RESET_ALL_TABS, (_, windowId) => {
       getTabsWindows().forEach((win) => this.closeWindow(win));
       resetAllTabs(windowId);
     });
 
-    ipcMain.on("add-auth-info", (_, info) => {
+    ipcMain.on(ADD_AUTH_INFO, (_, info) => {
       addAuthInfo(info);
     });
 
-    ipcMain.on("add-bookmark", (_, bookmark) => {
+    ipcMain.on(ADD_BOOKMARK, (_, bookmark) => {
       addBookmark(bookmark);
     });
-    ipcMain.on("remove-from-bookmarks", (_, url) => {
+    ipcMain.on(REMOVE_FROM_BOOKMARKS, (_, url) => {
       removeFromBookmarks(url);
     });
-    ipcMain.on("remove-from-search-histroy", (_, id) => {
+    ipcMain.on(REMOVE_FROM_SEARCH_HISTORY, (_, id) => {
       removeFromSearchHistroy(id);
     });
-    ipcMain.on("remove-from-auth-info", (_, id) => {
+    ipcMain.on(REMOVE_FROM_AUTH_INFO, (_, id) => {
       removeFromAuthInfo(id);
     });
-    ipcMain.on("create-window", () => {
+    ipcMain.on(CREATE_WINDOW, () => {
       this.addWindow();
     });
   }

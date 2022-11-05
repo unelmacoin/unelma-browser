@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { mergeChannel, SAVE_LOGIN_INFO } from "../../constants/global/channels";
 
 const SavePasswordDialog = ({ info, setLoginDialogInfo }) => {
   const [username, setUsername] = useState(info.username);
@@ -6,7 +7,7 @@ const SavePasswordDialog = ({ info, setLoginDialogInfo }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoginDialogInfo(null);
-    window.api.send("save-login-info" + window.id, info);
+    window.api.send(mergeChannel(SAVE_LOGIN_INFO, window.id), info);
   };
   const handleCancel = () => {
     setLoginDialogInfo(null);

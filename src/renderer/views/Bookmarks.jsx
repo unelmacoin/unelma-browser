@@ -1,21 +1,22 @@
 import React from "react";
 import "../css/bookmarks.css";
 import { FaTimes } from "react-icons/fa";
-import {  REMOVE_BOOKMARK } from "../../constants/renderer/actions";
+import { REMOVE_BOOKMARK } from "../../constants/renderer/actions";
 import uniqid from "uniqid";
 import dateFormat from "dateformat";
 import { categorizeByDate } from "../utils/categorize";
 import EmptyList from "../components/EmptyList/EmptyList.jsx";
 import BackwardBtn from "../components/BackwardBtn/BackwardBtn.jsx";
 import Layout from "../components/Layout/Layout.jsx";
+import { ADD_VIEW, mergeChannel } from "../../constants/global/channels";
 const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
   const sortedKeys = Object.keys(categorizeByDate(bookmarks)).sort((a, b) => {
     if (a.includes("Today")) return -1;
     if (b.includes("Today")) return 1;
     if (a.includes("Yesterday")) return -1;
     if (b.includes("Yesterday")) return 1;
-    if (a.includes("Last 7 days")) return -1;
-    if (b.includes("Last 7 days")) return 1;
+    if (a.includes("Last Week")) return -1;
+    if (b.includes("Last Week")) return 1;
     if (a.includes("Older")) return -1;
     if (b.includes("Older")) return 1;
     return 0;
@@ -27,7 +28,10 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button
             onClick={() => {
-              window.api.send("add-view" + window.id, { id: uniqid(), url });
+              window.api.send(mergeChannel(ADD_VIEW, window.id), {
+                id: uniqid(),
+                url,
+              });
               document.querySelector(".backward-btn a").click();
             }}
           >

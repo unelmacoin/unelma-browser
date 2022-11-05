@@ -142,10 +142,8 @@ webview {
   width: 225px;
   border-radius: 7px;
   background-color: #fff;
-  padding: 20px 0;
   position: absolute;
   top: 30px;
-  height: 300px;
   left: 0;
   transform: scale(0, 0);
   transition: 0.3s;
@@ -153,6 +151,7 @@ webview {
   z-index: 100000;
 }
 #menu .menu-item button {
+  width:100%;
   display: flex;
   align-items: center;
   padding: 14px 25px;

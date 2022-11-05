@@ -17,8 +17,8 @@ const History = ({  searchHistory, searchHistoryDispatcher }) => {
       if (b.includes("Today")) return 1;
       if (a.includes("Yesterday")) return -1;
       if (b.includes("Yesterday")) return 1;
-      if (a.includes("Last 7 days")) return -1;
-      if (b.includes("Last 7 days")) return 1;
+      if (a.includes("Last Week")) return -1;
+      if (b.includes("Last Week")) return 1;
       if (a.includes("Older")) return -1;
       if (b.includes("Older")) return 1;
       return 0;
@@ -31,7 +31,10 @@ const History = ({  searchHistory, searchHistoryDispatcher }) => {
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button
             onClick={() => {
-               window.api.send("add-view" + window.id, { id: uniqid(), url });
+               window.api.send(mergeChannel(ADD_VIEW, window.id), {
+                 id: uniqid(),
+                 url,
+               });
                document.querySelector(".backward-btn a").click();
             }}
           >

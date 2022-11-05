@@ -15,6 +15,16 @@ import Home from "./views/Home/Home.jsx";
 import Bookmarks from "./views/Bookmarks.jsx";
 import History from "./views/History.jsx";
 import Settings from "./views/Settings/Settings.jsx";
+import {
+  GET_AUTH_INFO,
+  GET_BOOKMARKS,
+  GET_CURRENT_TABS,
+  GET_LOGIN_INFO,
+  GET_SEARCH_HISTORY,
+  mergeChannel,
+  OPEN_SIDEBAR,
+  WINDOW_READY,
+} from "../constants/global/channels";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -27,9 +37,9 @@ const App = () => {
   const [passwords, passwordsDispatch] = useReducer(passwordsReducer, []);
   const [loginDialogInfo, setLoginDialogInfo] = useState();
   useEffect(() => {
-    window.api.receive("window-ready", (id) => {
+    window.api.receive(WINDOW_READY, (id) => {
       window.id = id;
-      window.api.receive("get-current-tabs" + id, (tabs) => {
+      window.api.receive(mergeChannel(GET_CURRENT_TABS, id), (tabs) => {
         tabsDispatch({
           type: SET_TABS,
           payload: {
@@ -37,8 +47,10 @@ const App = () => {
           },
         });
       });
-
-      window.api.receive("get-search-history", (searchHistoryVal) => {
+      window.api.receive(OPEN_SIDEBAR, () => {
+        setOpenSidebar(true);
+      });
+      window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
           type: SET_SEARCH_HISTORY,
           payload: {
@@ -46,10 +58,10 @@ const App = () => {
           },
         });
       });
-      window.api.receive("get-login-info" + window.id, (info) => {
+      window.api.receive(mergeChannel(GET_LOGIN_INFO, id), (info) => {
         setLoginDialogInfo(info);
       });
-      window.api.receive("get-bookmarks", (bookmarks) => {
+      window.api.receive(GET_BOOKMARKS, (bookmarks) => {
         bookmarksDispatcher({
           type: SET_BOOKMARKS,
           payload: {
@@ -57,7 +69,7 @@ const App = () => {
           },
         });
       });
-      window.api.receive("get-auth-info", (info) => {
+      window.api.receive(GET_AUTH_INFO, (info) => {
         passwordsDispatch({
           type: SET_PASSWORDS,
           payload: {

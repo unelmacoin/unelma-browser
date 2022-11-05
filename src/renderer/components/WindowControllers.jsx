@@ -3,6 +3,7 @@ import {
   TbLayoutSidebarRightExpand,
   TbLayoutSidebarLeftExpand,
 } from "react-icons/tb";
+import { TOGGLE_WINDOW } from "../../constants/global/channels";
 
 const WindowControllers = ({
   openSidebar,
@@ -12,7 +13,7 @@ const WindowControllers = ({
 }) => {
   const handleClick = () => {
     setOpenSidebar(!openSidebar);
-    window.api.send("toggle-window", window.id);
+    window.api.send(TOGGLE_WINDOW, window.id);
     if (openSidebar) {
       setMenu(false);
       setLoginDialogInfo(null);

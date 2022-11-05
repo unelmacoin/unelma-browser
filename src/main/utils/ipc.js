@@ -1,4 +1,5 @@
 import { BrowserWindow, ipcMain } from "electron";
+import { CLOSE_WINDOW, MAXIMIZE, MINIMIZE, UN_MAXIMIZE } from "../../constants/global/channels";
 import {
   addBookmark,
   removeFromBookmarks,
@@ -39,7 +40,7 @@ export const handleProcessesMessaging = () => {
 
   ipcMain.on("add-bookmark", (_, bookmark) => {
     addBookmark(bookmark);
-  });
+  }); 
   ipcMain.on("remove-from-bookmarks", (_, url) => {
     removeFromBookmarks(url);
   });
@@ -52,17 +53,17 @@ export const handleProcessesMessaging = () => {
 };
 
 export const handleWindowsControlsMessaging = (window) => {
-  ipcMain.on("minimize", (_, id) => {
+  ipcMain.on(MINIMIZE, (_, id) => {
     if (!window.isDestroyed() && window.windowId === id) {
       window.minimize();
     }
   });
-  ipcMain.on("maximize", (_, id) => {
+  ipcMain.on(MAXIMIZE, (_, id) => {
     if (!window.isDestroyed() && window.windowId === id) {
       window.maximize();
     }
   });
-  ipcMain.on("close-window", (_, id) => {
+  ipcMain.on(CLOSE_WINDOW, (_, id) => {
     if (
       !window.isDestroyed() &&
       window.isClosable() &&
@@ -71,7 +72,7 @@ export const handleWindowsControlsMessaging = (window) => {
       window.close();
     }
   });
-  ipcMain.on("unmaximize", (_, id) => {
+  ipcMain.on(UN_MAXIMIZE, (_, id) => {
     if (!window.isDestroyed() && window.windowId === id) {
       window.unmaximize();
     }
