@@ -70,6 +70,7 @@ export class MainWindow {
         url: tab.url,
         parentWindow: this.window,
         id: tab.id,
+        isToggled: this.isToggled,
       });
     });
     ipcMain.on(
@@ -109,7 +110,8 @@ export class MainWindow {
     });
     ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
       if (this.window.windowId === windowId) {
-        this.views.find((v) => v.isActive).fit(this.isToggled);
+        this.views.forEach((v) => v.fit(this.isToggled));
+        this.views.forEach((v) => !v.isActive && v.hide());
         this.isToggled = !this.isToggled;
       }
     });
@@ -157,6 +159,7 @@ export class MainWindow {
         parentWindow: this.window,
         isActive: true,
         id: uniqid(),
+        isToggled: this.isToggled,
       });
     } else {
       windowTabs.forEach((tab) => {
@@ -165,14 +168,15 @@ export class MainWindow {
           parentWindow: this.window,
           isActive: tab.active,
           id: tab.id,
+          isToggled: this.isToggled,
         });
       });
     }
     session.defaultSession.webRequest.onSendHeaders(
       { urls: ["https://*/*"] },
       function ({ webContents }) {
-        if (webContents.getType() === "browserView") {
-          webContents.send(REQUEST_START, webContents.getURL());
+        if (webContents?.getType() === "browserView") {
+          webContents?.send(REQUEST_START, webContents?.getURL());
         }
       }
     );
@@ -182,7 +186,17 @@ export class MainWindow {
     const view = new View(props);
     this.views.push(view);
     this.window.addBrowserView(view.view);
-    view.contents.addListener("did-start-loading", () => {
+    const finishLoading = (e) => {
+      const authInfo = getAuthInfo().find(
+        (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
+      );
+      if (authInfo) {
+        view.contents.send(LOGIN_INFO, authInfo);
+      }
+       view.finishLoad();
+       this.sendTabs();
+    };
+    view.contents.addListener("did-start-loading", (e) => {
       view.startLoad();
       this.sendTabs();
     });
@@ -190,34 +204,29 @@ export class MainWindow {
       view.failLoad();
       this.sendTabs();
     });
+    view.contents.addListener("did-stop-loading", (e) => {
+     finishLoading(e)
+    });
     view.contents.addListener("did-finish-load", (e) => {
-      view.finishLoad();
-      this.sendTabs();
+     finishLoading(e);
       addHistory({
         id: uniqid(),
         url: e.sender.getURL(),
         time: new Date(Date.now()),
       });
-      const authInfo = getAuthInfo().find(
-        (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
-      );
-      if (authInfo) {
-        view.contents.send(LOGIN_INFO, authInfo);
-      }
+
       this.send(GET_SEARCH_HISTORY, getSearchHistory());
     });
     view.contents.addListener("did-frame-finish-load", (e) => {
-      view.finishLoad();
-      this.sendTabs();
+      finishLoading(e);
     });
     view.contents.setWindowOpenHandler(({ url }) => {
-      this.send(OPEN_SIDEBAR);
-      this.views.find((v) => v.isActive).fit(this.isToggled);
-      this.isToggled = !this.isToggled;
+      // this.send(OPEN_SIDEBAR);
       this.addView({
         url,
         parentWindow: this.window,
         id: uniqid(),
+        isToggled: this.isToggled,
       });
       return { action: "deny" };
     });
@@ -225,7 +234,7 @@ export class MainWindow {
   }
   activeView(id) {
     this.views.forEach((view) => view.deActive());
-    this.views.find((view) => view.id === id).active();
+    this.views.find((view) => view.id === id).active(!this.isToggled);
     this.sendTabs();
   }
   removeView(id) {
@@ -244,7 +253,7 @@ export class MainWindow {
           ? this.getNextView(id)
           : this.getPrevView(id)
         : null;
-    newActiveView?.active();
+    newActiveView?.active(!this.isToggled);
     this.setViews(this.views.filter((elm) => elm.id !== id));
     this.window?.removeBrowserView(view.view);
     view.destroy();
@@ -327,6 +336,7 @@ export class MainWindow {
       getWindowTabs(this.window.windowId)
     );
   }
+
   get windowId() {
     return this.window?.windowId;
   }

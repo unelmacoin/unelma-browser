@@ -47,9 +47,6 @@ const App = () => {
           },
         });
       });
-      window.api.receive(OPEN_SIDEBAR, () => {
-        setOpenSidebar(true);
-      });
       window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
           type: SET_SEARCH_HISTORY,

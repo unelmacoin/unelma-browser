@@ -19,7 +19,7 @@ export class View {
   loading;
   y;
   hidden;
-  constructor({ url, parentWindow, id, isActive }) {
+  constructor({ url, parentWindow, id, isActive, isToggled }) {
     this.parentWindow = parentWindow;
     this.id = id;
     this.hidden = false;
@@ -28,17 +28,28 @@ export class View {
     this.url = url;
     this.title = url;
     this.isActive = isActive || true;
-    this.width =
-      Math.floor(this.parentWindow.getBounds().width * 0.8) -
-      PADDING * 2 -
-      SIDE_BAR_RIGHT_MARGIN;
     this.height =
       this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
-    this.x =
-      Math.floor(this.parentWindow.getBounds().width * 0.2) +
-      PADDING +
-      SIDE_BAR_RIGHT_MARGIN;
     this.y = TOP_BAR_HEIGHT;
+    if (!isToggled) {
+      this.width =
+        Math.floor(this.parentWindow.getBounds().width * 0.8) -
+        PADDING * 2 -
+        SIDE_BAR_RIGHT_MARGIN;
+      this.x =
+        Math.floor(this.parentWindow.getBounds().width * 0.2) +
+        PADDING +
+        SIDE_BAR_RIGHT_MARGIN;
+    } else {
+      this.width =
+        Math.floor(this.parentWindow.getBounds().width * 0.98) -
+        PADDING * 2 -
+        SIDE_BAR_RIGHT_MARGIN;
+      this.x =
+        Math.floor(this.parentWindow.getBounds().width * 0.02) +
+        PADDING +
+        SIDE_BAR_RIGHT_MARGIN;
+    }
     this.view = new BrowserView({
       webPreferences: {
         preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
@@ -85,14 +96,9 @@ export class View {
       height: this.height,
     });
   }
-  active() {
+  active(isToggled) {
     this.isActive = true;
-    this.view.setBounds({
-      x: this.x,
-      y: this.y,
-      width: this.width,
-      height: this.height,
-    });
+    this.fit(isToggled);
   }
   deActive() {
     this.isActive = false;

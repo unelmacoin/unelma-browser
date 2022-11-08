@@ -19,7 +19,7 @@ contextBridge.exposeInMainWorld("api", {
     }
   },
 });
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
   const commonInputnames = ["user", "email", "login", "phone"];
   const commoninputPass = ["pas", "pass", "password"];
   const recognizeInputFieldByKeywords = (keywords) => (inputField) => {
@@ -55,27 +55,18 @@ window.addEventListener("DOMContentLoaded", () => {
   ipcRenderer.on(LOGIN_INFO, (_, info) => {
     const passwordInput = getPassword([...document.querySelectorAll("input")]);
     const usernameInput = getUsername([...document.querySelectorAll("input")]);
-    if (passwordInput) {
+    if (passwordInput && usernameInput) {
       passwordInput.value = info.password;
-      ["input", "click", "change", "blur"].forEach((event) => {
-        const changeEvent = new Event(event, {
-          bubbles: true,
-          cancelable: true,
-        });
-        passwordInput.dispatchEvent(changeEvent);
-      });
-    }
-    if (usernameInput) {
       usernameInput.value = info.username;
       ["input", "click", "change", "blur"].forEach((event) => {
         const changeEvent = new Event(event, {
           bubbles: true,
           cancelable: true,
         });
+        passwordInput.dispatchEvent(changeEvent);
         usernameInput.dispatchEvent(changeEvent);
       });
     }
   });
-  // document.body.addEventListener("submit", submitListener);
   ipcRenderer.on(REQUEST_START, submitListener);
 });
