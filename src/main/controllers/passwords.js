@@ -5,14 +5,14 @@ const store = new Store();
 
 module.exports = {
   getAuthInfo: () => {
-    const authInfo = store.get("auth") || [];
+    const authInfo = store.get("authh") || [];
     return authInfo.map((info) => ({
       ...info,
       password: decrypt(info.password),
     }));
   },
   addAuthInfo: (info) => {
-    let authInfo = store.get("auth") || [];
+    let authInfo = store.get("authh") || [];
     if (!authInfo.find(({ id }) => id === info.id)) {
       authInfo.push({
         ...info,
@@ -20,12 +20,14 @@ module.exports = {
         id: uniqid(),
       });
     }
-    store.set("auth", authInfo);
+    
+    store.set("authh", authInfo);
+    console.log('authh',store.get("authh"))
   },
   removeFromAuthInfo: (id) => {
-    let authInfo = store.get("auth") || [];
+    let authInfo = store.get("authh") || [];
     store.set(
-      "auth",
+      "authh",
       authInfo.filter((item) => item.id !== id)
     );
   },

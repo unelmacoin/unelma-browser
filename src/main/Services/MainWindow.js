@@ -76,6 +76,7 @@ export class MainWindow {
     ipcMain.on(
       mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
       (_, info) => {
+        
         addAuthInfo(info);
         this.contents.send(GET_AUTH_INFO, getAuthInfo());
       }
@@ -174,9 +175,9 @@ export class MainWindow {
     }
     session.defaultSession.webRequest.onSendHeaders(
       { urls: ["https://*/*"] },
-      function ({ webContents }) {
-        if (webContents?.getType() === "browserView") {
-          webContents?.send(REQUEST_START, webContents?.getURL());
+      function (details) {
+        if (details?.webContents?.getType() === "browserView") {
+          details?.webContents?.send(REQUEST_START, details?.webContents?.getURL());
         }
       }
     );
