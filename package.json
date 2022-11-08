@@ -1,6 +1,6 @@
 {
   "name": "Unelma-Browser",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "A simple and basic Unelma - Browser",
   "main": ".webpack/main",
   "scripts": {
