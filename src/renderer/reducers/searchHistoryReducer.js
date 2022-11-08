@@ -1,3 +1,4 @@
+import { ADD_HISTORY, REMOVE_FROM_SEARCH_HISTORY } from "../../constants/global/channels.js";
 import {
   ADD_SEARCH_HISTORY,
   SET_SEARCH_HISTORY,
@@ -10,11 +11,11 @@ const searchHistoryReducer = (state, action) => {
     case SET_SEARCH_HISTORY:
       return [...action.payload.searchHistory];
     case ADD_SEARCH_HISTORY: {
-      window.api.send("add-history", action.payload.history);
+      window.api.send(ADD_HISTORY, action.payload.history);
       return handleSearchHistory(action.payload.history , state);
     }
     case REMOVE_SEARCH_HISTORY: {
-      window.api.send("remove-from-search-histroy", action.payload.id);
+      window.api.send(REMOVE_FROM_SEARCH_HISTORY, action.payload.id);
       return state.filter(({ id }) => id !== action.payload.id);
     }
     default:

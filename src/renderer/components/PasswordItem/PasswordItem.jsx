@@ -30,7 +30,7 @@ const PasswordItem = ({
   return (
     <div id="password-item">
       <img src={handleFavicon(site)} />
-      <button className="site">{site?.length > 30 ? `${site?.slice(0,30)}...`:site}</button>
+      <p className="site">{site?.length > 30 ? `${site?.slice(0,30)}...`:site}</p>
       <p>{username}</p>
       <input
         type={!toggled ? "password" : "text"}

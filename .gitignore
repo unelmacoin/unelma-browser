@@ -3,3 +3,4 @@ out/
 dist/
 .webpack/
 .env
+.vscode

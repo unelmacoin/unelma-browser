@@ -13,37 +13,22 @@ body::-webkit-scrollbar {
 ul {
   list-style: none;
 }
+a {
+  text-decoration: none;
+}
 button {
   cursor: pointer;
 }
 webview {
   height: 0;
   width: 0;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 .active-webview {
   height: 100%;
   width: 100%;
 }
 
-#root {
-  position: relative;
-  background: rgb(193, 194, 250);
-  background: linear-gradient(
-    90deg,
-    rgba(193, 194, 250, 1) 0%,
-    rgba(221, 220, 224, 1) 52%,
-    rgba(240, 240, 178, 1) 100%
-  );
-  border-radius: 7px;
-  padding: 40px 10px 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
-  user-select: none;
-}
 .top-bar {
   position: absolute;
   top: 0;
@@ -84,70 +69,68 @@ webview {
 .top-bar button:hover {
   color: rgba(255, 255, 255, 0.7);
 }
-#root #app-sidebar {
+#app-sidebar {
   -webkit-app-region: no-drag;
   position: relative;
   border-radius: inherit;
-  width: 20%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: 0.3s;
+  /* transition: 0.3s; */
+  margin-right: 30px;
 }
 
-#root #app-sidebar.toggled-sidebar {
-  width: 3%;
-}
-#root #app-sidebar.toggled-sidebar #tabs {
+#app-sidebar.toggled-sidebar #tabs {
   display: none;
 }
-#root #app-sidebar #controllers {
+#app-sidebar #controllers {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
 }
-#root #app-sidebar.toggled-sidebar #controllers {
+#app-sidebar.toggled-sidebar #controllers {
   flex-direction: column;
   justify-content: flex-start;
 }
-#root #app-sidebar #controllers #window-controllers {
+#app-sidebar #controllers #window-controllers {
   display: flex;
   align-items: center;
 }
 
-#root #app-sidebar.toggled-sidebar #window-controllers {
+#app-sidebar.toggled-sidebar #window-controllers {
   flex-direction: column;
 }
 
-#root #app-sidebar #controllers #toggle-btn {
+#app-sidebar #controllers #toggle-btn {
   margin: 0 10px;
   display: flex;
   align-items: center;
   cursor: pointer;
 }
-#root #app-sidebar.toggled-sidebar #toggle-btn {
+#app-sidebar.toggled-sidebar #toggle-btn {
   margin: 10px 0 !important;
 }
 
-#root #app-sidebar #navigation-controllers {
+#app-sidebar #navigation-controllers {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 42%;
   transition: 0.3s;
 }
-#root #app-sidebar.toggled-sidebar #navigation-controllers {
+#app-sidebar.toggled-sidebar #navigation-controllers {
   flex-direction: column;
   width: 100%;
 }
-#root #app-sidebar #navigation-controllers button {
+#app-sidebar #navigation-controllers button {
   font-size: 16px;
   color: rgba(51, 51, 51, 0.67);
   cursor: pointer;
   transition: 0.3s;
 }
+
 #menu-button {
   margin: 0 5px;
   color: rgba(51, 51, 51, 0.67);
@@ -159,7 +142,6 @@ webview {
   width: 225px;
   border-radius: 7px;
   background-color: #fff;
-  padding: 20px 0;
   position: absolute;
   top: 30px;
   left: 0;
@@ -169,6 +151,15 @@ webview {
   z-index: 100000;
 }
 #menu .menu-item button {
+  width:100%;
+  display: flex;
+  align-items: center;
+  padding: 14px 25px;
+  cursor: pointer;
+  color: #485261;
+  font-size: 16px;
+}
+#menu .menu-item a {
   display: flex;
   align-items: center;
   padding: 14px 25px;
@@ -177,6 +168,9 @@ webview {
   font-size: 16px;
 }
 #menu .menu-item button span {
+  margin-left: 10px;
+}
+#menu .menu-item a span {
   margin-left: 10px;
 }
 
@@ -286,7 +280,7 @@ input {
   height: 35px;
   -webkit-app-region: no-drag;
   border-radius: 4px;
-  animation: slide-up 0.1s;
+  /* animation: slide-up 0.1s; */
 }
 .tab img {
   width: 18px;
@@ -312,14 +306,14 @@ input {
   background-color: rgba(255, 255, 255, 0.295);
 }
 #webviews-container {
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
   border-radius: 7px;
   width: 78%;
   height: 100%;
   overflow: hidden;
   -webkit-app-region: no-drag;
-  transition: 0.3s;
-  background-color: white;
+  /* transition: 0.3s; */
+  /* background-color: white; */
   position: relative;
 }
 #webviews-container.toggled-container {
@@ -366,8 +360,8 @@ input {
   align-items: center;
   flex-direction: column;
   box-shadow: 0 0 10px -5px #000;
-  right: 10px;
-  top: 10px;
+  left: 10px;
+  top: 30px;
   width: 250px;
   z-index: 10000;
 }

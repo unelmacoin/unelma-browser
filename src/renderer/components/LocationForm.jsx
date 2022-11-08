@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { GO_TO_LOCATION, mergeChannel } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { UPDATE_ACTIVE_TAB } from "../../constants/renderer/actions";
 import { handleSearch } from "../utils/handleSearch";
@@ -16,6 +17,10 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
       payload: { tab: { url: handleSearch(location) } },
     });
     setLocation(handleSearch(location));
+    window.api.send(
+      mergeChannel(GO_TO_LOCATION, window.id),
+      handleSearch(location)
+    );
   };
   useEffect(() => {
     setLocation(activeTabURL || UNELMA_DEFAULT_URL);

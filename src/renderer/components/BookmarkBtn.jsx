@@ -19,7 +19,6 @@ const BookmarkBtn = ({ tabs, bookmarks, bookmarksDispatcher }) => {
             id: uniqid(),
             time: new Date(Date.now()),
           },
-          type: activeTab.type,
         },
       });
     } else {

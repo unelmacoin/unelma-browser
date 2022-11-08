@@ -1,17 +1,15 @@
 const contextMenu = require("electron-context-menu");
-const { createWindow } = require("./window");
-module.exports = {
-  addContextMenu: (contents) =>
+export class ContextMenu {
+  constructor(contents, addWindow) {
     contextMenu({
       window: contents,
       showInspectElement: true,
       prepend: () => [
         {
           label: "New window",
-          click: () => {
-            createWindow();
-          },
+          click: () => addWindow(),
         },
       ],
-    }),
-};
+    });
+  }
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { settingsSidebarMenuItems } from "../../../constants/renderer/menus";
+import BackwardBtn from "../BackwardBtn/BackwardBtn.jsx";
 import "./settingsSidebar.css";
 
 const SettingsSidebar = () => {
@@ -20,6 +21,7 @@ const SettingsSidebar = () => {
     ));
   return (
     <div id="settingsSidebar">
+      <BackwardBtn/>
       <ul>{renderItems()}</ul>
     </div>
   );

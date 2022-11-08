@@ -1,49 +1,26 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const {
+  RECIEVE_CHANNELS,
+  GET_LOGIN_INFO,
+  LOGIN_INFO,
+  SEND_CHANNELS,
+  REQUEST_START,
+} = require("./constants/global/channels");
 
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data) => {
-    let validChannels = [
-      "create-window",
-      "reset-all-tabs",
-      "maximize",
-      "unmaximize",
-      "minimize",
-      "close-window",
-      "add-bookmark",
-      "remove-from-bookmarks",
-      "add-auth-info",
-      "remove-from-auth-info",
-      "add-history",
-      "remove-from-search-histroy",
-      "reset-window-tabs",
-      "add-tab",
-      "remove-tab",
-      "update-tab",
-      "activate-tab",
-      "update-active-tab",
-    ];
-    if (validChannels.includes(channel)) {
+    if (SEND_CHANNELS.find((c) => channel.includes(c))) {
       ipcRenderer.send(channel, data);
     }
   },
   receive: (channel, func) => {
-    let validChannels = [
-      "window-ready",
-      "get-current-tabs",
-      "get-search-history",
-      "get-bookmarks",
-      "get-auth-info",
-      "is-maximized",
-      "get-windows-number",
-    ];
-    if (validChannels.find((c) => channel.includes(c))) {
+    if (RECIEVE_CHANNELS.find((c) => channel.includes(c))) {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
-  dirname: () => __dirname,
 });
-window.addEventListener("DOMContentLoaded", () => {
-  const commonInputnames = ["login", "user", "email"];
+window.addEventListener("load", () => {
+  const commonInputnames = ["user", "email", "login", "phone"];
   const commoninputPass = ["pas", "pass", "password"];
   const recognizeInputFieldByKeywords = (keywords) => (inputField) => {
     const attrValues = inputField
@@ -61,27 +38,35 @@ window.addEventListener("DOMContentLoaded", () => {
     inputs.find((input) =>
       recognizeInputFieldByKeywords(commoninputPass)(input)
     );
-  ipcRenderer.on("ready", () => {
-    const submitListener = () => {
-      const inputs = [...document.querySelectorAll("input")];
-      const username = getUsername(inputs)?.value;
-      const password = getPassword(inputs)?.value;
-      localStorage.setItem("username", username);
-      localStorage.setItem("password", password);
-      if (password) {
-        ipcRenderer.sendToHost("get-login-info", {
-          password,
-          username,
-          site: window.location.href,
-        });
-      }
-    };
 
-    ipcRenderer.on("login-info", (_, info) => {
-      document.querySelector('input[type="password"]').value = info.password;
-      getUsername([...document.querySelectorAll("input")]).value =
-        info.username;
-    });
-    document.body.addEventListener("submit", submitListener);
+  const submitListener = (_, site) => {
+    const inputs = [...document.querySelectorAll("input")];
+    const username = getUsername(inputs)?.value;
+    const password = getPassword(inputs)?.value;
+    if (password) {
+      ipcRenderer.send(GET_LOGIN_INFO, {
+        password,
+        username,
+        site,
+      });
+    }
+  };
+
+  ipcRenderer.on(LOGIN_INFO, (_, info) => {
+    const passwordInput = getPassword([...document.querySelectorAll("input")]);
+    const usernameInput = getUsername([...document.querySelectorAll("input")]);
+    if (passwordInput && usernameInput) {
+      passwordInput.value = info.password;
+      usernameInput.value = info.username;
+      ["input", "click", "change", "blur"].forEach((event) => {
+        const changeEvent = new Event(event, {
+          bubbles: true,
+          cancelable: true,
+        });
+        passwordInput.dispatchEvent(changeEvent);
+        usernameInput.dispatchEvent(changeEvent);
+      });
+    }
   });
+  ipcRenderer.on(REQUEST_START, submitListener);
 });

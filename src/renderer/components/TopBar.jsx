@@ -2,26 +2,27 @@ import React, { useEffect, useState } from "react";
 import { MdOutlineMinimize } from "react-icons/md";
 import { FiMinimize2, FiMaximize2 } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
+import { CLOSE_WINDOW, IS_MAXIMIZED, MAXIMIZE, MINIMIZE, UN_MAXIMIZE } from "../../constants/global/channels";
 
 const TopBar = () => {
   const [maximize, setMaximize] = useState(true);
   const handleMaximize = () => {
-    window.api.send("maximize", window.id);
+    window.api.send(MAXIMIZE, window.id);
      setMaximize(true);
   };
   const handleUnMaximize = () => {
-    window.api.send("unmaximize", window.id);
+    window.api.send(UN_MAXIMIZE, window.id);
      setMaximize(false);
   };
   const handleMinimize = () => {
-    window.api.send("minimize", window.id);
+    window.api.send(MINIMIZE, window.id);
    
   };
   const handleClose = () => {
-    window.api.send("close-window", window.id);
+    window.api.send(CLOSE_WINDOW, window.id);
   };
   useEffect(() => {
-    window.api.receive("is-maximized", (_, isMaximized) => {
+    window.api.receive(IS_MAXIMIZED, (_, isMaximized) => {
       setMaximize(isMaximized);
     });
   }, [maximize]);

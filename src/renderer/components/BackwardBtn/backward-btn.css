@@ -1,0 +1,10 @@
+.backward-btn {
+  top: 20px;
+  left:  20px;
+  position: fixed;
+   -webkit-app-region: no-drag;
+   z-index: 1000000;
+}
+.backward-btn a{
+  color: #333;
+}

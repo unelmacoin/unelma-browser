@@ -1,34 +1,28 @@
 import React from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { IoMdRefresh } from "react-icons/io";
+import { GO_BACK, GO_FORWARD, mergeChannel, RELOAD } from "../../constants/global/channels";
 const navigationControls = () => {
   return [
     {
       id: "navigation-controls-back",
       icon: <FiChevronLeft fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        if (currentView?.canGoBack()) {
-          currentView?.goBack();
-        }
+        window.api.send(mergeChannel(GO_BACK, window.id));
       },
     },
     {
       id: "navigation-controls-forward",
       icon: <FiChevronRight fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        if (currentView?.canGoForward()) {
-          currentView?.goForward();
-        }
+         window.api.send(mergeChannel(GO_FORWARD, window.id));
       },
     },
     {
       id: "navigation-controls-reload",
       icon: <IoMdRefresh fontSize="20" />,
       click: () => {
-        const currentView = document.querySelector(".active-webview");
-        currentView?.reload();
+        window.api.send(mergeChannel(RELOAD, window.id));
       },
     },
   ];

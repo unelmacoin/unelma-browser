@@ -1,8 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import SavePasswordDialog from "./components/SavePasswordDialog.jsx";
-import Sidebar from "./components/Sidebar.jsx";
-import TopBar from "./components/TopBar.jsx";
-import Webview from "./components/Webview.jsx";
+import { HashRouter as Router, Route } from "react-router-dom";
 import tabReducer from "./reducers/tabReducer";
 import {
   SET_BOOKMARKS,
@@ -10,13 +7,24 @@ import {
   SET_SEARCH_HISTORY,
   SET_TABS,
 } from "../constants/renderer/actions";
-import Bookmarks from "./views/Bookmarks.jsx";
-import History from "./views/History.jsx";
-import Settings from "./views/Settings/Settings.jsx";
 import passwordsReducer from "./reducers/passwordsReducer.js";
 import bookmarksReducer from "./reducers/bookmarksReducer.js";
 import searchHistoryReducer from "./reducers/searchHistoryReducer.js";
 import { defaultTab } from "./utils/tabs.js";
+import Home from "./views/Home/Home.jsx";
+import Bookmarks from "./views/Bookmarks.jsx";
+import History from "./views/History.jsx";
+import Settings from "./views/Settings/Settings.jsx";
+import {
+  GET_AUTH_INFO,
+  GET_BOOKMARKS,
+  GET_CURRENT_TABS,
+  GET_LOGIN_INFO,
+  GET_SEARCH_HISTORY,
+  mergeChannel,
+  OPEN_SIDEBAR,
+  WINDOW_READY,
+} from "../constants/global/channels";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -29,9 +37,9 @@ const App = () => {
   const [passwords, passwordsDispatch] = useReducer(passwordsReducer, []);
   const [loginDialogInfo, setLoginDialogInfo] = useState();
   useEffect(() => {
-    window.api.receive("window-ready", (id) => {
+    window.api.receive(WINDOW_READY, (id) => {
       window.id = id;
-      window.api.receive("get-current-tabs", (tabs) => {
+      window.api.receive(mergeChannel(GET_CURRENT_TABS, id), (tabs) => {
         tabsDispatch({
           type: SET_TABS,
           payload: {
@@ -39,8 +47,7 @@ const App = () => {
           },
         });
       });
-
-      window.api.receive("get-search-history", (searchHistoryVal) => {
+      window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
           type: SET_SEARCH_HISTORY,
           payload: {
@@ -48,7 +55,10 @@ const App = () => {
           },
         });
       });
-      window.api.receive("get-bookmarks", (bookmarks) => {
+      window.api.receive(mergeChannel(GET_LOGIN_INFO, id), (info) => {
+        setLoginDialogInfo(info);
+      });
+      window.api.receive(GET_BOOKMARKS, (bookmarks) => {
         bookmarksDispatcher({
           type: SET_BOOKMARKS,
           payload: {
@@ -56,7 +66,7 @@ const App = () => {
           },
         });
       });
-      window.api.receive("get-auth-info", (info) => {
+      window.api.receive(GET_AUTH_INFO, (info) => {
         passwordsDispatch({
           type: SET_PASSWORDS,
           payload: {
@@ -64,92 +74,51 @@ const App = () => {
           },
         });
       });
+
       window.addEventListener("resize", function () {
         document.getElementById("root").style.height =
           window.innerHeight + "px";
       });
     });
-    if (
-      passwords.find(
-        (info) =>
-          info.password === loginDialogInfo?.password &&
-          info.username === loginDialogInfo?.username &&
-          info.site === loginDialogInfo?.site
-      )
-    )
-      setLoginDialogInfo(null);
-  }, [loginDialogInfo]);
-  const renderTabs = () =>
-    tabs.map(({ id, url, active, type }) =>
-      type === "webview" ? (
-        <Webview
-          key={id}
-          url={url}
-          id={id}
-          passwords={passwords}
-          active={active}
-          tabsDispatch={tabsDispatch}
-          setLoginDialogInfo={setLoginDialogInfo}
-          searchHistoryDispatcher={searchHistoryDispatcher}
-        />
-      ) : type === "bookmarks" ? (
-        <Bookmarks
-          key={id}
-          active={active}
-          tabsDispatch={tabsDispatch}
-          bookmarks={bookmarks}
-          bookmarksDispatcher={bookmarksDispatcher}
-        />
-      ) : type === "history" ? (
-        <History
-          key={id}
-          active={active}
-          tabsDispatch={tabsDispatch}
-          searchHistory={searchHistory}
-          searchHistoryDispatcher={searchHistoryDispatcher}
-        />
-      ) : (
-        <Settings
-          key={id}
-          passwords={passwords}
-          passwordsDispatch={passwordsDispatch}
-          active={active}
-        />
-      )
-    );
-  const renderSavePasswordDialog = () =>
-    loginDialogInfo &&
-    !passwords.find(
-      (info) =>
-        info.password === loginDialogInfo.password &&
-        info.username === loginDialogInfo.username &&
-        info.site === loginDialogInfo.site
-    ) && (
-      <SavePasswordDialog
-        info={loginDialogInfo}
-        setLoginDialogInfo={setLoginDialogInfo}
-        passwordsDispatch={passwordsDispatch}
-      />
-    );
+  }, [openSidebar]);
 
   return (
-    <div id="root" style={{ height: `${window.window.innerHeight}px` }}>
-      <Sidebar
-        tabs={tabs}
-        tabsDispatch={tabsDispatch}
-        openSidebar={openSidebar}
-        setOpenSidebar={setOpenSidebar}
-        bookmarksDispatcher={bookmarksDispatcher}
-        bookmarks={bookmarks}
-      />
-      <div
-        id="webviews-container"
-        className={`${!openSidebar && "toggled-container"}`}
-      >
-        {renderSavePasswordDialog()}
-        {renderTabs()}
-      </div>
-      <TopBar />
+    <div>
+      <Router>
+        <Route exact path="/">
+          <Home
+            loginDialogInfo={loginDialogInfo}
+            setLoginDialogInfo={setLoginDialogInfo}
+            tabsDispatch={tabsDispatch}
+            bookmarksDispatcher={bookmarksDispatcher}
+            openSidebar={openSidebar}
+            setOpenSidebar={setOpenSidebar}
+            bookmarks={bookmarks}
+            tabs={tabs}
+            searchHistory={searchHistory}
+          ></Home>
+        </Route>
+        <Route exact path="/settings">
+          <Settings
+            passwords={passwords}
+            passwordsDispatch={passwordsDispatch}
+          />
+        </Route>
+        <Route exact path="/history">
+          <History
+            tabsDispatch={tabsDispatch}
+            searchHistory={searchHistory}
+            searchHistoryDispatcher={searchHistoryDispatcher}
+          />
+        </Route>
+        <Route exact path="/bookmarks">
+          <Bookmarks
+            tabsDispatch={tabsDispatch}
+            bookmarks={bookmarks}
+            bookmarksDispatcher={bookmarksDispatcher}
+          />
+        </Route>
+      </Router>
     </div>
   );
 };

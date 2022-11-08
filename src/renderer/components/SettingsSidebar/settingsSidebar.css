@@ -1,8 +1,9 @@
 #settingsSidebar {
   width: 22%;
   height: 100%;
-  padding: 15px;
+  padding:15px;
   overflow-y: scroll;
+  position: relative;
 }
 #settingsSidebar ul {
   width: 100%;

@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from "react";
 import BookmarkBtn from "./BookmarkBtn.jsx";
 import LocationForm from "./LocationForm.jsx";
 import Menu from "./Menu.jsx";
 import MenuButton from "./MenuButton.jsx";
 import NavigationControls from "./NavigationControls.jsx";
+import SavePasswordDialog from "./SavePasswordDialog.jsx";
 import TabsList from "./TabsList.jsx";
 import WindowControllers from "./WindowControllers.jsx";
 
@@ -14,15 +15,44 @@ const Sidebar = ({
   setOpenSidebar,
   bookmarksDispatcher,
   bookmarks,
+  loginDialogInfo,
+  setLoginDialogInfo,
 }) => {
   const [menu, setMenu] = useState(false);
+  
+     const renderSavePasswordDialog = () =>
+       loginDialogInfo && (
+         <SavePasswordDialog
+           info={loginDialogInfo}
+           setLoginDialogInfo={setLoginDialogInfo}
+          
+         />
+       );
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      document.getElementById("app-sidebar").style.width = openSidebar
+        ? `${window.innerWidth * 0.2}px`
+        : `${window.innerWidth * 0.02}px`;
+    });
+  }, [openSidebar]);
   return (
-    <div id="app-sidebar" className={`${!openSidebar && "toggled-sidebar"}`}>
+    <div
+      id="app-sidebar"
+      className={`${!openSidebar && "toggled-sidebar"}`}
+      style={{
+        width: openSidebar
+          ? `${window.innerWidth * 0.2}px`
+          : `${window.innerWidth * 0.02}px`,
+      }}
+    >
+      {renderSavePasswordDialog()}
       <div id="controllers">
-        <MenuButton setMenu={setMenu} />
+        <MenuButton setMenu={setMenu} openSidebar={openSidebar} />
         <WindowControllers
           setOpenSidebar={setOpenSidebar}
           openSidebar={openSidebar}
+          setLoginDialogInfo={setLoginDialogInfo}
+          setMenu={setMenu}
         />
         <BookmarkBtn
           tabs={tabs}
@@ -43,4 +73,4 @@ const Sidebar = ({
   );
 };
 
-export default Sidebar
+export default Sidebar;

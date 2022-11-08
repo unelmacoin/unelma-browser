@@ -4,12 +4,19 @@ import { ADD_TAB, SET_TABS } from "../../constants/renderer/actions";
 import { defaultTab } from "../utils/tabs";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Tab from "./Tab.jsx";
+import {
+  ADD_VIEW,
+  mergeChannel,
+  RE_ORDER_VIEWS,
+} from "../../constants/global/channels";
 const TabsList = ({ tabs, tabsDispatch }) => {
   const handleAddTab = () => {
+    const newTab = defaultTab(window.id);
+    window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
     tabsDispatch({
       type: ADD_TAB,
       payload: {
-        tab: { ...defaultTab(window.id) },
+        tab: { ...newTab },
       },
     });
   };
@@ -26,9 +33,13 @@ const TabsList = ({ tabs, tabsDispatch }) => {
         tabs: items,
       },
     });
+    window.api.send(
+      mergeChannel(RE_ORDER_VIEWS, window.id),
+      items.map(({ id }) => id)
+    );
   }
   const renderTabs = () =>
-    tabs.map(({ id, active, title, url, type, loading }, index) => (
+    tabs.map(({ id, active, title, url, type, loading, fail }, index) => (
       <Draggable key={id} draggableId={`${id}`} index={index}>
         {(provided) => (
           <div
@@ -44,6 +55,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
               loading={loading}
               url={url}
               type={type}
+              fail={fail}
             />
           </div>
         )}
