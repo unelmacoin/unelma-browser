@@ -40,7 +40,6 @@ export class App {
             });
           else this.addWindow();
       });
-      
     });
 
     app.on("window-all-closed", function () {
@@ -71,6 +70,7 @@ export class App {
     ipcMain.on(CREATE_WINDOW, () => {
       this.addWindow();
     });
+   
   }
   addWindow(id) {
     const window = new MainWindow(id);

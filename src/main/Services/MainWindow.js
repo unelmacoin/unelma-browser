@@ -24,6 +24,7 @@ import {
   SHOW_VIEWS,
   TOGGLE_WINDOW,
   WINDOW_READY,
+  FINISH_NAVIGATE,
 } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { getBookmarks } from "../controllers/bookmarks";
@@ -32,8 +33,10 @@ import { addHistory, getSearchHistory } from "../controllers/searchHistory";
 import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
 import { handleWindowsControlsMessaging } from "../utils/ipc";
 import { View } from "./View";
+const fs = require("fs");
 const uniqid = require("uniqid");
 const path = require("path");
+import * as ABPFilterParser from "abp-filter-parser";
 export class MainWindow {
   window;
   views;
@@ -54,10 +57,11 @@ export class MainWindow {
       minHeight: 600,
       minWidth: 1000,
       webPreferences: {
-        nodeIntegration: false,
-        webviewTag: true,
+        nodeIntegration: true,
+
         devTools: true,
         contextIsolation: true,
+        nodeIntegrationInSubFrames: true,
         preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
       },
     });
@@ -76,7 +80,6 @@ export class MainWindow {
     ipcMain.on(
       mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
       (_, info) => {
-        
         addAuthInfo(info);
         this.contents.send(GET_AUTH_INFO, getAuthInfo());
       }
@@ -177,7 +180,40 @@ export class MainWindow {
       { urls: ["https://*/*"] },
       function (details) {
         if (details?.webContents?.getType() === "browserView") {
-          details?.webContents?.send(REQUEST_START, details?.webContents?.getURL());
+          details?.webContents?.send(
+            REQUEST_START,
+            details?.webContents?.getURL()
+          );
+        }
+      }
+    );
+    let easyListTxt = fs.readFileSync(
+      path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
+      "utf-8"
+    );
+    let parsedFilterData = {};
+
+    let currentPageDomain = "slashdot.org";
+    ABPFilterParser.parse(easyListTxt, parsedFilterData);
+    this.window.webContents.session.webRequest.onBeforeRequest(
+      { urls: ["https://*/*"] },
+      (details, callback) => {
+        let urlToCheck = details.url;
+        if (
+          ABPFilterParser.matches(parsedFilterData, urlToCheck, {
+            domain: currentPageDomain,
+            elementTypeMaskMap: ABPFilterParser.elementTypes.SCRIPT,
+          })
+        ) {
+          callback({ cancel: true });
+          if (details?.webContents?.getType() === "browserView") {
+            details?.webContents?.send("as", details?.webContents?.getURL());
+          }
+        } else {
+          if (details?.webContents?.getType() === "browserView") {
+            details?.webContents?.send("as", details?.webContents?.getURL());
+          }
+          callback({});
         }
       }
     );
@@ -188,28 +224,32 @@ export class MainWindow {
     this.views.push(view);
     this.window.addBrowserView(view.view);
     const finishLoading = (e) => {
+      view.contents.send(FINISH_NAVIGATE);
       const authInfo = getAuthInfo().find(
         (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
       );
       if (authInfo) {
         view.contents.send(LOGIN_INFO, authInfo);
       }
-       view.finishLoad();
-       this.sendTabs();
+      view.finishLoad();
+      this.sendTabs();
     };
     view.contents.addListener("did-start-loading", (e) => {
       view.startLoad();
       this.sendTabs();
+    });
+    view.contents.addListener("did-navigate", () => {
+      view.contents.send(FINISH_NAVIGATE);
     });
     view.contents.addListener("did-fail-load", () => {
       view.failLoad();
       this.sendTabs();
     });
     view.contents.addListener("did-stop-loading", (e) => {
-     finishLoading(e)
+      finishLoading(e);
     });
     view.contents.addListener("did-finish-load", (e) => {
-     finishLoading(e);
+      finishLoading(e);
       addHistory({
         id: uniqid(),
         url: e.sender.getURL(),

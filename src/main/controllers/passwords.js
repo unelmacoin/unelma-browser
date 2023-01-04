@@ -20,9 +20,8 @@ module.exports = {
         id: uniqid(),
       });
     }
-    
+  
     store.set("authh", authInfo);
-    console.log('authh',store.get("authh"))
   },
   removeFromAuthInfo: (id) => {
     let authInfo = store.get("authh") || [];

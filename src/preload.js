@@ -5,6 +5,7 @@ const {
   LOGIN_INFO,
   SEND_CHANNELS,
   REQUEST_START,
+  FINISH_NAVIGATE,
 } = require("./constants/global/channels");
 
 contextBridge.exposeInMainWorld("api", {
@@ -20,15 +21,16 @@ contextBridge.exposeInMainWorld("api", {
   },
 });
 window.addEventListener("load", () => {
-  const commonInputnames = ["user", "email", "login", "phone"];
-  const commoninputPass = ["pas", "pass", "password"];
-  const recognizeInputFieldByKeywords = (keywords) => (inputField) => {
+  const commonInputnames = /user|email|login|phone/;
+  const commoninputPass = /pas(s|sword)?/;
+  const commonAdsKeyWords =
+    /^(ad-)|^(ad_)|^(ads-)|^(ads_)|^(-ad-)|(_ad$)|(-ad$)|(_ads$)|(-ads$)|(\/ads\/)|(\/ad\/)/;
+  const youtubeAds = /ytp-ad-(btn|text)/;
+  const recognizeInputFieldByKeywords = (regex) => (inputField) => {
     const attrValues = inputField
       .getAttributeNames()
       .map((name) => inputField.getAttribute(name));
-    return attrValues.find((attrValue) =>
-      keywords.find((name) => attrValue.toLowerCase().includes(name))
-    );
+    return attrValues.find((attrValue) => regex.test(attrValue));
   };
   const getUsername = (inputs) =>
     inputs.find((input) =>
@@ -39,7 +41,15 @@ window.addEventListener("load", () => {
       recognizeInputFieldByKeywords(commoninputPass)(input)
     );
 
-  const submitListener = (_, site) => {
+  const getAdsBoxs = (boxs) =>
+    boxs.filter((box) => recognizeInputFieldByKeywords(commonAdsKeyWords)(box));
+
+  const onFinishNavigateOrFinishLoad = () => {
+    getAdsBoxs([...document.getElementsByTagName("*")]).forEach((ad) => {
+      ad.remove();
+    });
+  };
+  const onRequestStart = (_, site) => {
     const inputs = [...document.querySelectorAll("input")];
     const username = getUsername(inputs)?.value;
     const password = getPassword(inputs)?.value;
@@ -49,6 +59,25 @@ window.addEventListener("load", () => {
         username,
         site,
       });
+    }
+  };
+
+  const onBeforeRequest = () => {
+    getAdsBoxs([...document.getElementsByTagName("*")]).forEach((ad) => {
+      
+      ad.remove();
+    });
+    if (new URL(window.location.href).hostname === "www.youtube.com") {
+      const getAdElements = (boxs) =>
+        boxs.find((box) => recognizeInputFieldByKeywords(youtubeAds)(box));
+      if (getAdElements([...document.getElementsByTagName("*")])) {
+        window.document.body.style.border = "1px solid red";
+        if (document.querySelector("video")) {
+          document.querySelector("video").currentTime =
+            document.querySelector("video").duration;
+          document.querySelector(".ytp-ad-skip-button")?.click();
+        }
+      }
     }
   };
 
@@ -68,5 +97,7 @@ window.addEventListener("load", () => {
       });
     }
   });
-  ipcRenderer.on(REQUEST_START, submitListener);
+  ipcRenderer.on(REQUEST_START, onRequestStart);
+  ipcRenderer.on(FINISH_NAVIGATE, onFinishNavigateOrFinishLoad);
+  ipcRenderer.on("as", onBeforeRequest);
 });
