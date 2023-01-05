@@ -1,31 +1,33 @@
 const Store = require("electron-store");
 const store = new Store();
+
+const  OBJECT_NAME = 'browser-views'
 module.exports = {
   setTabs: (tabs, windowId) => {
-    let currentViews = store.get("views-v01") || {};
+    let currentViews = store.get(OBJECT_NAME) || {};
   
     if (tabs.length > 0) {
       currentViews[windowId] = tabs;
     } else delete currentViews[windowId];
-    store.set("views-v01", currentViews);
+    store.set(OBJECT_NAME, currentViews);
   },
   getWindowTabs: (windowId) => {
-     return store.get("views-v01")
-       ? store.get("views-v01")[windowId]
-         ? store.get("views-v01")[windowId]
+     return store.get(OBJECT_NAME)
+       ? store.get(OBJECT_NAME)[windowId]
+         ? store.get(OBJECT_NAME)[windowId]
          : []
        : [];
   },
   getTabsWindows: () => {
-    const tabs = store.get("views-v01") || {};
+    const tabs = store.get(OBJECT_NAME) || {};
     return Object.keys(tabs) || [];
   },
   resetWindowTabs: (windowId) => {
-    let tabs = store.get("views-v01") || {};
+    let tabs = store.get(OBJECT_NAME) || {};
     delete tabs[windowId];
-    store.set("views-v01", tabs);
+    store.set(OBJECT_NAME, tabs);
   },
   resetAllTabs: () => {
-    store.set("views-v01", {});
+    store.set(OBJECT_NAME, {});
   },
 };

@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld("api", {
 });
 window.addEventListener("load", () => {
   const commonInputnames = /user|email|login|phone/;
-  const commoninputPass = /pas(s|sword)?/;
+  const commoninputPass = /(pass-)|(-pass)|(password)/;
   const commonAdsKeyWords =
     /^(ad-)|^(ad_)|^(ads-)|^(ads_)|^(-ad-)|(_ad$)|(-ad$)|(_ads$)|(-ads$)|(\/ads\/)|(\/ad\/)/;
   const youtubeAds = /ytp-ad-(btn|text)/;
