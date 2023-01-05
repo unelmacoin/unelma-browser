@@ -371,10 +371,10 @@ export class MainWindow {
     if (!this.window.isDestroyed()) this.contents.send(channel, data);
   }
   sendTabs() {
-    setTabs(this.mapViews(), this.window.windowId);
+    setTabs(this.mapViews(), this.window?.windowId);
     this.send(
-      mergeChannel(GET_CURRENT_TABS, this.window.windowId),
-      getWindowTabs(this.window.windowId)
+      mergeChannel(GET_CURRENT_TABS, this.window?.windowId),
+      getWindowTabs(this.window?.windowId)
     );
   }
 
@@ -382,6 +382,6 @@ export class MainWindow {
     return this.window?.windowId;
   }
   get contents() {
-    return this.window.webContents;
+    return this.window?.webContents;
   }
 }

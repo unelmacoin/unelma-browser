@@ -54,27 +54,27 @@ export const handleProcessesMessaging = () => {
 
 export const handleWindowsControlsMessaging = (window) => {
   ipcMain.on(MINIMIZE, (_, id) => {
-    if (!window.isDestroyed() && window.windowId === id) {
-      window.minimize();
+    if (!window?.isDestroyed() && window?.windowId === id) {
+      window?.minimize();
     }
   });
   ipcMain.on(MAXIMIZE, (_, id) => {
-    if (!window.isDestroyed() && window.windowId === id) {
-      window.maximize();
+    if (!window?.isDestroyed() && window?.windowId === id) {
+      window?.maximize();
     }
   });
   ipcMain.on(CLOSE_WINDOW, (_, id) => {
     if (
-      !window.isDestroyed() &&
-      window.isClosable() &&
-      window.windowId === id
+      !window?.isDestroyed() &&
+      window?.isClosable() &&
+      window?.windowId === id
     ) {
-      window.close();
+      window?.close();
     }
   });
   ipcMain.on(UN_MAXIMIZE, (_, id) => {
-    if (!window.isDestroyed() && window.windowId === id) {
-      window.unmaximize();
+    if (!window?.isDestroyed() && window?.windowId === id) {
+      window?.unmaximize();
     }
   });
 };

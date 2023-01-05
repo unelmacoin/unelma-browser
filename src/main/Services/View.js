@@ -166,6 +166,6 @@ export class View {
     }
   }
   get contents() {
-    return this.view.webContents;
+    return this.view?.webContents;
   }
 }
