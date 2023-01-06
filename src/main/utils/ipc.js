@@ -1,21 +1,17 @@
 import { BrowserWindow, ipcMain } from "electron";
-import { CLOSE_WINDOW, MAXIMIZE, MINIMIZE, UN_MAXIMIZE } from "../../constants/global/channels";
 import {
-  addBookmark,
-  removeFromBookmarks,
-} from "../controllers/bookmarks";
-import {
-  addAuthInfo,
-  removeFromAuthInfo,
-} from "../controllers/passwords";
-import {
-  removeFromSearchHistroy,
-} from "../controllers/searchHistory";
+  CLOSE_WINDOW,
+  MAXIMIZE,
+  MINIMIZE,
+  UN_MAXIMIZE,
+} from "../../constants/global/channels";
+import { addBookmark, removeFromBookmarks } from "../controllers/bookmarks";
+import { addAuthInfo, removeFromAuthInfo } from "../controllers/passwords";
+import { removeFromSearchHistroy } from "../controllers/searchHistory";
 import {
   getTabsWindows,
   resetAllTabs,
   resetWindowTabs,
-
 } from "../controllers/tabs";
 
 export const handleProcessesMessaging = () => {
@@ -40,7 +36,7 @@ export const handleProcessesMessaging = () => {
 
   ipcMain.on("add-bookmark", (_, bookmark) => {
     addBookmark(bookmark);
-  }); 
+  });
   ipcMain.on("remove-from-bookmarks", (_, url) => {
     removeFromBookmarks(url);
   });
@@ -54,27 +50,35 @@ export const handleProcessesMessaging = () => {
 
 export const handleWindowsControlsMessaging = (window) => {
   ipcMain.on(MINIMIZE, (_, id) => {
-    if (!window?.isDestroyed() && window?.windowId === id) {
-      window?.minimize();
+    if (window) {
+      if (!window?.isDestroyed() && window?.windowId === id) {
+        window?.minimize();
+      }
     }
   });
   ipcMain.on(MAXIMIZE, (_, id) => {
-    if (!window?.isDestroyed() && window?.windowId === id) {
-      window?.maximize();
+    if (window) {
+      if (!window?.isDestroyed() && window?.windowId === id) {
+        window?.maximize();
+      }
     }
   });
   ipcMain.on(CLOSE_WINDOW, (_, id) => {
-    if (
-      !window?.isDestroyed() &&
-      window?.isClosable() &&
-      window?.windowId === id
-    ) {
-      window?.close();
+    if (window) {
+      if (
+        !window?.isDestroyed() &&
+        window?.isClosable() &&
+        window?.windowId === id
+      ) {
+        window?.close();
+      }
     }
   });
   ipcMain.on(UN_MAXIMIZE, (_, id) => {
-    if (!window?.isDestroyed() && window?.windowId === id) {
-      window?.unmaximize();
+    if (window) {
+      if (!window?.isDestroyed() && window?.windowId === id) {
+        window?.unmaximize();
+      }
     }
   });
 };
