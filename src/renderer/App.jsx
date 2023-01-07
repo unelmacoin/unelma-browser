@@ -22,7 +22,6 @@ import {
   GET_LOGIN_INFO,
   GET_SEARCH_HISTORY,
   mergeChannel,
-  OPEN_SIDEBAR,
   WINDOW_READY,
 } from "../constants/global/channels";
 
