@@ -1,6 +1,6 @@
 # Unelma Browser
 
-A simple Unelma.XYZ - browser based on Chromium open-source project that aims to build a safer, faster and more stable experience without sending any data to big corporate giants.
+A simple Unelmas.com - browser based on Chromium open-source project that aims to build a safer, faster and more stable experience without sending any data to big corporate giants.
 
 # Distribution
 
