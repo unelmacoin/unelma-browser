@@ -29,6 +29,7 @@ export const RELOAD = "RELOAD";
 export const SAVE_LOGIN_INFO = "SAVE_LOGIN_INFO";
 export const RE_ORDER_VIEWS = "RE_ORDER_VIEWS";
 export const REQUEST_START = "REQUEST_START";
+export const FINISH_NAVIGATE = "FINISH_NAVIGATE";
 
 export const WINDOW_READY = "WINDOW_READY";
 export const GET_CURRENT_TABS = "GET_CURRENT_TABS";

@@ -20,6 +20,7 @@ export class App {
   constructor() {
     this.windows = [];
     let addWindow = this.addWindow.bind(this);
+    let closeWindow = this.closeWindow.bind(this);
     app.on("web-contents-created", function (_, contents) {
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
@@ -29,18 +30,17 @@ export class App {
     app.whenReady().then(() => {
       if (getTabsWindows().length > 0)
         getTabsWindows().forEach((windowId) => {
-          this.addWindow(windowId);
+          addWindow(windowId);
         });
-      else this.addWindow();
+      else addWindow();
       app.on("activate", function () {
         if (BrowserWindow.getAllWindows().length === 0)
           if (getTabsWindows().length > 0)
             getTabsWindows().forEach((windowId) => {
-              this.addWindow(windowId);
+              addWindow(windowId);
             });
-          else this.addWindow();
+          else addWindow();
       });
-      
     });
 
     app.on("window-all-closed", function () {
@@ -48,7 +48,7 @@ export class App {
     });
 
     ipcMain.on(RESET_ALL_TABS, (_, windowId) => {
-      getTabsWindows().forEach((win) => this.closeWindow(win));
+      getTabsWindows().forEach((win) => closeWindow(win));
       resetAllTabs(windowId);
     });
 
@@ -69,8 +69,9 @@ export class App {
       removeFromAuthInfo(id);
     });
     ipcMain.on(CREATE_WINDOW, () => {
-      this.addWindow();
+      addWindow();
     });
+   
   }
   addWindow(id) {
     const window = new MainWindow(id);

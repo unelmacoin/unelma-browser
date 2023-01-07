@@ -14,7 +14,6 @@ import {
   IS_MAXIMIZED,
   LOGIN_INFO,
   mergeChannel,
-  OPEN_SIDEBAR,
   RELOAD,
   REMOVE_VIEW,
   REQUEST_START,
@@ -24,6 +23,7 @@ import {
   SHOW_VIEWS,
   TOGGLE_WINDOW,
   WINDOW_READY,
+  FINISH_NAVIGATE,
 } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { getBookmarks } from "../controllers/bookmarks";
@@ -32,8 +32,10 @@ import { addHistory, getSearchHistory } from "../controllers/searchHistory";
 import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
 import { handleWindowsControlsMessaging } from "../utils/ipc";
 import { View } from "./View";
+const fs = require("fs");
 const uniqid = require("uniqid");
 const path = require("path");
+import * as ABPFilterParser from "abp-filter-parser";
 export class MainWindow {
   window;
   views;
@@ -54,10 +56,11 @@ export class MainWindow {
       minHeight: 600,
       minWidth: 1000,
       webPreferences: {
-        nodeIntegration: false,
-        webviewTag: true,
+        nodeIntegration: true,
+
         devTools: true,
         contextIsolation: true,
+        nodeIntegrationInSubFrames: true,
         preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
       },
     });
@@ -65,122 +68,161 @@ export class MainWindow {
     this.window.loadURL(UNELMA_BROWSER_WEBPACK_ENTRY);
     handleWindowsControlsMessaging(this.window);
 
-    ipcMain.on(mergeChannel(ADD_VIEW, this.window.windowId), (_, tab) => {
-      this.addView({
-        url: tab.url,
-        parentWindow: this.window,
-        id: tab.id,
-        isToggled: this.isToggled,
-      });
-    });
-    ipcMain.on(
-      mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
-      (_, info) => {
-        
-        addAuthInfo(info);
-        this.contents.send(GET_AUTH_INFO, getAuthInfo());
-      }
-    );
-    ipcMain.on(
-      mergeChannel(RE_ORDER_VIEWS, this.window.windowId),
-      (_, tabs) => {
-        this.reOrderViews(tabs);
-      }
-    );
-    ipcMain.on(mergeChannel(RESET_WINDOW_TABS, this.window.windowId), () => {
-      resetWindowTabs(this.window.windowId);
-      this.close();
-    });
-    ipcMain.on(mergeChannel(GO_BACK, this.window.windowId), () => {
-      this.goBack();
-    });
-    ipcMain.on(mergeChannel(GO_FORWARD, this.window.windowId), () => {
-      this.goForward();
-    });
-    ipcMain.on(mergeChannel(RELOAD, this.window.windowId), () => {
-      this.reload();
-    });
-    ipcMain.on(mergeChannel(HIDE_VIEWS, this.window.windowId), () => {
-      this.hideAllViews();
-    });
-    ipcMain.on(mergeChannel(SHOW_VIEWS, this.window.windowId), () => {
-      this.showViews();
-    });
-    ipcMain.on(mergeChannel(ACTIVATE_VIEW, this.window.windowId), (_, id) => {
-      this.activeView(id);
-    });
-    ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
-      if (this.window.windowId === windowId) {
-        this.views.forEach((v) => v.fit(this.isToggled));
-        this.views.forEach((v) => !v.isActive && v.hide());
-        this.isToggled = !this.isToggled;
-      }
-    });
-    ipcMain.on(mergeChannel(GO_TO_LOCATION, this.window.windowId), (_, url) => {
-      this.goToLocation(url);
-    });
-    ipcMain.on(GET_LOGIN_INFO, (_, v) => {
-      const isExist = () =>
-        getAuthInfo().find(
-          ({ site, password, username }) =>
-            new URL(site).origin === new URL(v.site).origin &&
-            username === v.username &&
-            password === v.password
-        );
-      if (!isExist()) {
-        this.contents.send(
-          mergeChannel(GET_LOGIN_INFO, this.window.windowId),
-          v
-        );
-      }
-    });
-    ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
-      this.removeView(id);
-    });
-    this.contents.on("did-finish-load", () => {
-      this.window.addListener("resize", () => {
-        this.views.find((v) => v.isActive && !v.hidden)?.fit(!this.isToggled);
-      });
-      this.send(WINDOW_READY, this.window.windowId);
-      this.send(IS_MAXIMIZED, this.window.isMaximized());
-      this.sendTabs();
-      this.send(GET_SEARCH_HISTORY, getSearchHistory());
-      this.send(GET_BOOKMARKS, getBookmarks());
-      this.send(GET_AUTH_INFO, getAuthInfo());
-      this.window.on("closed", () => {
-        this.window = null;
-      });
-    });
-    this.window.setMenu(null);
-    this.window.maximize();
-    const windowTabs = getWindowTabs(this.window.windowId);
-    if (windowTabs.length === 0) {
-      this.addView({
-        url: UNELMA_DEFAULT_URL,
-        parentWindow: this.window,
-        isActive: true,
-        id: uniqid(),
-        isToggled: this.isToggled,
-      });
-    } else {
-      windowTabs.forEach((tab) => {
+    if (this.window) {
+      ipcMain.on(mergeChannel(ADD_VIEW, this.window.windowId), (_, tab) => {
         this.addView({
           url: tab.url,
           parentWindow: this.window,
-          isActive: tab.active,
           id: tab.id,
           isToggled: this.isToggled,
         });
       });
-    }
-    session.defaultSession.webRequest.onSendHeaders(
-      { urls: ["https://*/*"] },
-      function (details) {
-        if (details?.webContents?.getType() === "browserView") {
-          details?.webContents?.send(REQUEST_START, details?.webContents?.getURL());
+      ipcMain.on(
+        mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
+        (_, info) => {
+          addAuthInfo(info);
+          this.window.webContents.send(GET_AUTH_INFO, getAuthInfo());
         }
+      );
+      ipcMain.on(
+        mergeChannel(RE_ORDER_VIEWS, this.window.windowId),
+        (_, tabs) => {
+          this.reOrderViews(tabs);
+        }
+      );
+      ipcMain.on(mergeChannel(RESET_WINDOW_TABS, this.window.windowId), () => {
+        resetWindowTabs(this.window.windowId);
+        this.close();
+      });
+      ipcMain.on(mergeChannel(GO_BACK, this.window.windowId), () => {
+        this.goBack();
+      });
+      ipcMain.on(mergeChannel(GO_FORWARD, this.window.windowId), () => {
+        this.goForward();
+      });
+      ipcMain.on(mergeChannel(RELOAD, this.window.windowId), () => {
+        this.reload();
+      });
+      ipcMain.on(mergeChannel(HIDE_VIEWS, this.window.windowId), () => {
+        this.hideAllViews();
+      });
+      ipcMain.on(mergeChannel(SHOW_VIEWS, this.window.windowId), () => {
+        this.showViews();
+      });
+      ipcMain.on(mergeChannel(ACTIVATE_VIEW, this.window.windowId), (_, id) => {
+        this.activeView(id);
+      });
+      ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
+        if(this.window){
+          if (this.window.windowId === windowId) {
+            this.views.forEach((v) => v.fit(this.isToggled));
+            this.views.forEach((v) => !v.isActive && v.hide());
+            this.isToggled = !this.isToggled;
+          }
+        }
+      });
+      ipcMain.on(
+        mergeChannel(GO_TO_LOCATION, this.window.windowId),
+        (_, url) => {
+          this.goToLocation(url);
+        }
+      );
+      ipcMain.on(GET_LOGIN_INFO, (_, v) => {
+        const isExist = () =>
+          getAuthInfo().find(
+            ({ site, password, username }) =>
+              new URL(site).origin === new URL(v.site).origin &&
+              username === v.username &&
+              password === v.password
+          );
+        if (!isExist()) {
+          this.window.webContents.send(
+            mergeChannel(GET_LOGIN_INFO, this.window.windowId),
+            v
+          );
+        }
+      });
+      ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
+        this.removeView(id);
+      });
+      this.window.webContents.on("did-finish-load", () => {
+        this.window.addListener("resize", () => {
+          this.views.find((v) => v.isActive && !v.hidden)?.fit(!this.isToggled);
+        });
+        this.send(WINDOW_READY, this.window.windowId);
+        this.send(IS_MAXIMIZED, this.window.isMaximized());
+        this.sendTabs();
+        this.send(GET_SEARCH_HISTORY, getSearchHistory());
+        this.send(GET_BOOKMARKS, getBookmarks());
+        this.send(GET_AUTH_INFO, getAuthInfo());
+        this.window.on("closed", () => {
+          this.window = null;
+        });
+      });
+      this.window.setMenu(null);
+      this.window.maximize();
+      const windowTabs = getWindowTabs(this.window.windowId);
+      if (windowTabs.length === 0) {
+        this.addView({
+          url: UNELMA_DEFAULT_URL,
+          parentWindow: this.window,
+          isActive: true,
+          id: uniqid(),
+          isToggled: this.isToggled,
+        });
+      } else {
+        windowTabs.forEach((tab) => {
+          this.addView({
+            url: tab.url,
+            parentWindow: this.window,
+            isActive: tab.active,
+            id: tab.id,
+            isToggled: this.isToggled,
+          });
+        });
       }
-    );
+      session.defaultSession.webRequest.onSendHeaders(
+        { urls: ["https://*/*"] },
+        function (details) {
+          if (details?.webContents?.getType() === "browserView") {
+            details?.webContents?.send(
+              REQUEST_START,
+              details?.webContents?.getURL()
+            );
+          }
+        }
+      );
+      let easyListTxt = fs.readFileSync(
+        path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
+        "utf-8"
+      );
+      let parsedFilterData = {};
+
+      let currentPageDomain = "slashdot.org";
+      ABPFilterParser.parse(easyListTxt, parsedFilterData);
+      this.window.webContents.session.webRequest.onBeforeRequest(
+        { urls: ["https://*/*"] },
+        (details, callback) => {
+          let urlToCheck = details.url;
+          if (
+            ABPFilterParser.matches(parsedFilterData, urlToCheck, {
+              domain: currentPageDomain,
+              elementTypeMaskMap: ABPFilterParser.elementTypes.SCRIPT,
+            })
+          ) {
+            callback({ cancel: true });
+            if (details?.webContents?.getType() === "browserView") {
+              details?.webContents?.send("as", details?.webContents?.getURL());
+            }
+          } else {
+            if (details?.webContents?.getType() === "browserView") {
+              details?.webContents?.send("as", details?.webContents?.getURL());
+            }
+            callback({});
+          }
+        }
+      );
+    }
   }
   addView(props) {
     this.views.forEach((v) => v.deActive());
@@ -188,28 +230,32 @@ export class MainWindow {
     this.views.push(view);
     this.window.addBrowserView(view.view);
     const finishLoading = (e) => {
+      view.contents.send(FINISH_NAVIGATE);
       const authInfo = getAuthInfo().find(
         (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
       );
       if (authInfo) {
         view.contents.send(LOGIN_INFO, authInfo);
       }
-       view.finishLoad();
-       this.sendTabs();
+      view.finishLoad();
+      this.sendTabs();
     };
     view.contents.addListener("did-start-loading", (e) => {
       view.startLoad();
       this.sendTabs();
+    });
+    view.contents.addListener("did-navigate", () => {
+      view.contents.send(FINISH_NAVIGATE);
     });
     view.contents.addListener("did-fail-load", () => {
       view.failLoad();
       this.sendTabs();
     });
     view.contents.addListener("did-stop-loading", (e) => {
-     finishLoading(e)
+      finishLoading(e);
     });
     view.contents.addListener("did-finish-load", (e) => {
-     finishLoading(e);
+      finishLoading(e);
       addHistory({
         id: uniqid(),
         url: e.sender.getURL(),
@@ -328,13 +374,13 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed()) this.contents.send(channel, data);
+    if (!this.window.isDestroyed()) this.window.webContents.send(channel, data);
   }
   sendTabs() {
-    setTabs(this.mapViews(), this.window.windowId);
+    setTabs(this.mapViews(), this.window?.windowId);
     this.send(
-      mergeChannel(GET_CURRENT_TABS, this.window.windowId),
-      getWindowTabs(this.window.windowId)
+      mergeChannel(GET_CURRENT_TABS, this.window?.windowId),
+      getWindowTabs(this.window?.windowId)
     );
   }
 
@@ -342,6 +388,6 @@ export class MainWindow {
     return this.window?.windowId;
   }
   get contents() {
-    return this.window.webContents;
+    return this.window?.webContents;
   }
 }

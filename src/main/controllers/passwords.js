@@ -3,16 +3,18 @@ const Store = require("electron-store");
 const uniqid = require("uniqid");
 const store = new Store();
 
+const OBJECT_NAME = 'password-autofill-v01'
 module.exports = {
   getAuthInfo: () => {
-    const authInfo = store.get("authh") || [];
+    const authInfo = store.get(OBJECT_NAME) || [];
     return authInfo.map((info) => ({
       ...info,
       password: decrypt(info.password),
     }));
   },
   addAuthInfo: (info) => {
-    let authInfo = store.get("authh") || [];
+    console.log('info', info)
+    let authInfo = store.get(OBJECT_NAME) || [];
     if (!authInfo.find(({ id }) => id === info.id)) {
       authInfo.push({
         ...info,
@@ -20,14 +22,13 @@ module.exports = {
         id: uniqid(),
       });
     }
-    
-    store.set("authh", authInfo);
-    console.log('authh',store.get("authh"))
+  
+    store.set(OBJECT_NAME, authInfo);
   },
   removeFromAuthInfo: (id) => {
-    let authInfo = store.get("authh") || [];
+    let authInfo = store.get(OBJECT_NAME) || [];
     store.set(
-      "authh",
+      OBJECT_NAME,
       authInfo.filter((item) => item.id !== id)
     );
   },

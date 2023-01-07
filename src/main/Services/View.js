@@ -20,35 +20,37 @@ export class View {
   y;
   hidden;
   constructor({ url, parentWindow, id, isActive, isToggled }) {
-    this.parentWindow = parentWindow;
-    this.id = id;
-    this.hidden = false;
-    this.loading = true;
-    this.fail = false;
-    this.url = url;
-    this.title = url;
-    this.isActive = isActive || true;
-    this.height =
-      this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
-    this.y = TOP_BAR_HEIGHT;
-    if (!isToggled) {
-      this.width =
-        Math.floor(this.parentWindow.getBounds().width * 0.8) -
-        PADDING * 2 -
-        SIDE_BAR_RIGHT_MARGIN;
-      this.x =
-        Math.floor(this.parentWindow.getBounds().width * 0.2) +
-        PADDING +
-        SIDE_BAR_RIGHT_MARGIN;
-    } else {
-      this.width =
-        Math.floor(this.parentWindow.getBounds().width * 0.98) -
-        PADDING * 2 -
-        SIDE_BAR_RIGHT_MARGIN;
-      this.x =
-        Math.floor(this.parentWindow.getBounds().width * 0.02) +
-        PADDING +
-        SIDE_BAR_RIGHT_MARGIN;
+    if (!parentWindow?.isDestroyed()) {
+      this.parentWindow = parentWindow;
+      this.id = id;
+      this.hidden = false;
+      this.loading = true;
+      this.fail = false;
+      this.url = url;
+      this.title = url;
+      this.isActive = isActive || true;
+      this.height =
+        this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
+      this.y = TOP_BAR_HEIGHT;
+      if (!isToggled) {
+        this.width =
+          Math.floor(this.parentWindow.getBounds().width * 0.8) -
+          PADDING * 2 -
+          SIDE_BAR_RIGHT_MARGIN;
+        this.x =
+          Math.floor(this.parentWindow.getBounds().width * 0.2) +
+          PADDING +
+          SIDE_BAR_RIGHT_MARGIN;
+      } else {
+        this.width =
+          Math.floor(this.parentWindow.getBounds().width * 0.98) -
+          PADDING * 2 -
+          SIDE_BAR_RIGHT_MARGIN;
+        this.x =
+          Math.floor(this.parentWindow.getBounds().width * 0.02) +
+          PADDING +
+          SIDE_BAR_RIGHT_MARGIN;
+      }
     }
     this.view = new BrowserView({
       webPreferences: {
@@ -68,33 +70,35 @@ export class View {
     });
   }
   fit(isToggled) {
-    if (isToggled) {
-      this.width =
-        Math.floor(this.parentWindow.getBounds().width * 0.8) -
-        PADDING * 2 -
-        SIDE_BAR_RIGHT_MARGIN;
-      this.x =
-        Math.floor(this.parentWindow.getBounds().width * 0.2) +
-        PADDING +
-        SIDE_BAR_RIGHT_MARGIN;
-    } else {
-      this.width =
-        Math.floor(this.parentWindow.getBounds().width * 0.98) -
-        PADDING * 2 -
-        SIDE_BAR_RIGHT_MARGIN;
-      this.x =
-        Math.floor(this.parentWindow.getBounds().width * 0.02) +
-        PADDING +
-        SIDE_BAR_RIGHT_MARGIN;
+    if (!this.parentWindow?.isDestroyed()) {
+      if (isToggled) {
+        this.width =
+          Math.floor(this.parentWindow.getBounds().width * 0.8) -
+          PADDING * 2 -
+          SIDE_BAR_RIGHT_MARGIN;
+        this.x =
+          Math.floor(this.parentWindow.getBounds().width * 0.2) +
+          PADDING +
+          SIDE_BAR_RIGHT_MARGIN;
+      } else {
+        this.width =
+          Math.floor(this.parentWindow.getBounds().width * 0.98) -
+          PADDING * 2 -
+          SIDE_BAR_RIGHT_MARGIN;
+        this.x =
+          Math.floor(this.parentWindow.getBounds().width * 0.02) +
+          PADDING +
+          SIDE_BAR_RIGHT_MARGIN;
+      }
+      this.height =
+        this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
+      this.view.setBounds({
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+      });
     }
-    this.height =
-      this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
-    this.view.setBounds({
-      x: this.x,
-      y: this.y,
-      width: this.width,
-      height: this.height,
-    });
   }
   active(isToggled) {
     this.isActive = true;
@@ -166,6 +170,6 @@ export class View {
     }
   }
   get contents() {
-    return this.view.webContents;
+    return this.view?.webContents;
   }
 }
