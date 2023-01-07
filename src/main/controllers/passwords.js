@@ -3,7 +3,7 @@ const Store = require("electron-store");
 const uniqid = require("uniqid");
 const store = new Store();
 
-const OBJECT_NAME = 'password-autofill'
+const OBJECT_NAME = 'password-autofill-v01'
 module.exports = {
   getAuthInfo: () => {
     const authInfo = store.get(OBJECT_NAME) || [];
@@ -13,6 +13,7 @@ module.exports = {
     }));
   },
   addAuthInfo: (info) => {
+    console.log('info', info)
     let authInfo = store.get(OBJECT_NAME) || [];
     if (!authInfo.find(({ id }) => id === info.id)) {
       authInfo.push({

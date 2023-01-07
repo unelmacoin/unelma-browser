@@ -113,10 +113,12 @@ export class MainWindow {
         this.activeView(id);
       });
       ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
-        if (this.window.windowId === windowId) {
-          this.views.forEach((v) => v.fit(this.isToggled));
-          this.views.forEach((v) => !v.isActive && v.hide());
-          this.isToggled = !this.isToggled;
+        if(this.window){
+          if (this.window.windowId === windowId) {
+            this.views.forEach((v) => v.fit(this.isToggled));
+            this.views.forEach((v) => !v.isActive && v.hide());
+            this.isToggled = !this.isToggled;
+          }
         }
       });
       ipcMain.on(
