@@ -35,7 +35,10 @@ import { View } from "./View";
 const fs = require("fs");
 const uniqid = require("uniqid");
 const path = require("path");
+const Store = require("electron-store");
 import * as ABPFilterParser from "abp-filter-parser";
+
+const store = new Store();
 export class MainWindow {
   window;
   views;
@@ -113,7 +116,7 @@ export class MainWindow {
         this.activeView(id);
       });
       ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
-        if(this.window){
+        if (this.window) {
           if (this.window.windowId === windowId) {
             this.views.forEach((v) => v.fit(this.isToggled));
             this.views.forEach((v) => !v.isActive && v.hide());
@@ -192,14 +195,11 @@ export class MainWindow {
           }
         }
       );
-      let easyListTxt = fs.readFileSync(
-        path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
-        "utf-8"
-      );
+
       let parsedFilterData = {};
 
       let currentPageDomain = "slashdot.org";
-      ABPFilterParser.parse(easyListTxt, parsedFilterData);
+      ABPFilterParser.parse(store.get("easylist"), parsedFilterData);
       this.window.webContents.session.webRequest.onBeforeRequest(
         { urls: ["https://*/*"] },
         (details, callback) => {

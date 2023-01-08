@@ -15,6 +15,10 @@ import {
   RESET_ALL_TABS,
 } from "../../constants/global/channels";
 
+const fs = require("fs");
+const path = require("path");
+const Store = require("electron-store");
+const store = new Store();
 export class App {
   windows;
   constructor() {
@@ -26,8 +30,13 @@ export class App {
         new ContextMenu(contents, addWindow);
       }
     });
-   
+
     app.whenReady().then(() => {
+      let easyListTxt = fs.readFileSync(
+        path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
+        "utf-8"
+      );
+      store.set("easylist", easyListTxt);
       if (getTabsWindows().length > 0)
         getTabsWindows().forEach((windowId) => {
           addWindow(windowId);
@@ -71,7 +80,6 @@ export class App {
     ipcMain.on(CREATE_WINDOW, () => {
       addWindow();
     });
-   
   }
   addWindow(id) {
     const window = new MainWindow(id);
