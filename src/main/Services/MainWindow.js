@@ -234,44 +234,47 @@ export class MainWindow {
     this.views.push(view);
     this.window.addBrowserView(view.view);
     const finishLoading = (e) => {
-      view.contents.send(FINISH_NAVIGATE);
-      const authInfo = getAuthInfo().find(
-        (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
-      );
+      const authInfo = getAuthInfo().find((v) => {
+        return e.sender?.getURL()
+          ? new URL(v.site).origin === new URL(e.sender?.getURL()).origin
+          : null;
+      });
       if (authInfo) {
-        view.contents.send(LOGIN_INFO, authInfo);
+        view?.contents?.send(LOGIN_INFO, authInfo);
       }
       view.finishLoad();
       this.sendTabs();
+      if (!e.sender?.getURL()) this.removeView(props.id);
+      view?.contents?.send(FINISH_NAVIGATE);
     };
-    view.contents.addListener("did-start-loading", (e) => {
+    view?.contents?.addListener("did-start-loading", (e) => {
       view.startLoad();
       this.sendTabs();
     });
-    view.contents.addListener("did-navigate", () => {
-      view.contents.send(FINISH_NAVIGATE);
+    view?.contents?.addListener("did-navigate", () => {
+      view?.contents?.send(FINISH_NAVIGATE);
     });
-    view.contents.addListener("did-fail-load", () => {
+    view?.contents?.addListener("did-fail-load", () => {
       view.failLoad();
       this.sendTabs();
     });
-    view.contents.addListener("did-stop-loading", (e) => {
+    view?.contents?.addListener("did-stop-loading", (e) => {
       finishLoading(e);
     });
-    view.contents.addListener("did-finish-load", (e) => {
+    view?.contents?.addListener("did-finish-load", (e) => {
       finishLoading(e);
       addHistory({
         id: uniqid(),
-        url: e.sender.getURL(),
+        url: e.sender?.getURL(),
         time: new Date(Date.now()),
       });
 
       this.send(GET_SEARCH_HISTORY, getSearchHistory());
     });
-    view.contents.addListener("did-frame-finish-load", (e) => {
+    view?.contents?.addListener("did-frame-finish-load", (e) => {
       finishLoading(e);
     });
-    view.contents.setWindowOpenHandler(({ url }) => {
+    view?.contents?.setWindowOpenHandler(({ url }) => {
       // this.send(OPEN_SIDEBAR);
       this.addView({
         url,

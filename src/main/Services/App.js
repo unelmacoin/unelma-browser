@@ -26,6 +26,7 @@ export class App {
     let addWindow = this.addWindow.bind(this);
     let closeWindow = this.closeWindow.bind(this);
     app.on("web-contents-created", function (_, contents) {
+      
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
       }
