@@ -1,7 +1,6 @@
 const CryptoJS = require("crypto-js");
 module.exports = {
   encrypt: (plainText) => {
-   // console.log('process.env.SECRET_KEY',process.env.SECRET_KEY, plainText)
     let encJson = CryptoJS.AES.encrypt(
       JSON.stringify(plainText||""),
       "process.env.SECRET_KEY"
