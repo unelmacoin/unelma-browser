@@ -84,7 +84,9 @@ export class MainWindow {
         mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
         (_, info) => {
           addAuthInfo(info);
-          this.window.webContents.send(GET_AUTH_INFO, getAuthInfo());
+          if (this.window) {
+            this.window.webContents.send(GET_AUTH_INFO, getAuthInfo());
+          }
         }
       );
       ipcMain.on(
@@ -139,10 +141,12 @@ export class MainWindow {
               password === v.password
           );
         if (!isExist()) {
-          this.window.webContents.send(
-            mergeChannel(GET_LOGIN_INFO, this.window.windowId),
-            v
-          );
+          if (this.window) {
+            this.window.webContents.send(
+              mergeChannel(GET_LOGIN_INFO, this.window.windowId),
+              v
+            );
+          }
         }
       });
       ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
@@ -374,7 +378,8 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed()) this.window.webContents.send(channel, data);
+    if (!this.window.isDestroyed())
+      if (this.window) this.window.webContents.send(channel, data);
   }
   sendTabs() {
     setTabs(this.mapViews(), this.window?.windowId);
