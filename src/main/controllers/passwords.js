@@ -13,7 +13,6 @@ module.exports = {
     }));
   },
   addAuthInfo: (info) => {
-    console.log('info', info)
     let authInfo = store.get(OBJECT_NAME) || [];
     if (!authInfo.find(({ id }) => id === info.id)) {
       authInfo.push({

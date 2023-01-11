@@ -35,7 +35,10 @@ import { View } from "./View";
 const fs = require("fs");
 const uniqid = require("uniqid");
 const path = require("path");
+const Store = require("electron-store");
 import * as ABPFilterParser from "abp-filter-parser";
+
+const store = new Store();
 export class MainWindow {
   window;
   views;
@@ -81,7 +84,9 @@ export class MainWindow {
         mergeChannel(SAVE_LOGIN_INFO, this.window.windowId),
         (_, info) => {
           addAuthInfo(info);
-          this.window.webContents.send(GET_AUTH_INFO, getAuthInfo());
+          if (this.window) {
+            this.window.webContents.send(GET_AUTH_INFO, getAuthInfo());
+          }
         }
       );
       ipcMain.on(
@@ -113,7 +118,7 @@ export class MainWindow {
         this.activeView(id);
       });
       ipcMain.on(TOGGLE_WINDOW, (_, windowId) => {
-        if(this.window){
+        if (this.window) {
           if (this.window.windowId === windowId) {
             this.views.forEach((v) => v.fit(this.isToggled));
             this.views.forEach((v) => !v.isActive && v.hide());
@@ -136,10 +141,12 @@ export class MainWindow {
               password === v.password
           );
         if (!isExist()) {
-          this.window.webContents.send(
-            mergeChannel(GET_LOGIN_INFO, this.window.windowId),
-            v
-          );
+          if (this.window) {
+            this.window.webContents.send(
+              mergeChannel(GET_LOGIN_INFO, this.window.windowId),
+              v
+            );
+          }
         }
       });
       ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
@@ -192,14 +199,11 @@ export class MainWindow {
           }
         }
       );
-      let easyListTxt = fs.readFileSync(
-        path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
-        "utf-8"
-      );
+
       let parsedFilterData = {};
 
       let currentPageDomain = "slashdot.org";
-      ABPFilterParser.parse(easyListTxt, parsedFilterData);
+      ABPFilterParser.parse(store.get("easylist"), parsedFilterData);
       this.window.webContents.session.webRequest.onBeforeRequest(
         { urls: ["https://*/*"] },
         (details, callback) => {
@@ -230,44 +234,47 @@ export class MainWindow {
     this.views.push(view);
     this.window.addBrowserView(view.view);
     const finishLoading = (e) => {
-      view.contents.send(FINISH_NAVIGATE);
-      const authInfo = getAuthInfo().find(
-        (v) => new URL(v.site).origin === new URL(e.sender.getURL()).origin
-      );
+      const authInfo = getAuthInfo().find((v) => {
+        return e.sender?.getURL()
+          ? new URL(v.site).origin === new URL(e.sender?.getURL()).origin
+          : null;
+      });
       if (authInfo) {
-        view.contents.send(LOGIN_INFO, authInfo);
+        view?.contents?.send(LOGIN_INFO, authInfo);
       }
       view.finishLoad();
       this.sendTabs();
+      if (!e.sender?.getURL()) this.removeView(props.id);
+      view?.contents?.send(FINISH_NAVIGATE);
     };
-    view.contents.addListener("did-start-loading", (e) => {
+    view?.contents?.addListener("did-start-loading", (e) => {
       view.startLoad();
       this.sendTabs();
     });
-    view.contents.addListener("did-navigate", () => {
-      view.contents.send(FINISH_NAVIGATE);
+    view?.contents?.addListener("did-navigate", () => {
+      view?.contents?.send(FINISH_NAVIGATE);
     });
-    view.contents.addListener("did-fail-load", () => {
+    view?.contents?.addListener("did-fail-load", () => {
       view.failLoad();
       this.sendTabs();
     });
-    view.contents.addListener("did-stop-loading", (e) => {
+    view?.contents?.addListener("did-stop-loading", (e) => {
       finishLoading(e);
     });
-    view.contents.addListener("did-finish-load", (e) => {
+    view?.contents?.addListener("did-finish-load", (e) => {
       finishLoading(e);
       addHistory({
         id: uniqid(),
-        url: e.sender.getURL(),
+        url: e.sender?.getURL(),
         time: new Date(Date.now()),
       });
 
       this.send(GET_SEARCH_HISTORY, getSearchHistory());
     });
-    view.contents.addListener("did-frame-finish-load", (e) => {
+    view?.contents?.addListener("did-frame-finish-load", (e) => {
       finishLoading(e);
     });
-    view.contents.setWindowOpenHandler(({ url }) => {
+    view?.contents?.setWindowOpenHandler(({ url }) => {
       // this.send(OPEN_SIDEBAR);
       this.addView({
         url,
@@ -374,7 +381,8 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed()) this.window.webContents.send(channel, data);
+    if (!this.window.isDestroyed())
+      if (this.window) this.window.webContents.send(channel, data);
   }
   sendTabs() {
     setTabs(this.mapViews(), this.window?.windowId);
