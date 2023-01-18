@@ -21,11 +21,7 @@ const TopBar = () => {
   const handleClose = () => {
     window.api.send(CLOSE_WINDOW, window.id);
   };
-  useEffect(() => {
-    window.api.receive(IS_MAXIMIZED, (_, isMaximized) => {
-      setMaximize(isMaximized);
-    });
-  }, [maximize]);
+  
   return (
     <div className="top-bar">
       <button id="window-controls-minimize" onClick={handleMinimize}>

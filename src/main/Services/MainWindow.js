@@ -292,26 +292,28 @@ export class MainWindow {
     this.sendTabs();
   }
   removeView(id) {
-    if (
-      this.views.length === 1 &&
-      !this.window.isDestroyed() &&
-      this.window.isClosable()
-    ) {
-      setTabs([], this.window.windowId);
-      this.close();
+    if(this.window){
+      if (
+        this.views.length === 1 &&
+        !this.window.isDestroyed() &&
+        this.window.isClosable()
+      ) {
+        setTabs([], this.window.windowId);
+        this.close();
+      }
+      const view = this.views.find((elm) => elm.id === id);
+      const newActiveView =
+        view && view.isActive
+          ? this.isFirst(id)
+            ? this.getNextView(id)
+            : this.getPrevView(id)
+          : null;
+      newActiveView?.active(!this.isToggled);
+      this.setViews(this.views.filter((elm) => elm.id !== id));
+      this.window?.removeBrowserView(view.view);
+      view.destroy();
+      this.sendTabs();
     }
-    const view = this.views.find((elm) => elm.id === id);
-    const newActiveView =
-      view && view.isActive
-        ? this.isFirst(id)
-          ? this.getNextView(id)
-          : this.getPrevView(id)
-        : null;
-    newActiveView?.active(!this.isToggled);
-    this.setViews(this.views.filter((elm) => elm.id !== id));
-    this.window?.removeBrowserView(view.view);
-    view.destroy();
-    this.sendTabs();
   }
   setViews(views) {
     this.views = views;
@@ -381,8 +383,9 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed())
-      if (this.window) this.window.webContents.send(channel, data);
+     if (this.window)
+       if (!this.window.isDestroyed())
+         this.window.webContents.send(channel, data);
   }
   sendTabs() {
     setTabs(this.mapViews(), this.window?.windowId);
