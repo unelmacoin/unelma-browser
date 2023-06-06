@@ -1,6 +1,6 @@
 # Unelma Browser
 
-A simple Unelmas.com - browser based on Chromium open-source project that aims to build a safer, faster and more stable experience without sending any data to big corporate giants.
+A simple Unelma Browser (UB) - browser based on Chromium open-source project that aims to build a safer, faster and more stable experience without sending any data to big corporate giants.
 
 **Caution**: Unelma Browser is currently under very active development. At this point, it is not advised to start developing or running your custom solution based on this project. Most likely, the project will evolve considerably. Please check the stable releases and send us any new features or bug reports.
 
