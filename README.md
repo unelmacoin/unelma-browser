@@ -1,3 +1,5 @@
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=unelmacoin_unelma-browser)
+
 # Unelma Browser
 
 A simple Unelma Browser (UB) - browser based on Chromium open-source project that aims to build a safer, faster and more stable experience without sending any data to big corporate giants.
