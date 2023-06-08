@@ -33,10 +33,9 @@ Apache License 2.0
 
 Please send private message if you would need help or want to ask for feature requests
 
-<br>Website: https://unelmacoin.io
+<br>Website: https://www.unelmaplatforms.com
+<br>Skype: https://join.skype.com/invite/AM8CYIelHTiG
 <br>Email: support(at)unelmacoin.com
 <br>Facebook: https://www.facebook.com/unelmaplatforms
-<br>Discord: https://discord.gg/dccbXPKGRH
 <br>Twitter: https://twitter.com/unelmaplatforms
 <br>Reddit: https://www.reddit.com/r/unelmacoin/
-<br>Telegram: https://t.me/unelmacoin
