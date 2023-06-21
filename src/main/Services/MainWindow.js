@@ -381,7 +381,7 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed())
+    if (this.window && !this.window.isDestroyed())
       if (this.window) this.window.webContents.send(channel, data);
   }
   sendTabs() {
