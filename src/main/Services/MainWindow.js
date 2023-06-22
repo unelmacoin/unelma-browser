@@ -230,7 +230,7 @@ export class MainWindow {
   }
   addView(props) {
     if(this.window) {
-      this.views.forEach((v) => v.deActive());
+      this.views.forEach((v) => v?.deActive());
       const view = new View(props);
       this.views.push(view);
       this.window.addBrowserView(view.view);
@@ -289,7 +289,7 @@ export class MainWindow {
     }
   }
   activeView(id) {
-    this.views.forEach((view) => view.deActive());
+    this.views.forEach((view) => view?.deActive());
     this.views.find((view) => view.id === id)?.active(!this.isToggled);
     this.sendTabs();
   }
@@ -312,7 +312,7 @@ export class MainWindow {
     newActiveView?.active(!this.isToggled);
     this.setViews(this.views.filter((elm) => elm.id !== id));
     this.window?.removeBrowserView(view.view);
-    view.destroy();
+    view?.destroy();
     this.sendTabs();
   }
   setViews(views) {
