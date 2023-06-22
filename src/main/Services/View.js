@@ -20,54 +20,56 @@ export class View {
   y;
   hidden;
   constructor({ url, parentWindow, id, isActive, isToggled }) {
-    if (!parentWindow?.isDestroyed()) {
-      this.parentWindow = parentWindow;
-      this.id = id;
-      this.hidden = false;
-      this.loading = true;
-      this.fail = false;
-      this.url = url;
-      this.title = url;
-      this.isActive = isActive || true;
-      this.height =
-        this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
-      this.y = TOP_BAR_HEIGHT;
-      if (!isToggled) {
-        this.width =
-          Math.floor(this.parentWindow.getBounds().width * 0.8) -
-          PADDING * 2 -
-          SIDE_BAR_RIGHT_MARGIN;
-        this.x =
-          Math.floor(this.parentWindow.getBounds().width * 0.2) +
-          PADDING +
-          SIDE_BAR_RIGHT_MARGIN;
-      } else {
-        this.width =
-          Math.floor(this.parentWindow.getBounds().width * 0.98) -
-          PADDING * 2 -
-          SIDE_BAR_RIGHT_MARGIN;
-        this.x =
-          Math.floor(this.parentWindow.getBounds().width * 0.02) +
-          PADDING +
-          SIDE_BAR_RIGHT_MARGIN;
+    if(parentWindow && parentWindow.getBounds()) {
+      if (!parentWindow?.isDestroyed()) {
+        this.parentWindow = parentWindow;
+        this.id = id;
+        this.hidden = false;
+        this.loading = true;
+        this.fail = false;
+        this.url = url;
+        this.title = url;
+        this.isActive = isActive || true;
+        this.height =
+          this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
+        this.y = TOP_BAR_HEIGHT;
+        if (!isToggled) {
+          this.width =
+            Math.floor(this.parentWindow.getBounds().width * 0.8) -
+            PADDING * 2 -
+            SIDE_BAR_RIGHT_MARGIN;
+          this.x =
+            Math.floor(this.parentWindow.getBounds().width * 0.2) +
+            PADDING +
+            SIDE_BAR_RIGHT_MARGIN;
+        } else {
+          this.width =
+            Math.floor(this.parentWindow.getBounds().width * 0.98) -
+            PADDING * 2 -
+            SIDE_BAR_RIGHT_MARGIN;
+          this.x =
+            Math.floor(this.parentWindow.getBounds().width * 0.02) +
+            PADDING +
+            SIDE_BAR_RIGHT_MARGIN;
+        }
       }
+      this.view = new BrowserView({
+        webPreferences: {
+          preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
+        },
+      });
+      this.view.setBackgroundColor("white");
+      this.view.setBounds({
+        x: this.x,
+        y: this.y,
+        width: this.width,
+        height: this.height,
+      });
+      this.loadURL(this.url);
+      this.contents.addListener("dom-ready", () => {
+        this.contents.send("ready");
+      });
     }
-    this.view = new BrowserView({
-      webPreferences: {
-        preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
-      },
-    });
-    this.view.setBackgroundColor("white");
-    this.view.setBounds({
-      x: this.x,
-      y: this.y,
-      width: this.width,
-      height: this.height,
-    });
-    this.loadURL(this.url);
-    this.contents.addListener("dom-ready", () => {
-      this.contents.send("ready");
-    });
   }
   fit(isToggled) {
     if (!this.parentWindow?.isDestroyed()) {
