@@ -295,6 +295,7 @@ export class MainWindow {
   }
   removeView(id) {
     if (
+      this.window &&
       this.views.length === 1 &&
       !this.window.isDestroyed() &&
       this.window.isClosable()
