@@ -362,7 +362,7 @@ export class MainWindow {
   }
   showViews() {
     const activeView = this.views.find((v) => v.isActive);
-    activeView.show();
+    activeView?.show();
   }
   mapView(props) {
     return {
