@@ -229,70 +229,73 @@ export class MainWindow {
     }
   }
   addView(props) {
-    this.views.forEach((v) => v.deActive());
-    const view = new View(props);
-    this.views.push(view);
-    this.window.addBrowserView(view.view);
-    const finishLoading = (e) => {
-      const authInfo = getAuthInfo().find((v) => {
-        return e.sender?.getURL()
-          ? new URL(v.site).origin === new URL(e.sender?.getURL()).origin
-          : null;
+    if(this.window) {
+      this.views.forEach((v) => v?.deActive());
+      const view = new View(props);
+      this.views.push(view);
+      this.window.addBrowserView(view.view);
+      const finishLoading = (e) => {
+        const authInfo = getAuthInfo().find((v) => {
+          return e.sender?.getURL()
+            ? new URL(v.site).origin === new URL(e.sender?.getURL()).origin
+            : null;
+        });
+        if (authInfo) {
+          view?.contents?.send(LOGIN_INFO, authInfo);
+        }
+        view.finishLoad();
+        this.sendTabs();
+        if (!e.sender?.getURL()) this.removeView(props.id);
+        view?.contents?.send(FINISH_NAVIGATE);
+      };
+      view?.contents?.addListener("did-start-loading", (e) => {
+        view.startLoad();
+        this.sendTabs();
       });
-      if (authInfo) {
-        view?.contents?.send(LOGIN_INFO, authInfo);
-      }
-      view.finishLoad();
-      this.sendTabs();
-      if (!e.sender?.getURL()) this.removeView(props.id);
-      view?.contents?.send(FINISH_NAVIGATE);
-    };
-    view?.contents?.addListener("did-start-loading", (e) => {
-      view.startLoad();
-      this.sendTabs();
-    });
-    view?.contents?.addListener("did-navigate", () => {
-      view?.contents?.send(FINISH_NAVIGATE);
-    });
-    view?.contents?.addListener("did-fail-load", () => {
-      view.failLoad();
-      this.sendTabs();
-    });
-    view?.contents?.addListener("did-stop-loading", (e) => {
-      finishLoading(e);
-    });
-    view?.contents?.addListener("did-finish-load", (e) => {
-      finishLoading(e);
-      addHistory({
-        id: uniqid(),
-        url: e.sender?.getURL(),
-        time: new Date(Date.now()),
+      view?.contents?.addListener("did-navigate", () => {
+        view?.contents?.send(FINISH_NAVIGATE);
       });
+      view?.contents?.addListener("did-fail-load", () => {
+        view.failLoad();
+        this.sendTabs();
+      });
+      view?.contents?.addListener("did-stop-loading", (e) => {
+        finishLoading(e);
+      });
+      view?.contents?.addListener("did-finish-load", (e) => {
+        finishLoading(e);
+        addHistory({
+          id: uniqid(),
+          url: e.sender?.getURL(),
+          time: new Date(Date.now()),
+        });
 
-      this.send(GET_SEARCH_HISTORY, getSearchHistory());
-    });
-    view?.contents?.addListener("did-frame-finish-load", (e) => {
-      finishLoading(e);
-    });
-    view?.contents?.setWindowOpenHandler(({ url }) => {
-      // this.send(OPEN_SIDEBAR);
-      this.addView({
-        url,
-        parentWindow: this.window,
-        id: uniqid(),
-        isToggled: this.isToggled,
+        this.send(GET_SEARCH_HISTORY, getSearchHistory());
       });
-      return { action: "deny" };
-    });
-    this.sendTabs();
+      view?.contents?.addListener("did-frame-finish-load", (e) => {
+        finishLoading(e);
+      });
+      view?.contents?.setWindowOpenHandler(({ url }) => {
+        // this.send(OPEN_SIDEBAR);
+        this.addView({
+          url,
+          parentWindow: this.window,
+          id: uniqid(),
+          isToggled: this.isToggled,
+        });
+        return { action: "deny" };
+      });
+      this.sendTabs();
+    }
   }
   activeView(id) {
-    this.views.forEach((view) => view.deActive());
-    this.views.find((view) => view.id === id).active(!this.isToggled);
+    this.views.forEach((view) => view?.deActive());
+    this.views.find((view) => view.id === id)?.active(!this.isToggled);
     this.sendTabs();
   }
   removeView(id) {
     if (
+      this.window &&
       this.views.length === 1 &&
       !this.window.isDestroyed() &&
       this.window.isClosable()
@@ -310,7 +313,7 @@ export class MainWindow {
     newActiveView?.active(!this.isToggled);
     this.setViews(this.views.filter((elm) => elm.id !== id));
     this.window?.removeBrowserView(view.view);
-    view.destroy();
+    view?.destroy();
     this.sendTabs();
   }
   setViews(views) {
@@ -359,7 +362,7 @@ export class MainWindow {
   }
   showViews() {
     const activeView = this.views.find((v) => v.isActive);
-    activeView.show();
+    activeView?.show();
   }
   mapView(props) {
     return {
@@ -381,7 +384,7 @@ export class MainWindow {
     if (this.window.isClosable()) this.window.close();
   }
   send(channel, data) {
-    if (!this.window.isDestroyed())
+    if (this.window && !this.window.isDestroyed())
       if (this.window) this.window.webContents.send(channel, data);
   }
   sendTabs() {
