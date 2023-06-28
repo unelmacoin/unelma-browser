@@ -3,13 +3,7 @@ import {
 } from "../../constants/renderer/actions.js";
 
 const tabReducer = (state, action) => {
-
-  switch (action.type) {
-    case SET_TABS: {
-      return action.payload.tabs;
-    }
-    default:
+  if (action.type === SET_TABS ) return action.payload.tabs;
       return state;
-  }
 };
 export default tabReducer;

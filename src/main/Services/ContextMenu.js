@@ -1,5 +1,5 @@
 const contextMenu = require("electron-context-menu");
-export class ContextMenu {
+ class ContextMenu {
   constructor(contents, addWindow) {
     contextMenu({
       window: contents,
@@ -13,3 +13,5 @@ export class ContextMenu {
     });
   }
 }
+
+module.exports = {ContextMenu}

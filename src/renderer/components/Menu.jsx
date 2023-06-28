@@ -1,17 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { mergeChannel } from "../../constants/global/channels";
+import { mergeChannel , CREATE_WINDOW,
+  HIDE_VIEWS,
+  RESET_ALL_TABS,
+  RESET_WINDOW_TABS, } from "../../constants/global/channels";
 import { BiHistory } from "react-icons/bi";
 import { BsWindowSidebar } from "react-icons/bs";
 import { IoBookmarksOutline, IoClose } from "react-icons/io5";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
-import {
-  CREATE_WINDOW,
-  HIDE_VIEWS,
-  RESET_ALL_TABS,
-  RESET_WINDOW_TABS,
-} from "../../constants/global/channels";
+
 const menuItems = () => [
   {
     label: "Bookmarks",
@@ -59,8 +57,8 @@ const menuItems = () => [
     },
   },
 ];
-const Menu = ({ menu, setMenu, tabsDispatch, tabs }) => {
-  const renderItems = menuItems(tabs, tabsDispatch).map(
+const Menu = ({ menu, setMenu}) => {
+  const renderItems = menuItems().map(
     ({ label, icon, action, path }) =>
       path ? (
         <li key={label} className="menu-item">

@@ -1,4 +1,3 @@
-import { UPDATE_ACTIVE_TAB } from "../../constants/renderer/actions";
 import uniqid from "uniqid";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 

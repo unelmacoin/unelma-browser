@@ -12,11 +12,7 @@ module.exports = {
     store.set(OBJECT_NAME, currentViews);
   },
   getWindowTabs: (windowId) => {
-     return store.get(OBJECT_NAME)
-       ? store.get(OBJECT_NAME)[windowId]
-         ? store.get(OBJECT_NAME)[windowId]
-         : []
-       : [];
+    return store.get(OBJECT_NAME) && store.get(OBJECT_NAME)[windowId] ? store.get(OBJECT_NAME)[windowId] : [];
   },
   getTabsWindows: () => {
     const tabs = store.get(OBJECT_NAME) || {};
