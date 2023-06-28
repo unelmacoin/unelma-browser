@@ -57,8 +57,8 @@ const menuItems = () => [
     },
   },
 ];
-const Menu = ({ menu, setMenu, tabsDispatch, tabs }) => {
-  const renderItems = menuItems(tabs, tabsDispatch).map(
+const Menu = ({ menu, setMenu}) => {
+  const renderItems = menuItems().map(
     ({ label, icon, action, path }) =>
       path ? (
         <li key={label} className="menu-item">
