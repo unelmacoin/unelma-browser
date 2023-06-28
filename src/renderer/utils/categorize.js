@@ -7,14 +7,16 @@ export function categorizeByDate(arr) {
     yesterday.setDate(today.getDate() - 1);
     const older = new Date(today);
     older.setDate(today.getDate() - 7);
-    const category =
-      date.getTime() > today.getTime()
-        ? `Today - ${date.toDateString()}`
-        : date.getTime() > yesterday.getTime()
-        ? `Yesterday - ${date.toDateString()}`
-        : date.getTime() > older.getTime()
-        ? `Last Week`
-        : `Older`;
+    let category;
+    if (date.getTime() > today.getTime()) {
+      category = `Today - ${date.toDateString()}`;
+    } else if (date.getTime() > yesterday.getTime()) {
+      category = `Yesterday - ${date.toDateString()}`;
+    } else if (date.getTime() > older.getTime()) {
+      category = `Last Week`;
+    } else {
+      category = `Older`;
+    }
     if (!acc[category]) {
       acc[category] = [];
     }
