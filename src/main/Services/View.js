@@ -20,7 +20,7 @@ export class View {
   y;
   hidden;
   constructor({ url, parentWindow, id, isActive, isToggled }) {
-    if(parentWindow && parentWindow.getBounds()) {
+    if(parentWindow?.getBounds()) {
       if (!parentWindow?.isDestroyed()) {
         this.parentWindow = parentWindow;
         this.id = id;
