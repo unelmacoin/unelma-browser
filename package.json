@@ -1,5 +1,5 @@
 {
-  "name": "Unelma-Browser",
+  "name": "@unelmaplatforms/unelma-browser",
   "version": "2.5.1",
   "description": "A simple and basic Unelma - Browser",
   "main": ".webpack/main",
