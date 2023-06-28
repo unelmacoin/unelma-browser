@@ -4,10 +4,12 @@ const isURL = (url) => {
   return urlRegex.test(url) || url.startsWith("file:///");
 };
 export const handleSearch = (value) => {
-  return value.startsWith("http") || value.startsWith("https")
-    ? value
-    : isURL(value)
-    ? `https://${value}`
-    : `https://www.google.com/search?q=${value.split(" ").join("+")}`;
+  if (value.startsWith("http") || value.startsWith("https")) {
+    return value;
+  } else if (isURL(value)) {
+    return `https://${value}`;
+  } else {
+    return `https://www.google.com/search?q=${value.split(" ").join("+")}`;
+  }
 };
 
