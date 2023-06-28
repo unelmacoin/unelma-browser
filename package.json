@@ -1,7 +1,7 @@
 {
   "name": "@unelmaplatforms/unelma-browser",
   "version": "2.5.1",
-  "description": "A simple and basic Unelma - Browser",
+  "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
