@@ -275,7 +275,6 @@ export class MainWindow {
       finishLoading(e);
     });
     view?.contents?.setWindowOpenHandler(({ url }) => {
-      // this.send(OPEN_SIDEBAR);
       this.addView({
         url,
         parentWindow: this.window,
