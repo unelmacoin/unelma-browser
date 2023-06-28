@@ -301,12 +301,19 @@ export class MainWindow {
       this.close();
     }
     const view = this.views.find((elm) => elm.id === id);
-    const newActiveView =
-      view && view.isActive
-        ? this.isFirst(id)
-          ? this.getNextView(id)
-          : this.getPrevView(id)
-        : null;
+    let  newActiveView; 
+    if(view && view.isActive){
+      if(this.isFirst(id)){
+newActiveView = this.getNextView(id)
+      }
+      else{
+newActiveView =this.getPrevView(id)
+      }
+    }
+    else 
+    {
+      newActiveView = null
+    }
     newActiveView?.active(!this.isToggled);
     this.setViews(this.views.filter((elm) => elm.id !== id));
     this.window?.removeBrowserView(view.view);
