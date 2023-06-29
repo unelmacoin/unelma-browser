@@ -10,6 +10,7 @@ import EmptyList from "../components/EmptyList/EmptyList.jsx";
 import { categorizeByDate } from "../utils/categorize";
 import BackwardBtn from "../components/BackwardBtn/BackwardBtn.jsx";
 import Layout from "../components/Layout/Layout.jsx";
+import { ADD_VIEW, mergeChannel } from "../../constants/global/channels";
 const History = ({  searchHistory, searchHistoryDispatcher }) => {
   const sortedKeys = Object.keys(categorizeByDate(searchHistory)).sort(
     (a, b) => {
