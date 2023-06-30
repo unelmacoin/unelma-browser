@@ -1,5 +1,5 @@
 {
-  "name": "@unelmaplatforms/unelma-browser",
+  "name": "Unelma_Browser",
   "version": "2.5.2",
   "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
@@ -34,8 +34,8 @@
   "author": "Unelma Platforms Inc.",
   "license": "Apache 2.0",
   "dependencies": {
-    "@cliqz/adblocker-electron": "^1.23.8",
-    "@cliqz/adblocker-electron-preload": "^1.23.8",
+    "@cliqz/adblocker-electron": "^1.26.6",
+    "@cliqz/adblocker-electron-preload": "^1.26.6",
     "abp-filter-parser": "^0.2.0"
   },
   "devDependencies": {
@@ -54,7 +54,7 @@
     "css-loader": "^6.7.1",
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.1",
-    "electron": "^v24.6.1",
+    "electron": "^19.0.0",
     "electron-builder": "^23.1.0",
     "electron-context-menu": "^3.3.0",
     "electron-notarize": "^1.2.1",
