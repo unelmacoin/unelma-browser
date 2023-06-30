@@ -1,6 +1,6 @@
 {
   "name": "@unelmaplatforms/unelma-browser",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
   "scripts": {
@@ -9,6 +9,11 @@
     "make": "electron-forge make",
     "dist": "electron-builder --win",
     "pack": "electron-builder -mwl"
+  },
+  "repository": "https://github.com/unelmacoin/unelma-browser",
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
   },
   "files": [
     "package.json",
@@ -49,13 +54,14 @@
     "css-loader": "^6.7.1",
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.1",
-    "electron": "^19.0.0",
+    "electron": "^v24.6.1",
     "electron-builder": "^23.1.0",
     "electron-context-menu": "^3.3.0",
     "electron-notarize": "^1.2.1",
     "electron-packager": "^15.5.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.0.2",
+    "electron-updater": "^6.1.1",
     "react": "^16.13.1",
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^16.13.1",
