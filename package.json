@@ -5,11 +5,11 @@
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-builder -p always",
+    "package": "electron-builder",
     "make": "electron-forge make",
     "dist": "electron-builder --win",
     "pack": "electron-builder -mwl",
-    "publish": "electron-forge publish"
+    "publish": "electron-builder -p always"
   },
   "repository": "https://github.com/unelmacoin/unelma-browser",
   "publish": {
@@ -24,9 +24,20 @@
   "postinstall": "electron-builder install-app-deps",
   "build": {
     "appId": "xyz.unelma.browser",
+    "afterSign": "./build/notarize.js",
+    "mac": {
+      "category": "com.unelmas.application.browser"
+    },
+    "linux": {
+      "category": "com.unelmas.application.browser",
+      "target": "AppImage"
+    },
     "productName": "Unelma Browser",
     "icon": "./src/img/unp.png",
     "target": "nsis",
+    "win": {
+      "target": "nsis"
+    },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
       "oneClick": false
@@ -68,7 +79,7 @@
     "electron": "^19.0.0",
     "electron-builder": "^23.1.0",
     "electron-context-menu": "^3.3.0",
-    "electron-notarize": "^1.2.1",
+    "electron-notarize": "^1.2.2",
     "electron-packager": "^15.5.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^8.0.2",
