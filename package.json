@@ -9,7 +9,7 @@
     "make": "electron-forge make",
     "dist": "electron-builder --win",
     "pack": "electron-builder -mwl",
-    "publish": "electron-builder -p always"
+    "publish": "electron-builder --mac --win --linux -p always"
   },
   "repository": "https://github.com/unelmacoin/unelma-browser",
   "publish": {
@@ -26,10 +26,10 @@
     "appId": "xyz.unelma.browser",
     "afterSign": "./build/notarize.js",
     "mac": {
-      "category": "com.unelmas.application.browser"
+      "category": "public.app-category.productivity"
     },
     "linux": {
-      "category": "com.unelmas.application.browser",
+      "category": "public.app-category.productivity",
       "target": "AppImage"
     },
     "productName": "Unelma Browser",
@@ -45,7 +45,7 @@
     "publish": [
       {
         "provider": "github",
-        "owner": "unellma",
+        "owner": "unelmacoin",
         "repo": "unelma-browser"
       }
     ]
@@ -55,14 +55,14 @@
   "dependencies": {
     "@cliqz/adblocker-electron": "^1.26.6",
     "@cliqz/adblocker-electron-preload": "^1.26.6",
-    "@electron/osx-sign": "^1.0.4",
-    "abp-filter-parser": "^0.2.0",
-    "electron-log": "^5.0.0-beta.24"
+    "abp-filter-parser": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
     "@babel/preset-react": "^7.18.6",
     "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron/osx-sign": "^1.0.4",
+    "electron-log": "^5.0.0-beta.24",
     "@electron-forge/maker-deb": "^6.0.0-beta.63",
     "@electron-forge/maker-rpm": "^6.0.0-beta.63",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
