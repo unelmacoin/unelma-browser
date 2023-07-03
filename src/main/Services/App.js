@@ -33,6 +33,15 @@ export class App {
     });
 
     app.whenReady().then(() => {
+
+      const updateUnelmaBrowser = require('update-electron-app');
+
+      updateUnelmaBrowser({
+        updateInterval: '1 hour',
+        notifyUser: true,
+        logger: require('electron-log')
+      });
+
       let easyListTxt = fs.readFileSync(
         path.join(__dirname, "../../src/main/utils/adblocker/easylist.txt"),
         "utf-8"
@@ -50,14 +59,6 @@ export class App {
               addWindow(windowId);
             });
           else addWindow();
-      });
-
-      const updateUnelmaBrowser = require('update-electron-app');
-
-      updateUnelmaBrowser({
-        updateInterval: '1 hour',
-        notifyUser: true,
-        logger: require('electron-log')
       });
     });
 
