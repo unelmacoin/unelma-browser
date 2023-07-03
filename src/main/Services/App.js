@@ -14,7 +14,6 @@ import {
   REMOVE_FROM_SEARCH_HISTORY,
   RESET_ALL_TABS,
 } from "../../constants/global/channels";
-
 const fs = require("fs");
 const path = require("path");
 const Store = require("electron-store");
@@ -30,6 +29,7 @@ export class App {
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
       }
+
     });
 
     app.whenReady().then(() => {
@@ -50,6 +50,14 @@ export class App {
               addWindow(windowId);
             });
           else addWindow();
+      });
+
+      const updateUnelmaBrowser = require('update-electron-app');
+
+      updateUnelmaBrowser({
+        updateInterval: '1 hour',
+        notifyUser: true,
+        logger: require('electron-log')
       });
     });
 
