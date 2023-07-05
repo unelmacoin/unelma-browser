@@ -4,6 +4,7 @@ const contextMenu = require("electron-context-menu");
     contextMenu({
       window: contents,
       showInspectElement: true,
+      showSaveImageAs:true,
       prepend: () => [
         {
           label: "New window",
