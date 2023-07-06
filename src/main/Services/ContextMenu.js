@@ -1,8 +1,6 @@
-const { dialog } = require("electron");
+const { dialog ,app, net} = require("electron");
 const contextMenu = require("electron-context-menu");
-const { app } = require('electron');
 const path = require('path');
-const { net } = require('electron');
 const fs = require("fs");
  class ContextMenu {
   constructor(contents, addWindow) {
