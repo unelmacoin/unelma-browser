@@ -17,17 +17,25 @@ const fs = require("fs");
         {
           label: 'Save Image As ...',
           visible: parameters.mediaType === 'image',
-          click: () => {
-            dialog.showSaveDialog(browserWindow, {
-              title: 'Save As',
+          click: async () => {
+            const result = await dialog.showSaveDialog(browserWindow, {
+              title: 'Save Image As',
               defaultPath: path.join(app.getPath('home'), (parameters.title || 'image') + '.png'),
-            }).then(result => {
-              if (!result.canceled) {
-                const url = parameters.srcURL;
-                const filePath = result.filePath;
-                download(url, filePath);
-              }
+              filters: [
+                { name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'svf', 'svg', 'gif','webp', 'tiff'] }
+              ]
             });
+
+            if (!result.canceled) {
+              let filePath = result.filePath;
+              const extension = path.extname(filePath);
+              if (!extension) {
+                filePath += '.png';
+              }
+
+              const url = parameters.srcURL;
+              download(url, filePath);
+            }
           }
         },
       ]
