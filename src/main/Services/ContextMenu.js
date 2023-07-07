@@ -22,7 +22,7 @@ const fs = require("fs");
               title: 'Save Image As',
               defaultPath: path.join(app.getPath('home'), (parameters.title || 'image') + '.png'),
               filters: [
-                { name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'svf', 'svg', 'gif'] }
+                { name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'gif', 'svf', 'svg', 'gif','webp', 'tiff'] }
               ]
             });
 
