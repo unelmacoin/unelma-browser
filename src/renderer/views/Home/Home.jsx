@@ -14,7 +14,7 @@ const Home = ({
 }) => {
   return (
     <Layout>
-      <div id="home">
+      <div id="home" style={{scrollBehavior:"smooth", overflowY:"scroll"}}>
         <Sidebar
           tabs={tabs}
           tabsDispatch={tabsDispatch}
