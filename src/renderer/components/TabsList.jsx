@@ -64,6 +64,10 @@ const TabsList = ({ tabs, tabsDispatch }) => {
 
   return (
     <div id="tabs">
+      <button id="add-tab" onClick={handleAddTab}>
+        <FaPlus />
+        <span>New Tab</span>
+      </button>
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="characters">
           {(provided) => (
@@ -78,11 +82,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
             </div>
           )}
         </Droppable>
-      </DragDropContext>
-      <button id="add-tab" onClick={handleAddTab}>
-        <FaPlus />
-        <span>New Tab</span>
-      </button>
+      </DragDropContext>      
     </div>
   );
 };
