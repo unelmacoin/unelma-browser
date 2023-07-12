@@ -73,7 +73,6 @@ const TabsList = ({ tabs, tabsDispatch }) => {
           {(provided) => (
             <div
               id="actual-tabs"
-              style={{ maxHeight: "450px" }}
               ref={provided.innerRef}
               {...provided.droppableProps}
             >

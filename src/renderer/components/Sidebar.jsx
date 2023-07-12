@@ -31,7 +31,7 @@ const Sidebar = ({
   useEffect(() => {
     window.addEventListener("resize", () => {
       document.getElementById("app-sidebar").style.width = openSidebar
-        ? `${window.innerWidth * 0.2}px`
+        ? `${window.innerWidth * 0.21}px`
         : `${window.innerWidth * 0.02}px`;
     });
   }, [openSidebar]);
@@ -41,7 +41,7 @@ const Sidebar = ({
       className={`${!openSidebar && "toggled-sidebar"}`}
       style={{
         width: openSidebar
-          ? `${window.innerWidth * 0.2}px`
+          ? `${window.innerWidth * 0.21}px`
           : `${window.innerWidth * 0.02}px`,
       }}
     >

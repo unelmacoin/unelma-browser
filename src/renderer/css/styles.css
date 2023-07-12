@@ -223,10 +223,12 @@ webview {
 }
 #root #tabs {
   width: 100%;
+  overflow: hidden;
 }
 #root #tabs #actual-tabs {
   border-bottom: 1px solid rgba(211, 211, 211, 0.547);
   overflow-y: scroll;
+  max-height: 700px;
 }
 
 /* width */
