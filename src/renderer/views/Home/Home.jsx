@@ -14,7 +14,7 @@ const Home = ({
 }) => {
   return (
     <Layout>
-      <div id="home">
+      <div id="home" >
         <Sidebar
           tabs={tabs}
           tabsDispatch={tabsDispatch}
