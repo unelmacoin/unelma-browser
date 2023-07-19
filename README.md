@@ -1,4 +1,4 @@
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)](https://sonarcloud.io/summary/new_code?id=unelmacoin_unelma-browser)
+[![Build](https://github.com/unelmacoin/unelma-browser/actions/workflows/sonarcloud.yml/badge.svg)](https://github.com/unelmacoin/unelma-browser/actions/workflows/sonarcloud.yml)
 
 # Unelma Browser
 
