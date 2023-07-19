@@ -7,13 +7,11 @@ const fs = require("fs");
     contextMenu({
       window: contents,
       showInspectElement: true,
-      prepend: () => [
+      prepend: (defaultActions, parameters, browserWindow) => [
         {
           label: "New window",
           click: () => addWindow(),
         },
-      ],
-      prepend: (defaultActions, parameters, browserWindow) => [
         {
           label: 'Save Image As ...',
           visible: parameters.mediaType === 'image',
@@ -38,8 +36,8 @@ const fs = require("fs");
             }
           }
         },
-      ]
       
+      ]
  
     });
   }
