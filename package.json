@@ -1,11 +1,11 @@
 {
   "name": "Unelma_Browser",
-  "version": "2.5.5",
+  "version": "2.5.6",
   "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
-    "package": "electron-builder",
+    "package": "electron-builder -p never",
     "make": "electron-forge make",
     "dist": "electron-builder --win",
     "pack": "electron-builder -mwl",
@@ -26,7 +26,12 @@
     "appId": "com.unelmas.browser",
     "afterSign": "./build/notarize.js",
     "mac": {
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "type": "distribution",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "gatekeeperAssess": false
     },
     "linux": {
       "category": "public.app-category.productivity",
@@ -40,6 +45,7 @@
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
+      "createStartMenuShortcut": true,
       "oneClick": false
     },
     "publish": [
