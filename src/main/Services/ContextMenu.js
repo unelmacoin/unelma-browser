@@ -36,6 +36,20 @@ const fs = require("fs");
             }
           }
         },
+        {
+          label: 'Print',
+          click: () => {
+
+            try {
+              contents.print({
+                silent: false,
+                printBackground: true,
+              });
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        },
       
       ]
  
