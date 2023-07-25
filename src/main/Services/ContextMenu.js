@@ -36,6 +36,21 @@ const fs = require("fs");
             }
           }
         },
+        {
+          label: 'Print',
+          accelerator: process.platform === 'darwin' ? 'Command+P' : 'Ctrl+P',
+          click: () => {
+
+            try {
+              contents.print({
+                silent: false,
+                printBackground: true,
+              });
+            } catch (error) {
+              console.log(error)
+            }
+          }
+        },
       
       ]
  

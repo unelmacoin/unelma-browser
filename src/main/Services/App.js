@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session } = require("electron");
+const { app, BrowserWindow, ipcMain, session, globalShortcut } = require("electron");
 import { getTabsWindows, resetAllTabs } from "../controllers/tabs";
 import { ContextMenu } from "./ContextMenu";
 import { MainWindow } from "./MainWindow";
@@ -28,6 +28,12 @@ export class App {
       
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
+        const ret = globalShortcut.register('CommandOrControl+P', () => {
+          if(contents.isDestroyed()) {
+            return;
+          }
+          contents.print(); 
+       });
       }
 
     });
