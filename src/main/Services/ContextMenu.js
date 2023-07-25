@@ -38,6 +38,7 @@ const fs = require("fs");
         },
         {
           label: 'Print',
+          accelerator: process.platform === 'darwin' ? 'Command+P' : 'Ctrl+P',
           click: () => {
 
             try {
