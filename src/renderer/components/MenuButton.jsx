@@ -1,7 +1,8 @@
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 
-const MenuButton = ({ setMenu, openSidebar }) => {
+const MenuButton = ({ setMenu,menu, openSidebar }) => {
+  console.log(menu)
   const handleClick = () => {
     setMenu((v) => !v);
     if (!openSidebar) {

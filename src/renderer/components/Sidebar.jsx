@@ -17,8 +17,10 @@ const Sidebar = ({
   bookmarks,
   loginDialogInfo,
   setLoginDialogInfo,
+  setMenu ={setMenu},
+  menu={menu},
 }) => {
-  const [menu, setMenu] = useState(false);
+ 
   
      const renderSavePasswordDialog = () =>
        loginDialogInfo && (
@@ -47,7 +49,7 @@ const Sidebar = ({
     >
       {renderSavePasswordDialog()}
       <div id="controllers">
-        <MenuButton setMenu={setMenu} openSidebar={openSidebar} />
+        <MenuButton setMenu={setMenu} menu={menu} openSidebar={openSidebar} />
         <WindowControllers
           setOpenSidebar={setOpenSidebar}
           openSidebar={openSidebar}

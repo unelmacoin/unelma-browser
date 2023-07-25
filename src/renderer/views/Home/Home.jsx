@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Layout from "../../components/Layout/Layout.jsx";
 import Sidebar from "../../components/Sidebar.jsx";
 import "./home.css";
@@ -12,8 +12,9 @@ const Home = ({
   loginDialogInfo,
   setLoginDialogInfo,
 }) => {
+  const [menu, setMenu] = useState(false);
   return (
-    <Layout>
+    <Layout setMenu={setMenu} menu ={menu}>
       <div id="home" >
         <Sidebar
           tabs={tabs}
@@ -24,6 +25,8 @@ const Home = ({
           bookmarks={bookmarks}
           loginDialogInfo={loginDialogInfo}
           setLoginDialogInfo={setLoginDialogInfo}
+          setMenu={setMenu}
+          menu ={menu}
         />
         <div
           id="webviews-container"
