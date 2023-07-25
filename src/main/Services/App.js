@@ -28,10 +28,13 @@ export class App {
       
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
+        const ret = globalShortcut.register('CommandOrControl+P', () => {
+          if(contents.isDestroyed()) {
+            return;
+          }
+          contents.print(); 
+       });
       }
-      const ret = globalShortcut.register('CommandOrControl+P', () => {
-        contents.print(); 
-     });
 
     });
 
