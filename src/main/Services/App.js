@@ -29,7 +29,7 @@ export class App {
       if (contents.getType() === "browserView") {
         new ContextMenu(contents, addWindow);
       }
-      const ret = globalShortcut.register('Ctrl+P', () => {
+      const ret = globalShortcut.register('CommandOrControl+P', () => {
         contents.print(); 
      });
 
