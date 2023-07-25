@@ -87,8 +87,13 @@ const Menu = ({ menu, setMenu}) => {
         </li>
       )
   );
+  const handleCloseThreeButtonMenu =() =>{
+    if (menu === true)  setMenu(false)
+   
+  }
   return (
     <div id="menu" className={`${menu && "open"}`}>
+      <div id="closeMenu"><span id="closeMenuSpan" onClick={handleCloseThreeButtonMenu}>X</span> </div>
       <ul id="menu-list">{renderItems}</ul>
     </div>
   );

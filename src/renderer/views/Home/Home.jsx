@@ -11,8 +11,9 @@ const Home = ({
   tabs,
   loginDialogInfo,
   setLoginDialogInfo,
+  setMenu,
+  menu,
 }) => {
-  const [menu, setMenu] = useState(false);
   return (
     <Layout setMenu={setMenu} menu ={menu}>
       <div id="home" >

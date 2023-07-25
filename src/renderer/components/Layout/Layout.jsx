@@ -3,14 +3,11 @@ import './layout.css'
 import TopBar from'../TopBar.jsx'
 const Layout = ({ children, menu, setMenu }) => {
   console.log(menu)
-  const handleClose =() =>{
-    if (menu === true)  setMenu(false)//document.getElementById("menu-button").click();
-   
-  }
+  
   return (
-    <div id="root" style={{ height: `${window.window.innerHeight}px` }} onClick={handleClose}>
+    <div id="root" style={{ height: `${window.window.innerHeight}px` }} >
       {children}
-      <TopBar />
+      <TopBar menu={menu}  setMenu={setMenu}/>
     </div>
   );
 };
