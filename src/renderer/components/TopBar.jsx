@@ -4,7 +4,7 @@ import { FiMinimize2, FiMaximize2 } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { CLOSE_WINDOW, IS_MAXIMIZED, MAXIMIZE, MINIMIZE, UN_MAXIMIZE } from "../../constants/global/channels";
 
-const TopBar = () => {
+const TopBar = ({menu , setMenu}) => {
   const [maximize, setMaximize] = useState(true);
   const handleMaximize = () => {
     window.api.send(MAXIMIZE, window.id);
@@ -26,8 +26,13 @@ const TopBar = () => {
       setMaximize(isMaximized);
     });
   }, [maximize]);
+  const handle_CloseThreeButtonMenu =() =>{
+    if (menu === true)  setMenu(false)
+    alert('here it is')
+   
+  }
   return (
-    <div className="top-bar">
+    <div className="top-bar" onClick={handle_CloseThreeButtonMenu}>
       <button id="window-controls-minimize" onClick={handleMinimize}>
         <MdOutlineMinimize fontSize="8px" />
       </button>

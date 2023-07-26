@@ -1,11 +1,13 @@
 import React from "react";
 import './layout.css'
 import TopBar from'../TopBar.jsx'
-const Layout = ({ children }) => {
+const Layout = ({ children, menu, setMenu }) => {
+  console.log(menu)
+  
   return (
-    <div id="root" style={{ height: `${window.window.innerHeight}px` }}>
+    <div id="root" style={{ height: `${window.window.innerHeight}px` }} >
       {children}
-      <TopBar />
+      <TopBar menu={menu}  setMenu={setMenu}/>
     </div>
   );
 };

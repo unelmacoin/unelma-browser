@@ -35,6 +35,7 @@ const App = () => {
   );
   const [passwords, passwordsDispatch] = useReducer(passwordsReducer, []);
   const [loginDialogInfo, setLoginDialogInfo] = useState();
+  const [menu, setMenu] = useState(false);
   useEffect(() => {
     window.api.receive(WINDOW_READY, (id) => {
       window.id = id;
@@ -81,8 +82,13 @@ const App = () => {
     });
   }, [openSidebar]);
 
+  const handleCloseThreeButtonMenu =() =>{
+    if (menu === true)  setMenu(false)
+   
+  }
+
   return (
-    <div>
+    <div onClick={handleCloseThreeButtonMenu}>
       <Router>
         <Route exact path="/">
           <Home
@@ -95,6 +101,8 @@ const App = () => {
             bookmarks={bookmarks}
             tabs={tabs}
             searchHistory={searchHistory}
+            setMenu={setMenu}
+            menu ={menu}
           ></Home>
         </Route>
         <Route exact path="/settings">
