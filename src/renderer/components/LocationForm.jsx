@@ -37,6 +37,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
           value={location}
           onChange={handleChange}
           onFocus={handleFocusChange}
+         placeholder={location ? '' : 'Search with Google or enter address…'}
         />
       </form>
     </div>
