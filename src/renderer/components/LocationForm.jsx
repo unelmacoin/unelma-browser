@@ -25,6 +25,9 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
   useEffect(() => {
     setLocation(activeTabURL || UNELMA_DEFAULT_URL);
   }, [tabs]);
+  const handleFocusChange = () =>{
+    setLocation('')
+  }
   return (
     <div className="location-container">
       <form id="location-form" onSubmit={handleSubmit}>
@@ -33,6 +36,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
           type="text"
           value={location}
           onChange={handleChange}
+          onFocus={handleFocusChange}
         />
       </form>
     </div>
