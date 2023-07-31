@@ -28,7 +28,6 @@ const TopBar = ({menu , setMenu}) => {
   }, [maximize]);
   const handle_CloseThreeButtonMenu =() =>{
     if (menu === true)  setMenu(false)
-    alert('here it is')
    
   }
   return (
