@@ -110,6 +110,10 @@ const App = () => {
           <Settings
             passwords={passwords}
             passwordsDispatch={passwordsDispatch}
+            bookmarksDispatcher={bookmarksDispatcher}
+            bookmarks={bookmarks}
+            searchHistory={searchHistory}
+            searchHistoryDispatcher={searchHistoryDispatcher}
           />
         </Route>
         <Route exact path="/history">

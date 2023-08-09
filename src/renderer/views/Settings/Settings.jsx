@@ -9,7 +9,14 @@ import SiteData from "../../components/SiteData/SiteData.jsx";
 import SettingsSidebar from "../../components/SettingsSidebar/SettingsSidebar.jsx";
 import BrowserSettingsPage from "./BrowserSettingsPage.jsx";
 
-const Settings = ({ passwords, passwordsDispatch }) => {
+const Settings = ({
+  passwords,
+  passwordsDispatch,
+  bookmarksDispatcher,
+  bookmarks,
+  searchHistory,
+  searchHistoryDispatcher,
+}) => {
   const [renderTab, setRenderTab] = useState();
   const [activeItem, setActiveItem] = useState(settingsSidebarMenuItems[0].id);
 
@@ -32,7 +39,14 @@ const Settings = ({ passwords, passwordsDispatch }) => {
         );
         break;
       case "clearCache":
-        return <SiteData />;
+        return <SiteData 
+        passwords={passwords}
+        passwordsDispatch={passwordsDispatch}
+        bookmarksDispatcher={bookmarksDispatcher}
+        bookmarks={bookmarks}
+        searchHistory={searchHistory}
+        searchHistoryDispatcher={searchHistoryDispatcher}
+        />;
         break;
       default:
         return <BrowserSettingsPage />;

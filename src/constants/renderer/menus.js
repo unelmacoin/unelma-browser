@@ -24,7 +24,7 @@ export const settingsSidebarMenuItems = [
   },
   {
     id: uniqid(),
-    label: "Clear cache",
+    label: "Clear Data",
     name:'clearCache',
     icon: (active) => (
       <AiTwotoneDelete fontSize={20} color={active ? "#e87874" : "lightgray"} />
