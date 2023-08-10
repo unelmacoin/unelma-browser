@@ -14,6 +14,7 @@ const SiteData = ({
   searchHistory,
   searchHistoryDispatcher,
 }) => {
+  const smalltalk = require("smalltalk");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [duration, setDuration] = useState("");
   const [books, setBooks] = useState(bookmarks);
@@ -32,70 +33,78 @@ const SiteData = ({
     setDuration(e.target.value);
   };
 
-  const handleDelete = (e) => {
+  const handleDelete = async (e) => {
     e.preventDefault();
-    const confirmation = window.prompt(
-      "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
-    );
-    if (confirmation === "DEL") {
-    if (duration > 0) {
-      for (let selectedOption of selectedOptions) {
-        switch (selectedOption) {
-          case "password":
-            const passwordFilters = filterByDays(passwords, duration);
-            for (let passwordFilter of passwordFilters) {
-              passwordsDispatch({
-                type: REMOVE_PASSWORD,
-                payload: {
-                  id: passwordFilter.id,
-                },
-              });
-            }
-            break;
-          case "cookies":
-            break;
-          case "cache":
-            break;
+    try {
+      const confirmation = await smalltalk.prompt(
+        "Confirmation",
+        "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
+      );
+      if (confirmation === "DEL") {
+        if (selectedOptions) {
+          for (let selectedOption of selectedOptions) {
+            switch (selectedOption) {
+              case "password":
+                const passwordFilters = duration > 0 ? filterByDays(passwords, duration) : passwords;
+                for (let passwordFilter of passwordFilters) {
+                  passwordsDispatch({
+                    type: REMOVE_PASSWORD,
+                    payload: {
+                      id: passwordFilter.id,
+                    },
+                  });
+                }
+                break;
+              case "cookies":
+                break;
+              case "cache":
+                break;
 
-          case "history":
-            const historyFilters = filterByDays(searchHistory, duration);
-            for (let historyFilter of historyFilters) {
-              searchHistoryDispatcher({
-                type: REMOVE_SEARCH_HISTORY,
-                payload: {
-                  id: historyFilter.id,
-                },
-              });
-            }
-            break;
+              case "history":
+                const historyFilters = duration > 0 ? filterByDays(searchHistory, duration) : searchHistory;
+                for (let historyFilter of historyFilters) {
+                  searchHistoryDispatcher({
+                    type: REMOVE_SEARCH_HISTORY,
+                    payload: {
+                      id: historyFilter.id,
+                    },
+                  });
+                }
+                break;
 
-          case "bookmarks":
-            const bookmarkFilters = filterByDays(bookmarks, duration);
-            for (let bookmarkFilter of bookmarkFilters) {
-              bookmarksDispatcher({
-                type: REMOVE_BOOKMARK,
-                payload: {
-                  url: bookmarkFilter.url,
-                },
-              });
-            }
+              case "bookmarks":
+                const bookmarkFilters = duration > 0 ? filterByDays(bookmarks, duration) : bookmarks;
+                for (let bookmarkFilter of bookmarkFilters) {
+                  bookmarksDispatcher({
+                    type: REMOVE_BOOKMARK,
+                    payload: {
+                      url: bookmarkFilter.url,
+                    },
+                  });
+                }
 
-            break;
-          default:
-            break;
+                break;
+              default:
+                break;
+            }
+          }
+          new Notification(
+            `${selectedOptions.join(", ").toString()} : Deleted`
+          );
+        } else {
+          const books =
+            JSON.stringify(bookmarks) ||
+            bookmarks.length ||
+            JSON.stringify(searchHistory) ||
+            "no bookmarks";
+          alert(books);
         }
+      } else {
+        new Notification("Deletion cancelled");
       }
-    } else {
-      const books =
-        JSON.stringify(bookmarks) ||
-        bookmarks.length ||
-        JSON.stringify(searchHistory) ||
-        "no bookmarks";
-      alert(books);
-    }
-  }
-    else {
-      alert("Deletion cancelled");
+    } catch (error) {
+      console.log(error);
+      new Notification("Deletion cancelled");
     }
   };
 
