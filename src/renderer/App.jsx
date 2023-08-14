@@ -24,7 +24,6 @@ import {
   mergeChannel,
   WINDOW_READY,
 } from "../constants/global/channels";
-import SiteData from "./components/SiteData/SiteData.jsx";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -83,10 +82,9 @@ const App = () => {
     });
   }, [openSidebar]);
 
-  const handleCloseThreeButtonMenu =() =>{
-    if (menu === true)  setMenu(false)
-   
-  }
+  const handleCloseThreeButtonMenu = () => {
+    if (menu === true) setMenu(false);
+  };
 
   return (
     <div onClick={handleCloseThreeButtonMenu}>
@@ -103,7 +101,7 @@ const App = () => {
             tabs={tabs}
             searchHistory={searchHistory}
             setMenu={setMenu}
-            menu ={menu}
+            menu={menu}
           ></Home>
         </Route>
         <Route exact path="/settings">
@@ -130,17 +128,6 @@ const App = () => {
             bookmarksDispatcher={bookmarksDispatcher}
           />
         </Route>
-        {/* <Route exact path="/cleadata">
-          <SiteData
-            // tabsDispatch={tabsDispatch}
-            // bookmarks={bookmarks}
-            // bookmarksDispatcher={bookmarksDispatcher}
-            // searchHistory={searchHistory}
-            // searchHistoryDispatcher={searchHistoryDispatcher}
-            // passwords={passwords}
-            // passwordsDispatch={passwordsDispatch}
-          />
-        </Route> */}
       </Router>
     </div>
   );

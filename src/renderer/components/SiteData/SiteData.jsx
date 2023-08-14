@@ -17,7 +17,6 @@ const SiteData = ({
   const smalltalk = require("smalltalk");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [duration, setDuration] = useState("");
-  const [books, setBooks] = useState(bookmarks);
   const handleOptionChange = (e) => {
     const optionValue = e.target.value;
     if (e.target.checked) {
@@ -36,16 +35,17 @@ const SiteData = ({
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
+      if (selectedOptions.length > 0 ) {
       const confirmation = await smalltalk.prompt(
         "Confirmation",
         "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
       );
       if (confirmation === "DEL") {
-        if (selectedOptions) {
           for (let selectedOption of selectedOptions) {
             switch (selectedOption) {
               case "password":
-                const passwordFilters = duration > 0 ? filterByDays(passwords, duration) : passwords;
+                const passwordFilters =
+                  duration > 0 ? filterByDays(passwords, duration) : passwords;
                 for (let passwordFilter of passwordFilters) {
                   passwordsDispatch({
                     type: REMOVE_PASSWORD,
@@ -55,13 +55,11 @@ const SiteData = ({
                   });
                 }
                 break;
-              case "cookies":
-                break;
-              case "cache":
-                break;
-
               case "history":
-                const historyFilters = duration > 0 ? filterByDays(searchHistory, duration) : searchHistory;
+                const historyFilters =
+                  duration > 0
+                    ? filterByDays(searchHistory, duration)
+                    : searchHistory;
                 for (let historyFilter of historyFilters) {
                   searchHistoryDispatcher({
                     type: REMOVE_SEARCH_HISTORY,
@@ -73,7 +71,8 @@ const SiteData = ({
                 break;
 
               case "bookmarks":
-                const bookmarkFilters = duration > 0 ? filterByDays(bookmarks, duration) : bookmarks;
+                const bookmarkFilters =
+                  duration > 0 ? filterByDays(bookmarks, duration) : bookmarks;
                 for (let bookmarkFilter of bookmarkFilters) {
                   bookmarksDispatcher({
                     type: REMOVE_BOOKMARK,
@@ -91,17 +90,13 @@ const SiteData = ({
           new Notification(
             `${selectedOptions.join(", ").toString()} : Deleted`
           );
-        } else {
-          const books =
-            JSON.stringify(bookmarks) ||
-            bookmarks.length ||
-            JSON.stringify(searchHistory) ||
-            "no bookmarks";
-          alert(books);
-        }
+   
       } else {
         new Notification("Deletion cancelled");
       }
+    } else {
+      new Notification("Make a selection to Delete");
+    }
     } catch (error) {
       console.log(error);
       new Notification("Deletion cancelled");
@@ -110,20 +105,16 @@ const SiteData = ({
 
   function filterByDays(items, maxDays) {
     const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - maxDays); //get the base to start deleting from
+    cutoff.setDate(cutoff.getDate() - maxDays);
 
     return items.filter((item) => {
-      const time = new Date(item.time); //get item.time from the array and asign it to time
-      return time >= cutoff; //filter all the item with date freater than the base to be deleted
+      const time = new Date(item.time);
+      return time >= cutoff;
     });
   }
 
   return (
     <div className="container">
-      {/* <>
-      {books && books.map(hist =>
-        <li key={hist.id}>{hist.url}, {hist.time.toString()}</li>)}
-      </> */}
       <h2>Clear Browser Data</h2>
       <div className="options">
         <label>
@@ -133,20 +124,6 @@ const SiteData = ({
             onChange={handleOptionChange}
           />
           Password
-        </label>
-        <br />
-        <label>
-          <input
-            type="checkbox"
-            value="cookies"
-            onChange={handleOptionChange}
-          />
-          Cookies
-        </label>
-        <br />
-        <label>
-          <input type="checkbox" value="cache" onChange={handleOptionChange} />
-          Cache
         </label>
         <br />
         <label>
