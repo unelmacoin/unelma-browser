@@ -2,26 +2,35 @@ import React, { useState } from "react";
 import { settingsSidebarMenuItems } from "../../../constants/renderer/menus";
 import BackwardBtn from "../BackwardBtn/BackwardBtn.jsx";
 import "./settingsSidebar.css";
+import { Link } from "react-router-dom";
 
-const SettingsSidebar = () => {
-  const [activeItem, setActiveItem] = useState(settingsSidebarMenuItems[0].id);
-  const handleSelect = (id) => () => {
-    setActiveItem(id);
+const SettingsSidebar = ({ activeItem, setActiveItem, setRenderTab }) => {
+  const renderItems = () => {
+    try {
+      return settingsSidebarMenuItems.map(({ id, name, label, icon }) =>
+          <li
+            key={id}
+            className={`${id === activeItem ? "active" : ""}`}
+            onClick={() => {
+              setActiveItem(id);
+              setRenderTab(name);
+            }}
+          >
+            <span>{icon(id === activeItem)}</span>
+            {label}
+          </li>
+        
+      );
+    } catch (error) {
+      // Handle the error here (e.g., log the error or show an error message)
+      console.error("Error while rendering sidebar items:", error.message);
+      return null; // or return a fallback UI component
+    }
   };
-  const renderItems = () =>
-    settingsSidebarMenuItems.map(({ id, label, icon }) => (
-      <li
-        key={id}
-        className={`${id === activeItem ? "active" : ""}`}
-        onClick={handleSelect(id)}
-      >
-        <span>{icon(id === activeItem)}</span>
-        {label}
-      </li>
-    ));
+
   return (
     <div id="settingsSidebar">
-      <BackwardBtn/>
+      <BackwardBtn />
       <ul>{renderItems()}</ul>
     </div>
   );

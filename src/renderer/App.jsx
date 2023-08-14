@@ -82,10 +82,9 @@ const App = () => {
     });
   }, [openSidebar]);
 
-  const handleCloseThreeButtonMenu =() =>{
-    if (menu === true)  setMenu(false)
-   
-  }
+  const handleCloseThreeButtonMenu = () => {
+    if (menu === true) setMenu(false);
+  };
 
   return (
     <div onClick={handleCloseThreeButtonMenu}>
@@ -102,13 +101,17 @@ const App = () => {
             tabs={tabs}
             searchHistory={searchHistory}
             setMenu={setMenu}
-            menu ={menu}
+            menu={menu}
           ></Home>
         </Route>
         <Route exact path="/settings">
           <Settings
             passwords={passwords}
             passwordsDispatch={passwordsDispatch}
+            bookmarksDispatcher={bookmarksDispatcher}
+            bookmarks={bookmarks}
+            searchHistory={searchHistory}
+            searchHistoryDispatcher={searchHistoryDispatcher}
           />
         </Route>
         <Route exact path="/history">

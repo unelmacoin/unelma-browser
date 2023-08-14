@@ -2,7 +2,6 @@ import React from "react";
 import './layout.css'
 import TopBar from'../TopBar.jsx'
 const Layout = ({ children, menu, setMenu }) => {
-  console.log(menu)
   
   return (
     <div id="root" style={{ height: `${window.window.innerHeight}px` }} >
