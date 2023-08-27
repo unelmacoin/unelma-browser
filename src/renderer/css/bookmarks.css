@@ -19,6 +19,7 @@
 
 #categories-list {
   width: 100%;
+  color: ;
 }
 #bookmarks .category {
   display: flex;
@@ -59,6 +60,7 @@ h4 {
   padding: 20px;
   margin-bottom: 10px;
   text-transform: capitalize;
+  color: var( --body-font-grey-shade);
 }
 .time {
   font-weight: bold;

@@ -1,20 +1,30 @@
 :root{
+  --root-background:#c1c2fa;
+  --root-background-grad-1:#dddce0;
+  --root-background-grad-2:#f0f0b2;
     --body-backGround:white;
     --body-backGround-transparent:transparent;
     --body-font-color:black;
-    --body-font-grey-shade:rgba(51, 51, 51, 0.67);
+    --body-font-grey-shade:#333333ab;
     --top-bar-button-bg:rgba(0, 0, 0, 0.1);
     --redish-shade-background:#f2f2f2;
     --accent-color:#e87874;
+    --accent-color-hover:#e87874;
     --white-shadow-border:none;
-    --active-tab-bg:rgba(255, 255, 255, 0.295);
+    --active-tab-bg:#ffffff4b;
     --empty-list-font:#1b274b;
     --top-bar-button-bg: #0000001a;
     --window-controllers-icon-font:#333333b2;
+    --search-location-container:#333333b2;
+    --search-location-container-bg:#33333321;
     }
     
     [data-theme="dark"]{
+      --root-background:black;
+      --root-background-grad-1:#7e7d7e;
+      --root-background-grad-2:#333333ab;
       --top-bar-button-bg:white;
+      --accent-color-hover:#562b29;
       --body-backGround:#000000d4;
       --body-font-color:#ffffffda;
       --body-backGround-transparent:#000000d4;
@@ -23,6 +33,8 @@
       --body-font-grey-shade:#cccccc;
       --empty-list-font:#ffffffda;
       --window-controllers-icon-font:#333333b2;
+      --search-location-container:#a49a9ad7;
+      --search-location-container-bg:#33333321;
       /* input {
         color: white;
       } */

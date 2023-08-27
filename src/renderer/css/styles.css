@@ -181,7 +181,8 @@ webview {
   justify-content: center;
   cursor: pointer;
 }
-#menu .menu-item button {
+#menu .menu-item button,
+#menu .menu-item a  {
   width:100%;
   display: flex;
   align-items: center;
@@ -190,23 +191,20 @@ webview {
   color: var( --body-font-color);
   font-size: 16px;
 }
-#menu .menu-item a {
-  display: flex;
-  align-items: center;
-  padding: 14px 25px;
-  cursor: pointer;
-  color: var( --body-font-color);
-  font-size: 16px;
-}
-#menu .menu-item button span {
-  margin-left: 10px;
-}
+
+#menu .menu-item button span,
 #menu .menu-item a span {
   margin-left: 10px;
 }
 
-#menu .menu-item:hover {
-  opacity: 0.6;
+#menu-list .menu-item:hover,
+#menu-list .menu-item:hover * {
+  background-color: var(--accent-color-hover);
+}
+
+#menu-list .menu-item:hover {
+  margin-right: 1rem;
+  border-radius: 20px 20px 20px 0 !important; 
 }
 
 #menu.open {
@@ -230,16 +228,16 @@ webview {
 #root #app-sidebar #location-form input {
   width: 100%;
   padding: 10px;
-  background-color: rgba(51, 51, 51, 0.13);
+  background-color: var(--search-location-container-bg);
   border-radius: 8px;
   font-size: 13px;
-  color: rgba(51, 51, 51, 0.699);
+  color: var(--search-location-container);
 }
 #root #app-sidebar .location-container button {
   padding: 10px;
   border-radius: 8px;
   font-size: 13px;
-  color: rgba(51, 51, 51, 0.699);
+  color: var(--search-location-container);
   cursor: pointer;
 }
 .location-container {
@@ -249,7 +247,7 @@ webview {
   width: 100%;
 }
 #root #app-sidebar #location-form input::placeholder {
-  color: #333333b2;
+  color: var(--search-location-container);
   font-size: 13px;
 }
 #root #tabs {
@@ -274,7 +272,7 @@ webview {
 
 /* Handle */
 #root #tabs #actual-tabs::-webkit-scrollbar-thumb {
-  background: rgba(51, 51, 51, 0.349);
+  background: var(--body-font-grey-shade);
 }
 
 #root #tabs #add-tab {
@@ -282,7 +280,7 @@ webview {
   text-align: start;
   padding: 10px;
   margin: 15px 0;
-  color: rgba(51, 51, 51, 0.637);
+  color: var( --search-location-container);
   cursor: pointer;
 }
 
@@ -336,7 +334,7 @@ input {
   padding: 8px 3px;
 }
 .active-tab {
-  background-color: rgba(255, 255, 255, 0.295);
+  background-color: #ffffff4b;
 }
 #webviews-container {
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */

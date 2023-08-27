@@ -63,7 +63,7 @@ const Menu = ({ menu, setMenu}) => {
     ({ label, icon, action, path }) =>
       path ? (
         <li key={label} className="menu-item">
-          <Link
+          <Link className='menu-iten-link'
             to={path}
             onClick={() => {
               action();
@@ -76,7 +76,7 @@ const Menu = ({ menu, setMenu}) => {
         </li>
       ) : (
         <li key={label} className="menu-item">
-          <button
+          <button className='menu-iten-link'
             onClick={() => {
               action();
               setMenu(false);
