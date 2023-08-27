@@ -37,7 +37,14 @@ export class App {
       }
 
     });
-
+    // app.on('ready', () => {
+    //   const storedTheme = window.localStorage.getItem('theme');
+    //   if (storedTheme) {
+    //     MainWindow.webContents.executeJavaScript(
+    //       `document.querySelector('body').setAttribute('data-theme', '${storedTheme}');`
+    //     );
+    //   }
+    // });
     app.whenReady().then(() => {
 
       const updateUnelmaBrowser = require('update-electron-app');

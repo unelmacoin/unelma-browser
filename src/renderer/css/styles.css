@@ -1,14 +1,16 @@
 @import './theme.css';
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   background-color:var(--body-backGround-transparent); ;
+  background-color:var(--body-backGround-transparent); ;
 }
+
 
 body {
   font-family: Lucida Grande, Arial, sans-serif;
+  background-color: var(--body-backGround-transparent);
   background-color: var(--body-backGround-transparent);
 }
 body::-webkit-scrollbar {
@@ -34,6 +36,7 @@ webview {
 }
 
 .top-bar {
+  background-color: var(--body-backGround-transparent);
   background-color: var(--body-backGround-transparent);
   position: absolute;
   top: 0;

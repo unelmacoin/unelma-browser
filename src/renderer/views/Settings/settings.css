@@ -1,3 +1,5 @@
+@import '../../../renderer/css/theme.css';
+
 #settings-content {
   width: 78%;
   height: 100%;
@@ -50,11 +52,11 @@ label {
 
 input[type="checkbox"] {
   transform: scale(1.3);
-  accent-color: #e87874;
+  accent-color: var(--accent-color);
 }
 
 .save-button {
-  background: #e87874;
+  background: var(--accent-color);
   color: #fff;
   padding: 15px 30px;
   border: none;

@@ -1,7 +1,10 @@
+@import '../../../renderer/css/theme.css';
+
 #home {
   display: flex;
   justify-content: space-between;
   align-items: center;
   -webkit-app-region: no-drag;
   height: 100%;
+  background-color: var(--body-backGround-transparent);
 }

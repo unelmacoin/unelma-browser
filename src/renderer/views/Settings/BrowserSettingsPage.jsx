@@ -10,7 +10,6 @@ const BrowserSettingsPage = () => {
     const newTheme = e.target.checked ? 'dark' : 'light';
     console.log(newTheme)
     document.querySelector('body').setAttribute('data-theme', newTheme);
-
   setDarkMode(newTheme)
   window.localStorage.setItem('theme', newTheme);
 
