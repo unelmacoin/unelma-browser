@@ -32,7 +32,7 @@ const BookmarkBtn = ({ tabs, bookmarks, bookmarksDispatcher }) => {
   };
   return (
     <button id="bookmark-btn" onClick={handleClick}>
-      <HiStar fontSize={"18"} color={!active() ? "#333" : "gold"} />
+      <HiStar fontSize={"18"} className={!active() ? 'bookmark-star-color' : "bookmark-star-color-active"} />
     </button>
   );
 };

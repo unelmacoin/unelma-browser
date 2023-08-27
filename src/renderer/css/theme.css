@@ -1,0 +1,40 @@
+:root{
+    --body-backGround:white;
+    --body-backGround-transparent:transparent;
+    --body-font-color:black;
+    --body-font-grey-shade:rgba(51, 51, 51, 0.67);
+    --top-bar-button-bg:rgba(0, 0, 0, 0.1);
+    --redish-shade-background:#f2f2f2;
+    --accent-color:#e87874;
+    --white-shadow-border:none;
+    --active-tab-bg:rgba(255, 255, 255, 0.295);
+    --empty-list-font:#1b274b;
+    --top-bar-button-bg: #0000001a;
+    --window-controllers-icon-font:#333333b2;
+    }
+    
+    [data-theme="dark"]{
+      --top-bar-button-bg:white;
+      --body-backGround:#000000d4;
+      --body-font-color:#ffffffda;
+      --body-backGround-transparent:#000000d4;
+      --redish-shade-background:#000000d4;
+      --border-thin:1px solid #302c2c76;
+      --body-font-grey-shade:#cccccc;
+      --empty-list-font:#ffffffda;
+      --window-controllers-icon-font:#333333b2;
+      /* input {
+        color: white;
+      } */
+      
+    }
+
+    .popMenu{
+      /* box-shadow:0 0 20px #ffffffcc; */
+      border-right: var(--border-thin);
+      background-color: var(--body-backGround);
+      
+    }
+    .popMenu .menu-item a span{
+      background-color: inherit;
+    }

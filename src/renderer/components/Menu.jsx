@@ -9,6 +9,7 @@ import { BsWindowSidebar } from "react-icons/bs";
 import { IoBookmarksOutline, IoClose } from "react-icons/io5";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
+import '../css/theme.css';
 
 const menuItems = () => [
   {
@@ -92,7 +93,7 @@ const Menu = ({ menu, setMenu}) => {
    
   }
   return (
-    <div id="menu" className={`${menu && "open"}`}>
+    <div id="menu" className={`${menu && "open"} popMenu`}>
       <div id="closeMenu"><span id="closeMenuSpan" onClick={handleCloseThreeButtonMenu}>X</span> </div>
       <ul id="menu-list">{renderItems}</ul>
     </div>

@@ -1,11 +1,15 @@
+@import './theme.css';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color:var(--body-backGround-transparent); ;
 }
+
 body {
   font-family: Lucida Grande, Arial, sans-serif;
-  background-color: transparent;
+  background-color: var(--body-backGround-transparent);
 }
 body::-webkit-scrollbar {
   width: 0px;
@@ -30,6 +34,7 @@ webview {
 }
 
 .top-bar {
+  background-color: var(--body-backGround-transparent);
   position: absolute;
   top: 0;
   left: 0;
@@ -44,7 +49,7 @@ webview {
 }
 
 .top-bar button {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--top-bar-button-bg);
   width: 11px;
   height: 11px;
   border-radius: 50%;
@@ -70,6 +75,8 @@ webview {
   color: rgba(255, 255, 255, 0.7);
 }
 #app-sidebar {
+  background-color: var(--body-backGround-transparent);
+  color: var(--body-font-color);
   -webkit-app-region: no-drag;
   position: relative;
   border-radius: inherit;
@@ -97,10 +104,14 @@ webview {
 #app-sidebar #controllers #window-controllers {
   display: flex;
   align-items: center;
+  
 }
 
 #app-sidebar.toggled-sidebar #window-controllers {
   flex-direction: column;
+}
+.window-controllers-icon {
+  color: var(--body-font-grey-shade);
 }
 
 #app-sidebar #controllers #toggle-btn {
@@ -126,14 +137,14 @@ webview {
 }
 #app-sidebar #navigation-controllers button {
   font-size: 16px;
-  color: rgba(51, 51, 51, 0.67);
+  color: var(--body-font-grey-shade);
   cursor: pointer;
   transition: 0.3s;
 }
 
 #menu-button {
   margin: 0 5px;
-  color: rgba(51, 51, 51, 0.67);
+  color: var(--body-font-grey-shade);
   cursor: pointer;
   font-size: 18px;
 }
@@ -141,13 +152,13 @@ webview {
 #menu {
   width: 225px;
   border-radius: 7px;
-  background-color: #fff;
+  background-color:var( --body-backGround);
   position: absolute;
   top: 30px;
   left: 0;
   transform: scale(0, 0);
   transition: 0.3s;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 7px var( --body-font-grey-shade);
   z-index: 100000;
 }
 #closeMenu{
@@ -176,7 +187,7 @@ webview {
   align-items: center;
   padding: 14px 25px;
   cursor: pointer;
-  color: #485261;
+  color: var( --body-font-color);
   font-size: 16px;
 }
 #menu .menu-item a {
@@ -184,7 +195,7 @@ webview {
   align-items: center;
   padding: 14px 25px;
   cursor: pointer;
-  color: #485261;
+  color: var( --body-font-color);
   font-size: 16px;
 }
 #menu .menu-item button span {
@@ -195,7 +206,7 @@ webview {
 }
 
 #menu .menu-item:hover {
-  background-color: rgba(211, 211, 211, 0.205);
+  opacity: 0.6;
 }
 
 #menu.open {
@@ -349,11 +360,20 @@ input {
 #bookmark-btn {
   margin: 0 5px;
   cursor: pointer;
-  color: rgba(51, 51, 51, 0.637);
+  color: var(--body-font-grey-shade);
 }
 #bookmark-btn.active {
   color: gold !important;
 }
+
+.bookmark-star-color{
+ color: var(--body-font-grey-shade);
+}
+
+.bookmark-star-color-active{
+  color: gold;
+ }
+
 #root #app-sidebar.toggled-sidebar #bookmark-btn {
   margin: 10px 0;
 }
