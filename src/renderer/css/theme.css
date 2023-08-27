@@ -10,6 +10,7 @@
     --redish-shade-background:#f2f2f2;
     --accent-color:#e87874;
     --accent-color-hover:#e87874;
+    --accent-color-reversed:black;
     --white-shadow-border:none;
     --active-tab-bg:#ffffff4b;
     --empty-list-font:#1b274b;
@@ -25,6 +26,7 @@
       --root-background-grad-2:#333333ab;
       --top-bar-button-bg:white;
       --accent-color-hover:#562b29;
+      --accent-color-reversed:#e87874;
       --body-backGround:#000000d4;
       --body-font-color:#ffffffda;
       --body-backGround-transparent:#000000d4;

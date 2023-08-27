@@ -267,7 +267,7 @@ webview {
 
 /* Track */
 #root #tabs #actual-tabs::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--body-backGround-transparent);
 }
 
 /* Handle */
@@ -326,15 +326,17 @@ input {
   width: 80%;
   margin: 15px;
   animation: slide-up 0.1s;
+  background-color: transparent;
 }
 
 .tab .close {
   cursor: pointer;
   font-size: 10px;
-  padding: 8px 3px;
+  padding: 8px 3px; 
+  color: var(--accent-color-reversed);
 }
 .active-tab {
-  background-color: #ffffff4b;
+  background-color: var( --active-tab-bg);
 }
 #webviews-container {
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
