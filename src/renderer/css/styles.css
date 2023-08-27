@@ -316,6 +316,7 @@ input {
 .tab img {
   width: 18px;
   height: 18px;
+  background-color: transparent;
 }
 
 .tab p {
@@ -328,7 +329,9 @@ input {
   animation: slide-up 0.1s;
   background-color: transparent;
 }
-
+.tab button svg{
+  background-color: transparent;
+}
 .tab .close {
   cursor: pointer;
   font-size: 10px;
@@ -382,14 +385,20 @@ input {
   width: 20px;
   height: 20px;
   animation: loading 0.2s infinite;
+  background-color: transparent;
 }
 
+.loading-indicator svg {
+  background-color: transparent;
+}
 @keyframes loading {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg); 
+    background-color: transparent;
   }
   100% {
     transform: rotate(360deg);
+    background-color: transparent;
   }
 }
 #savePasswordDialog {
