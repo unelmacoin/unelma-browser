@@ -64,10 +64,18 @@ webview {
 .top-bar #window-controls-close {
   background-color: #ff5a52;
 }
+.top-bar #window-controls-close svg ,
+.top-bar #window-controls-unmaximize svg,
+.top-bar #window-controls-maximize svg,
+.top-bar #window-controls-minimize svg
+{
+  background-color: transparent;
+}
 .top-bar #window-controls-unmaximize,
 .top-bar #window-controls-maximize {
   background-color: #51c23a;
 }
+
 .top-bar #window-controls-minimize {
   background-color: #e7c039;
 }
