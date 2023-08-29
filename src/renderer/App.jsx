@@ -89,7 +89,7 @@ const App = () => {
   useEffect(() => {
     const storedTheme = localStorage.getItem('theme');
     if (storedTheme) {
-      document.querySelector('body').setAttribute('data-theme', storedTheme);
+      document.querySelector('#root').setAttribute('data-theme', storedTheme);
     }
   }, []);
 

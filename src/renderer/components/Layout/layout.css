@@ -12,4 +12,5 @@
   -webkit-app-region: drag;
   -webkit-user-select: none;
   user-select: none;
+  transition: ease all 2s;
 }

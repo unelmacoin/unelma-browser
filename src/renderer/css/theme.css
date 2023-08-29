@@ -23,7 +23,7 @@
     [data-theme="dark"]{
       --root-background:black;
       --root-background-grad-1:#7e7d7e;
-      --root-background-grad-2:#333333ab;
+      --root-background-grad-2:#252525;
       --top-bar-button-bg:white;
       --accent-color-hover:#562b29;
       --accent-color-reversed:#e87874;
@@ -36,15 +36,10 @@
       --empty-list-font:#ffffffda;
       --window-controllers-icon-font:#333333b2;
       --search-location-container:#a49a9ad7;
-      --search-location-container-bg:#33333321;
-      /* input {
-        color: white;
-      } */
-      
+      --search-location-container-bg:#33333321;    
     }
 
     .popMenu{
-      /* box-shadow:0 0 20px #ffffffcc; */
       border-right: var(--border-thin);
       background-color: var(--body-backGround);
       

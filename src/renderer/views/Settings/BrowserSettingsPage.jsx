@@ -7,7 +7,7 @@ const BrowserSettingsPage = () => {
   const toggleTheme = (e) => {
     const newTheme = e.target.checked ? "dark" : "light";
     console.log(newTheme);
-    document.querySelector("body").setAttribute("data-theme", newTheme);
+    document.querySelector("#root").setAttribute("data-theme", newTheme);
 
     setDarkMode(newTheme);
     window.localStorage.setItem("theme", newTheme);
@@ -16,7 +16,7 @@ const BrowserSettingsPage = () => {
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
-      document.querySelector("body").setAttribute("data-theme", storedTheme);
+      document.querySelector("#root").setAttribute("data-theme", storedTheme);
       setDarkMode(storedTheme);
     }
   }, []);
@@ -24,7 +24,7 @@ const BrowserSettingsPage = () => {
   const saveSettings = () => {
     window.localStorage.setItem(
       "theme",
-      document.body.getAttribute("data-theme")
+      document.querySelector("#root").getAttribute("data-theme")
     );
     new Notification("Settings saved", {
       body: "Your settings have been saved successfully.",
