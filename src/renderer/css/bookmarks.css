@@ -19,7 +19,6 @@
 
 #categories-list {
   width: 100%;
-  color: ;
 }
 #bookmarks .category {
   display: flex;
@@ -66,4 +65,7 @@ h4 {
   font-weight: bold;
   font-size: 13px;
   width: 100px;
+}
+.item-url-links{
+  color: var( --body-font-color);
 }

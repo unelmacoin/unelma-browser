@@ -64,3 +64,6 @@ h4 {
   width: 100px;
   color: #646464;
 }
+.item-url-links{
+  color: var( --body-font-color);
+}

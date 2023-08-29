@@ -30,7 +30,7 @@ const History = ({  searchHistory, searchHistoryDispatcher }) => {
       <li key={id} className="item">
         <div className="item-content">
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
-          <button
+          <button className="item-url-links"
             onClick={() => {
                window.api.send(mergeChannel(ADD_VIEW, window.id), {
                  id: uniqid(),
