@@ -42,7 +42,7 @@ const History = ({  searchHistory, searchHistoryDispatcher }) => {
             {url.length > 40 ? `${url.slice(0, 40)}...` : url}
           </button>
         </div>
-        <button
+        <button className="item-url-links"
           onClick={() => {
             searchHistoryDispatcher({
               type: REMOVE_SEARCH_HISTORY,

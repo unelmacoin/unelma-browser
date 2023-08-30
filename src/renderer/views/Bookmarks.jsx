@@ -38,7 +38,7 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
             {url.length > 40 ? `${url.slice(0, 40)}...` : url}
           </button>
         </div>
-        <button
+        <button className="item-url-links"
           onClick={() => {
             bookmarksDispatcher({
               type: REMOVE_BOOKMARK,
