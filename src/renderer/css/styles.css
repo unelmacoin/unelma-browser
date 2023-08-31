@@ -412,33 +412,33 @@ input {
 #savePasswordDialog {
   display: flex;
   position: absolute;
-  background-color: white;
+  background-color: var(  --whiteAndBlack);
   padding: 20px;
   border-radius: 7px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0 0 10px -5px #000;
+  box-shadow: 0 0 10px -5px var(--top-bar-button-bg);
   left: 10px;
   top: 30px;
   width: 250px;
   z-index: 10000;
 }
 #savePasswordDialog h2 {
-  color: #485261;
+  color: var( --body-font-colors);
   padding: 10px;
   margin-bottom: 10px;
 }
 #savePasswordDialog input {
   width: 100%;
   padding: 10px 15px;
-  border: 1px solid lightgray;
+  border: 1px solid var(--redish-shade-background);
   border-radius: inherit;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--body-font-grey-shade);
 }
 #savePasswordDialog input::placeholder {
-  color: rgb(177, 176, 176);
+  color: #b1b0b0;
   text-transform: capitalize;
 }
 #savePasswordDialog button {
@@ -453,6 +453,8 @@ input {
 #savePasswordDialog button#never {
   color: #e87874;
   background-color: #fff;
+  box-shadow: 0 0 1px 1px var(--body-font-color);
+
 }
 @keyframes slide-up {
   0% {
