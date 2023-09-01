@@ -1,11 +1,15 @@
+@import './theme.css';
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color:var(--body-backGround-transparent); ;
 }
+
 body {
   font-family: Lucida Grande, Arial, sans-serif;
-  background-color: transparent;
+  background-color: var(--body-backGround-transparent);
 }
 body::-webkit-scrollbar {
   width: 0px;
@@ -30,6 +34,7 @@ webview {
 }
 
 .top-bar {
+  background-color: var(--body-backGround-transparent);
   position: absolute;
   top: 0;
   left: 0;
@@ -44,7 +49,7 @@ webview {
 }
 
 .top-bar button {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: var(--top-bar-button-bg);
   width: 11px;
   height: 11px;
   border-radius: 50%;
@@ -59,10 +64,18 @@ webview {
 .top-bar #window-controls-close {
   background-color: #ff5a52;
 }
+.top-bar #window-controls-close svg ,
+.top-bar #window-controls-unmaximize svg,
+.top-bar #window-controls-maximize svg,
+.top-bar #window-controls-minimize svg
+{
+  background-color: transparent;
+}
 .top-bar #window-controls-unmaximize,
 .top-bar #window-controls-maximize {
   background-color: #51c23a;
 }
+
 .top-bar #window-controls-minimize {
   background-color: #e7c039;
 }
@@ -70,6 +83,8 @@ webview {
   color: rgba(255, 255, 255, 0.7);
 }
 #app-sidebar {
+  background-color: var(--body-backGround-transparent);
+  color: var(--body-font-color);
   -webkit-app-region: no-drag;
   position: relative;
   border-radius: inherit;
@@ -97,10 +112,14 @@ webview {
 #app-sidebar #controllers #window-controllers {
   display: flex;
   align-items: center;
+  
 }
 
 #app-sidebar.toggled-sidebar #window-controllers {
   flex-direction: column;
+}
+.window-controllers-icon {
+  color: var(--body-font-grey-shade);
 }
 
 #app-sidebar #controllers #toggle-btn {
@@ -126,14 +145,14 @@ webview {
 }
 #app-sidebar #navigation-controllers button {
   font-size: 16px;
-  color: rgba(51, 51, 51, 0.67);
+  color: var(--body-font-grey-shade);
   cursor: pointer;
   transition: 0.3s;
 }
 
 #menu-button {
   margin: 0 5px;
-  color: rgba(51, 51, 51, 0.67);
+  color: var(--body-font-grey-shade);
   cursor: pointer;
   font-size: 18px;
 }
@@ -141,13 +160,13 @@ webview {
 #menu {
   width: 225px;
   border-radius: 7px;
-  background-color: #fff;
+  background-color:var( --body-backGround);
   position: absolute;
   top: 30px;
   left: 0;
   transform: scale(0, 0);
   transition: 0.3s;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 7px var( --body-font-grey-shade);
   z-index: 100000;
 }
 #closeMenu{
@@ -170,32 +189,30 @@ webview {
   justify-content: center;
   cursor: pointer;
 }
-#menu .menu-item button {
+#menu .menu-item button,
+#menu .menu-item a  {
   width:100%;
   display: flex;
   align-items: center;
   padding: 14px 25px;
   cursor: pointer;
-  color: #485261;
+  color: var( --body-font-color);
   font-size: 16px;
 }
-#menu .menu-item a {
-  display: flex;
-  align-items: center;
-  padding: 14px 25px;
-  cursor: pointer;
-  color: #485261;
-  font-size: 16px;
-}
-#menu .menu-item button span {
-  margin-left: 10px;
-}
+
+#menu .menu-item button span,
 #menu .menu-item a span {
   margin-left: 10px;
 }
 
-#menu .menu-item:hover {
-  background-color: rgba(211, 211, 211, 0.205);
+#menu-list .menu-item:hover,
+#menu-list .menu-item:hover * {
+  background-color: var(--accent-color-hover);
+}
+
+#menu-list .menu-item:hover {
+  margin-right: 1rem;
+  border-radius: 20px 20px 20px 0 !important; 
 }
 
 #menu.open {
@@ -219,16 +236,16 @@ webview {
 #root #app-sidebar #location-form input {
   width: 100%;
   padding: 10px;
-  background-color: rgba(51, 51, 51, 0.13);
+  background-color: var(--search-location-container-bg);
   border-radius: 8px;
   font-size: 13px;
-  color: rgba(51, 51, 51, 0.699);
+  color: var(--search-location-container);
 }
 #root #app-sidebar .location-container button {
   padding: 10px;
   border-radius: 8px;
   font-size: 13px;
-  color: rgba(51, 51, 51, 0.699);
+  color: var(--search-location-container);
   cursor: pointer;
 }
 .location-container {
@@ -238,7 +255,7 @@ webview {
   width: 100%;
 }
 #root #app-sidebar #location-form input::placeholder {
-  color: #333333b2;
+  color: var(--search-location-container);
   font-size: 13px;
 }
 #root #tabs {
@@ -258,12 +275,12 @@ webview {
 
 /* Track */
 #root #tabs #actual-tabs::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--body-backGround-transparent);
 }
 
 /* Handle */
 #root #tabs #actual-tabs::-webkit-scrollbar-thumb {
-  background: rgba(51, 51, 51, 0.349);
+  background: var(--body-font-grey-shade);
 }
 
 #root #tabs #add-tab {
@@ -271,7 +288,7 @@ webview {
   text-align: start;
   padding: 10px;
   margin: 15px 0;
-  color: rgba(51, 51, 51, 0.637);
+  color: var( --search-location-container);
   cursor: pointer;
 }
 
@@ -307,6 +324,7 @@ input {
 .tab img {
   width: 18px;
   height: 18px;
+  background-color: transparent;
 }
 
 .tab p {
@@ -317,15 +335,19 @@ input {
   width: 80%;
   margin: 15px;
   animation: slide-up 0.1s;
+  background-color: transparent;
 }
-
+.tab button svg{
+  background-color: transparent;
+}
 .tab .close {
   cursor: pointer;
   font-size: 10px;
-  padding: 8px 3px;
+  padding: 8px 3px; 
+  color: var(--accent-color-reversed);
 }
 .active-tab {
-  background-color: rgba(255, 255, 255, 0.295);
+  background-color: var( --active-tab-bg);
 }
 #webviews-container {
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
@@ -349,11 +371,20 @@ input {
 #bookmark-btn {
   margin: 0 5px;
   cursor: pointer;
-  color: rgba(51, 51, 51, 0.637);
+  color: var(--body-font-grey-shade);
 }
 #bookmark-btn.active {
   color: gold !important;
 }
+
+.bookmark-star-color{
+ color: var(--body-font-grey-shade);
+}
+
+.bookmark-star-color-active{
+  color: gold;
+ }
+
 #root #app-sidebar.toggled-sidebar #bookmark-btn {
   margin: 10px 0;
 }
@@ -362,46 +393,52 @@ input {
   width: 20px;
   height: 20px;
   animation: loading 0.2s infinite;
+  background-color: transparent;
 }
 
+.loading-indicator svg {
+  background-color: transparent;
+}
 @keyframes loading {
   0% {
-    transform: rotate(0deg);
+    transform: rotate(0deg); 
+    background-color: transparent;
   }
   100% {
     transform: rotate(360deg);
+    background-color: transparent;
   }
 }
 #savePasswordDialog {
   display: flex;
   position: absolute;
-  background-color: white;
+  background-color: var(  --whiteAndBlack);
   padding: 20px;
   border-radius: 7px;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  box-shadow: 0 0 10px -5px #000;
+  box-shadow: 0 0 10px -5px var(--top-bar-button-bg);
   left: 10px;
   top: 30px;
   width: 250px;
   z-index: 10000;
 }
 #savePasswordDialog h2 {
-  color: #485261;
+  color: var( --body-font-colors);
   padding: 10px;
   margin-bottom: 10px;
 }
 #savePasswordDialog input {
   width: 100%;
   padding: 10px 15px;
-  border: 1px solid lightgray;
+  border: 1px solid var(--redish-shade-background);
   border-radius: inherit;
   margin-bottom: 10px;
-  color: #333;
+  color: var(--body-font-grey-shade);
 }
 #savePasswordDialog input::placeholder {
-  color: rgb(177, 176, 176);
+  color: #b1b0b0;
   text-transform: capitalize;
 }
 #savePasswordDialog button {
@@ -416,6 +453,8 @@ input {
 #savePasswordDialog button#never {
   color: #e87874;
   background-color: #fff;
+  box-shadow: 0 0 1px 1px var(--body-font-color);
+
 }
 @keyframes slide-up {
   0% {

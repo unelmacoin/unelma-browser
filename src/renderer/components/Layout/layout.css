@@ -1,15 +1,16 @@
 #root {
   position: relative;
-  background: rgb(193, 194, 250);
+  background: var(--root-background);
   background: linear-gradient(
     90deg,
-    rgba(193, 194, 250, 1) 0%,
-    rgba(221, 220, 224, 1) 52%,
-    rgba(240, 240, 178, 1) 100%
+    var(--root-background) 0%,
+    var(--root-background-grad-1) 52%,
+    var( --root-background-grad-2) 100%
   );
   border-radius: 7px;
   padding: 40px 10px 10px;
   -webkit-app-region: drag;
   -webkit-user-select: none;
   user-select: none;
+  transition: ease all 2s;
 }

@@ -6,5 +6,5 @@
    z-index: 1000000;
 }
 .backward-btn a{
-  color: #333;
+  color: var(--search-location-container);
 }

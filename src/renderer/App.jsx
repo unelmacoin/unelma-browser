@@ -86,6 +86,13 @@ const App = () => {
     if (menu === true) setMenu(false);
   };
 
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      document.querySelector('#root').setAttribute('data-theme', storedTheme);
+    }
+  }, []);
+
   return (
     <div onClick={handleCloseThreeButtonMenu}>
       <Router>

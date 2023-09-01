@@ -92,7 +92,7 @@ const SiteData = ({
           );
    
       } else {
-        new Notification("Deletion cancelled");
+        new Notification("Confirmation Value Error");
       }
     } else {
       new Notification("Make a selection to Delete");

@@ -26,7 +26,7 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
       <li key={id} className="item">
         <div className="item-content">
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
-          <button
+          <button className="item-url-links"
             onClick={() => {
               window.api.send(mergeChannel(ADD_VIEW, window.id), {
                 id: uniqid(),
@@ -38,7 +38,7 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
             {url.length > 40 ? `${url.slice(0, 40)}...` : url}
           </button>
         </div>
-        <button
+        <button className="item-url-links"
           onClick={() => {
             bookmarksDispatcher({
               type: REMOVE_BOOKMARK,

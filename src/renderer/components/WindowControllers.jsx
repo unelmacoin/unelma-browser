@@ -23,9 +23,9 @@ const WindowControllers = ({
     <div id="window-controllers">
       <button id="toggle-btn" onClick={handleClick}>
         {openSidebar ? (
-          <TbLayoutSidebarRightExpand color="#333333b2" fontSize="25" />
+          <TbLayoutSidebarRightExpand className="window-controllers-icon" fontSize="25" />
         ) : (
-          <TbLayoutSidebarLeftExpand color="#333333b2" fontSize="25" />
+          <TbLayoutSidebarLeftExpand className="window-controllers-icon" fontSize="25" />
         )}
       </button>
     </div>
