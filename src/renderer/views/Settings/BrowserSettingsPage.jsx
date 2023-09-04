@@ -3,6 +3,7 @@ import "./settings.css";
 
 const BrowserSettingsPage = () => {
   const [darkMode, setDarkMode] = useState("light");
+  const [showNotification, setShowNotification] = useState(false);
 
   const toggleTheme = (e) => {
     const newTheme = e.target.checked ? "dark" : "light";
@@ -15,9 +16,14 @@ const BrowserSettingsPage = () => {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
+    const notifySetting = localStorage.getItem('notify')
     if (storedTheme) {
       document.querySelector("#root").setAttribute("data-theme", storedTheme);
       setDarkMode(storedTheme);
+    }
+    if (notifySetting)
+    {
+      setShowNotification(notifySetting)
     }
   }, []);
 
@@ -26,17 +32,30 @@ const BrowserSettingsPage = () => {
       "theme",
       document.querySelector("#root").getAttribute("data-theme")
     );
+    window.localStorage.setItem('notify', showNotification)
     new Notification("Settings saved", {
       body: "Your settings have been saved successfully.",
     });
   };
+  
+  const toggleNotification = (e) =>
+  {
+if (e.target.checked === true ){
+  setShowNotification(true)
+}
+else{
+  setShowNotification(false)
+}
+
+  }
   return (
     <div className="settings-page">
       <h2>Browser Settings</h2>
       <div className="setting-controls">
         <div className="setting-option">
           <label htmlFor="notifications">Enable Notifications:</label>
-          <input type="checkbox" id="notifications" />
+          <input type="checkbox" id="notifications" checked = {showNotification}
+          onChange={toggleNotification} />
         </div>
         <div className="setting-option">
           <label htmlFor="darkMode">Dark Mode:</label>
