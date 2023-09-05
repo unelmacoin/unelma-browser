@@ -7,23 +7,20 @@ const BrowserSettingsPage = () => {
 
   const toggleTheme = (e) => {
     const newTheme = e.target.checked ? "dark" : "light";
-    console.log(newTheme);
     document.querySelector("#root").setAttribute("data-theme", newTheme);
 
     setDarkMode(newTheme);
     window.localStorage.setItem("theme", newTheme);
   };
-
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
-    const notifySetting = localStorage.getItem('notify')
+    const notifySetting = JSON.parse(localStorage.getItem("notify"));
     if (storedTheme) {
       document.querySelector("#root").setAttribute("data-theme", storedTheme);
       setDarkMode(storedTheme);
     }
-    if (notifySetting)
-    {
-      setShowNotification(notifySetting)
+    if (notifySetting) {
+      setShowNotification(notifySetting);
     }
   }, []);
 
@@ -32,30 +29,27 @@ const BrowserSettingsPage = () => {
       "theme",
       document.querySelector("#root").getAttribute("data-theme")
     );
-    window.localStorage.setItem('notify', showNotification)
+    window.localStorage.setItem("notify", JSON.stringify(showNotification));
     new Notification("Settings saved", {
       body: "Your settings have been saved successfully.",
     });
   };
-  
-  const toggleNotification = (e) =>
-  {
-if (e.target.checked === true ){
-  setShowNotification(true)
-}
-else{
-  setShowNotification(false)
-}
 
-  }
+  const toggleNotification = (e) => {
+    setShowNotification(e.target.checked);
+  };
   return (
     <div className="settings-page">
       <h2>Browser Settings</h2>
       <div className="setting-controls">
         <div className="setting-option">
           <label htmlFor="notifications">Enable Notifications:</label>
-          <input type="checkbox" id="notifications" checked = {showNotification}
-          onChange={toggleNotification} />
+          <input
+            type="checkbox"
+            id="notifications"
+            checked={showNotification}
+            onChange={toggleNotification}
+          />
         </div>
         <div className="setting-option">
           <label htmlFor="darkMode">Dark Mode:</label>
