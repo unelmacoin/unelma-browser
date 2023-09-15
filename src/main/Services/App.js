@@ -17,6 +17,7 @@ import {
 const fs = require("fs");
 const path = require("path");
 const Store = require("electron-store");
+const os = require('os');
 const store = new Store();
 export class App {
   windows;
@@ -96,6 +97,32 @@ export class App {
     ipcMain.on(CREATE_WINDOW, () => {
       addWindow();
     });
+
+    ipcMain.handle('clear-cache-and-cookies', () => {
+      let appDataPath;
+    
+      switch (process.platform) {
+        case 'darwin':
+          appDataPath = path.join(os.homedir(), 'Library/Application Support/Unelma_Browser/');
+          break;
+        case 'win32':
+          appDataPath = path.join(os.homedir(), 'AppData/Local/Unelma_Browser/');
+          break;
+        case 'linux':
+          appDataPath = path.join(os.homedir(), '.config/Unelma_Browser/');
+          break;
+        default:
+          console.log('Platform not supported');
+          return;
+      }
+       console.log(appDataPath)
+      const cachePath = path.join(appDataPath, 'Cache');
+      const cookiesPath = path.join(appDataPath, 'Cookies');
+    
+      fs.rmdirSync(cachePath, { recursive: true });
+      fs.unlinkSync(cookiesPath);
+    });
+  
   }
   addWindow(id) {
     const window = new MainWindow(id);
@@ -106,4 +133,5 @@ export class App {
     currentWindow?.close();
     this.windows = this.windows.filter((win) => win.id !== id);
   }
+
 }

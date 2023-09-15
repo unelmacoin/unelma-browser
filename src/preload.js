@@ -19,6 +19,9 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
+  clearCacheAndCookies: () => {
+    ipcRenderer.invoke('clear-cache-and-cookies');
+  },
 });
 window.addEventListener("load", () => {
   const commonInputnames = /user|email|login|phone/;
