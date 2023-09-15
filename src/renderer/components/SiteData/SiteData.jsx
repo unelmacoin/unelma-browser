@@ -157,7 +157,6 @@ const SiteData = ({
           <input
             type="checkbox"
             value="cacheData"
-            // checked={clearCacheChecked}
             onChange={handleOptionChange}
           />
           Clear Cache / Cookies
