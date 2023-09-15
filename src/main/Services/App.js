@@ -119,8 +119,13 @@ export class App {
       const cachePath = path.join(appDataPath, 'Cache');
       const cookiesPath = path.join(appDataPath, 'Cookies');
     
-      fs.rmdirSync(cachePath, { recursive: true });
-      fs.unlinkSync(cookiesPath);
+      try {
+        fs.rmSync(cachePath, { recursive: true, force: true });
+        fs.unlinkSync(cookiesPath);
+        return 'Cache and cookies cleared successfully';
+      } catch (error) {
+        throw new Error('Failed to clear cache and cookies: ' + error.message);
+      }
     });
   
   }

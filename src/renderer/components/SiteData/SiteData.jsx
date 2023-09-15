@@ -160,7 +160,7 @@ const SiteData = ({
             // checked={clearCacheChecked}
             onChange={handleOptionChange}
           />
-          clear Cache / browse data
+          Clear Cache / Cookies
         </label>
       </div>
       <br />
