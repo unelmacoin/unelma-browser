@@ -17,6 +17,7 @@ const SiteData = ({
   const smalltalk = require("smalltalk");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [duration, setDuration] = useState("");
+
   const handleOptionChange = (e) => {
     const optionValue = e.target.value;
     if (e.target.checked) {
@@ -83,6 +84,14 @@ const SiteData = ({
                 }
 
                 break;
+                case "cacheData":
+                  try {
+                    const result = await window.api.clearCacheAndCookies();
+                    console.log(result); 
+                  } catch (error) {
+                    console.error(error); 
+                  }
+                  break;
               default:
                 break;
             }
@@ -142,6 +151,15 @@ const SiteData = ({
             onChange={handleOptionChange}
           />
           Bookmarks
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            value="cacheData"
+            onChange={handleOptionChange}
+          />
+          Clear Cache / Cookies
         </label>
       </div>
       <br />
