@@ -40,26 +40,6 @@ export class App {
     });
 
     app.whenReady().then(() => {
-
-     
-      
-      //  dialog.showMessageBox({
-      //     type: 'question',
-      //     buttons: ['Yes', 'No'],
-      //     title: 'Restore Session',
-      //     message: 'Do you want to restore your previous session?',
-      //     defaultId: 0,
-      //     cancelId: 1
-      //   }).then(async (response) => {
-      //     if (response.response === 0) {
-      //      await resetWindowTabs(windowId);
-      //  await  resetAllTabs(windowId)
-      
-      //     }
-          
-      //   })
-      
-
       const updateUnelmaBrowser = require('update-electron-app');
 
       updateUnelmaBrowser({
