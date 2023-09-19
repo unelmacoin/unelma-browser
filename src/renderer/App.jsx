@@ -22,6 +22,7 @@ import {
   GET_LOGIN_INFO,
   GET_SEARCH_HISTORY,
   mergeChannel,
+  RESET_ALL_TABS,
   WINDOW_READY,
 } from "../constants/global/channels";
 
@@ -36,16 +37,41 @@ const App = () => {
   const [passwords, passwordsDispatch] = useReducer(passwordsReducer, []);
   const [loginDialogInfo, setLoginDialogInfo] = useState();
   const [menu, setMenu] = useState(false);
+  let initLoad = 0;
   useEffect(() => {
-    window.api.receive(WINDOW_READY, (id) => {
+    window.api.receive(WINDOW_READY, async (id) => {
       window.id = id;
-      window.api.receive(mergeChannel(GET_CURRENT_TABS, id), (tabs) => {
-        tabsDispatch({
-          type: SET_TABS,
-          payload: {
-            tabs,
-          },
-        });
+      window.api.receive(mergeChannel(GET_CURRENT_TABS, id), async (tabs) => {
+        console.log("initaload value found", initLoad);
+        if (initLoad !== 0) {
+          console.log("not the first init load", initLoad);
+          tabsDispatch({
+            type: SET_TABS,
+            payload: {
+              tabs,
+            },
+          });
+        } else {
+          try {
+            const result = await window.api.openDialog();
+            if (result.response === 0) {
+              tabsDispatch({
+                type: "SET_TABS",
+                payload: {
+                  tabs,
+                },
+              });
+              console.log("restore all tab done", initLoad);
+            } else if (result.response === 1) {
+              await window.api.send(RESET_ALL_TABS, id);
+              console.log("reset all tab done", initLoad);
+              console.log("no");
+            }
+          } catch (error) {
+            console.error("Error displaying dialog:", error);
+          }
+        }
+        initLoad = 1;
       });
       window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
@@ -87,9 +113,9 @@ const App = () => {
   };
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem('theme');
+    const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
-      document.querySelector('#root').setAttribute('data-theme', storedTheme);
+      document.querySelector("#root").setAttribute("data-theme", storedTheme);
     }
   }, []);
 
