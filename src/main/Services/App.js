@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, session, globalShortcut } = require("electron");
+const { app, BrowserWindow, ipcMain, session, globalShortcut, dialog } = require("electron");
 import { getTabsWindows, resetAllTabs } from "../controllers/tabs";
 import { ContextMenu } from "./ContextMenu";
 import { MainWindow } from "./MainWindow";
@@ -40,7 +40,6 @@ export class App {
     });
 
     app.whenReady().then(() => {
-
       const updateUnelmaBrowser = require('update-electron-app');
 
       updateUnelmaBrowser({
@@ -127,7 +126,15 @@ export class App {
         throw new Error('Failed to clear cache and cookies: ' + error.message);
       }
     });
-  
+    ipcMain.on('open-dialog', async (event) => {
+      const result = await dialog.showMessageBox({
+        type: 'question',
+        message: 'Do you want to restore your previous session?',
+        buttons: ['Yes', 'No']
+      });
+    
+      event.sender.send('dialog-closed', result);
+    });
   }
   addWindow(id) {
     const window = new MainWindow(id);
