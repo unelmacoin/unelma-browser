@@ -27,25 +27,59 @@ export class App {
     this.windows = [];
     let addWindow = this.addWindow.bind(this);
     let closeWindow = this.closeWindow.bind(this);
-    let mainWindow;
 
-    function createWindow() {
-      mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
-        webPreferences: {
-          nodeIntegration: true
-        }
-      });
+    // app.on("ready", function () {
+    //   // new BrowserWindow();
 
-      const menuTemplate = template;
-       
-      const menu = Menu.buildFromTemplate(menuTemplate);
-      Menu.setApplicationMenu(menu);
-    }
+    //   const menuTemplate = [
+    //     {
+    //       label: "Help",
+    //       submenu: [
+    //         {
+    //           label: "Get Help",
+    //           click: () => {
+    //             shell.openExternal("https://unelmasupport.com")
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   ]
 
-    app.on("ready", createWindow);
+    //   const menu = Menu.buildFromTemplate(menuTemplate);
+    //   Menu.setApplicationMenu(menu)
+    // });
+    ////////////////////////////
+    // let mainWindow;
 
+    // function createWindow() {
+    //   mainWindow = new BrowserWindow({
+    //     width: 800,
+    //     height: 600,
+    //     webPreferences: {
+    //       nodeIntegration: true
+    //     }
+    //   });
+
+    //   const menuTemplate = [
+    //     {
+    //       role: "Help",
+    //       submenu: [
+    //         {
+    //           label: "Get Help",
+    //           click: () => {
+    //             shell.openExternal("https://unelmasupport.com")
+    //           }
+    //         }
+    //       ]
+    //     }
+    //    ]
+    
+    //   const menu = Menu.buildFromTemplate(menuTemplate);
+    //   Menu.setApplicationMenu(menu);
+    // }
+
+    // app.on("ready", createWindow);
+// //////////////////////////////
     app.on("web-contents-created", function (_, contents) {
       
       if (contents.getType() === "browserView") {

@@ -14,7 +14,6 @@ import {
   REMOVE_FROM_SEARCH_HISTORY,
   RESET_ALL_TABS,
 } from "../../constants/global/channels";
-import { template } from "./TopBarMenu";
 import { create } from "domain";
 const fs = require("fs");
 const path = require("path");
@@ -27,6 +26,28 @@ export class App {
     this.windows = [];
     let addWindow = this.addWindow.bind(this);
     let closeWindow = this.closeWindow.bind(this);
+
+    // app.on("ready", function () {
+    //   // new BrowserWindow();
+
+    //   const menuTemplate = [
+    //     {
+    //       label: "Help",
+    //       submenu: [
+    //         {
+    //           label: "Get Help",
+    //           click: () => {
+    //             shell.openExternal("https://unelmasupport.com")
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   ]
+
+    //   const menu = Menu.buildFromTemplate(menuTemplate);
+    //   Menu.setApplicationMenu(menu)
+    // });
+
     let mainWindow;
 
     function createWindow() {
@@ -37,12 +58,24 @@ export class App {
           nodeIntegration: true
         }
       });
+    }
 
-      const menuTemplate = template;
-       
+       const menuTemplate = [
+        {
+          label: "Help",
+          submenu: [
+            {
+              label: "Get Help",
+              click: () => {
+                shell.openExternal("https://unelmasupport.com")
+              }
+            }
+          ]
+        }
+       ]
+    
       const menu = Menu.buildFromTemplate(menuTemplate);
       Menu.setApplicationMenu(menu);
-    }
 
     app.on("ready", createWindow);
 
@@ -159,7 +192,5 @@ export class App {
     currentWindow?.close();
     this.windows = this.windows.filter((win) => win.id !== id);
   }
-
-  
 
 }
