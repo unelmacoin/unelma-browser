@@ -22,6 +22,14 @@ contextBridge.exposeInMainWorld("api", {
   clearCacheAndCookies: () => {
     ipcRenderer.invoke('clear-cache-and-cookies');
   },
+  openDialog: async () => {
+    ipcRenderer.send('open-dialog');
+    return new Promise(resolve => {
+      ipcRenderer.once('dialog-closed', (event, result) => {
+        resolve(result);
+      });
+    });
+  },
 });
 window.addEventListener("load", () => {
   const commonInputnames = /user|email|login|phone/;
