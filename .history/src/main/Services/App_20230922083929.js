@@ -1,4 +1,4 @@
-const { Menu, app, BrowserWindow, ipcMain, session, globalShortcut } = require("electron");
+const { Menu, shell, app, BrowserWindow, ipcMain, session, globalShortcut } = require("electron");
 import { getTabsWindows, resetAllTabs } from "../controllers/tabs";
 import { ContextMenu } from "./ContextMenu";
 import { MainWindow } from "./MainWindow";
