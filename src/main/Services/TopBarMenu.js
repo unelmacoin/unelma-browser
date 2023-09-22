@@ -1,5 +1,4 @@
-const { app, Menu } = require('electron')
-
+const { app } = require('electron');
 const isMac = process.platform === 'darwin'
 
 export const template = [
@@ -94,6 +93,7 @@ export const template = [
         click: async () => {
           const { shell } = require('electron')
           await shell.openExternal('https://unelmasupport.com')
+          
         }
       }
     ]
