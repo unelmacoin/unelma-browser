@@ -4,3 +4,4 @@ dist/
 .webpack/
 .env
 .vscode
+.history
