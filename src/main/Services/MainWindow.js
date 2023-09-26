@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, session } from "electron";
+import { app,BrowserWindow, ipcMain, session } from "electron";
 import {
   ACTIVATE_VIEW,
   ADD_VIEW,
@@ -43,8 +43,7 @@ export class MainWindow {
   window;
   views;
   isToggled;
-
-  constructor(id) {
+  constructor(id, initialUrl) {
     this.views = [];
     this.isToggled = false;
     this.window = new BrowserWindow({
@@ -169,25 +168,25 @@ export class MainWindow {
       this.window.setMenu(null);
       this.window.maximize();
       const windowTabs = getWindowTabs(this.window.windowId);
-      if (windowTabs.length === 0) {
-        this.addView({
-          url: UNELMA_DEFAULT_URL,
-          parentWindow: this.window,
-          isActive: true,
-          id: uniqid(),
-          isToggled: this.isToggled,
-        });
-      } else {
-        windowTabs.forEach((tab) => {
+        if (windowTabs.length === 0) {
           this.addView({
-            url: tab.url,
+            url: !initialUrl ? UNELMA_DEFAULT_URL : initialUrl, // Loads custom link if given a paremeter otherwise loads, default url.
             parentWindow: this.window,
-            isActive: tab.active,
-            id: tab.id,
+            isActive: true,
+            id: uniqid(),
             isToggled: this.isToggled,
           });
-        });
-      }
+        } else {
+          windowTabs.forEach((tab) => {
+            this.addView({
+              url: tab.url,
+              parentWindow: this.window,
+              isActive: tab.active,
+              id: tab.id,
+              isToggled: this.isToggled,
+            });
+          });
+        }
       session.defaultSession.webRequest.onSendHeaders(
         { urls: ["https://*/*"] },
         function (details) {
@@ -229,7 +228,7 @@ export class MainWindow {
     }
   }
   addView(props) {
-    if(this.window) {
+    if (this.window) {
       this.views.forEach((v) => v?.deActive());
       const view = new View(props);
       this.views.push(view);
@@ -270,17 +269,17 @@ export class MainWindow {
           time: new Date(Date.now()),
         });
 
-    this.send(GET_SEARCH_HISTORY, getSearchHistory());
-    });
-    view?.contents?.addListener("did-frame-finish-load", (e) => {
-      finishLoading(e);
-    });
-    view?.contents?.setWindowOpenHandler(({ url }) => {
-      this.addView({
-        url,
-        parentWindow: this.window,
-        id: uniqid(),
-        isToggled: this.isToggled,
+        this.send(GET_SEARCH_HISTORY, getSearchHistory());
+      });
+      view?.contents?.addListener("did-frame-finish-load", (e) => {
+        finishLoading(e);
+      });
+      view?.contents?.setWindowOpenHandler(({ url }) => {
+        this.addView({
+          url,
+          parentWindow: this.window,
+          id: uniqid(),
+          isToggled: this.isToggled,
         });
         return { action: "deny" };
       });
@@ -303,18 +302,15 @@ export class MainWindow {
       this.close();
     }
     const view = this.views.find((elm) => elm.id === id);
-    let  newActiveView; 
-    if(view && view.isActive){
-      if(this.isFirst(id)){
-newActiveView = this.getNextView(id)
+    let newActiveView;
+    if (view && view.isActive) {
+      if (this.isFirst(id)) {
+        newActiveView = this.getNextView(id);
+      } else {
+        newActiveView = this.getPrevView(id);
       }
-      else{
-newActiveView =this.getPrevView(id)
-      }
-    }
-    else 
-    {
-      newActiveView = null
+    } else {
+      newActiveView = null;
     }
     newActiveView?.active(!this.isToggled);
     this.setViews(this.views.filter((elm) => elm.id !== id));
