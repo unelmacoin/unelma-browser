@@ -116,8 +116,12 @@ export class View {
     });
   }
   loadURL(url) {
-    this.contents.loadURL(url);
-    this.url = url;
+    try {
+      this.contents.loadURL(url);
+      this.url = url;
+    } catch (error) {
+      console.error(error);
+    }
   }
   // destroy() {
   //   this.contents.destroy();
