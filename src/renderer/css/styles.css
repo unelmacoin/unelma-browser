@@ -260,8 +260,7 @@ webview {
   top: 85%;
   left: 0;
   width: 100%;
-  border: 1px solid #f0f0f0;
-  background: #fffef3;
+  background: #d2d7df;
   padding: 1rem;
   border-radius: 8px;
   box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
@@ -311,7 +310,6 @@ webview {
   padding: 0 1rem;
   transition: all 0.3s ease;
   border-radius: 8px;
-  border-bottom: 1px solid #99999926;
 }
 
 .list-image {

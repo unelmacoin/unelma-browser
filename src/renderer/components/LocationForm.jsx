@@ -3,7 +3,7 @@ import { GO_TO_LOCATION, mergeChannel } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { UPDATE_ACTIVE_TAB } from "../../constants/renderer/actions";
 import { handleSearch } from "../utils/handleSearch";
-import SearchList from "./SearchList.jsx";
+import { useSelector } from "react-redux";
 
 const LocationForm = ({ tabsDispatch, tabs }) => {
   const activeTabURL = tabs.find((tab) => tab.active)?.url;
@@ -15,6 +15,9 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
       setShowSearchList(true);
     } else setShowSearchList(false);
   };
+
+  const items = useSelector((item) => state.searchHistory);
+  console.log(items);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,9 +38,9 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
     setLocation("");
   };
 
-  const handleClose = () => {
-    setShowSearchList(false);
-  };
+  // const handleClose = () => {
+  //   setShowSearchList(false);
+  // };
   return (
     <div className="location-container">
       <form id="location-form" onSubmit={handleSubmit}>
@@ -50,7 +53,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
           placeholder={location ? "" : "Search with Google or enter address…"}
         />
       </form>
-      {showSearchList && <SearchList handleClose={handleClose} />}
+      {/* {showSearchList && <SearchList handleClose={handleClose} />} */}
     </div>
   );
 };
