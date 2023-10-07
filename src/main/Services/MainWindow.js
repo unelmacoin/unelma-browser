@@ -287,43 +287,57 @@ export class MainWindow {
     }
   }
   activeView(id) {
-    this.views.forEach((view) => view?.deActive());
-    this.views.find((view) => view.id === id)?.active(!this.isToggled);
-    this.sendTabs();
+    try {
+      const view = this.views.find((view) => view?.id === id);
+      if (view) {
+        this.views.forEach((view) => view?.deActive());
+        view.active(!this.isToggled);
+        this.sendTabs();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   removeView(id) {
-    if (
-      this.window &&
-      this.views.length === 1 &&
-      !this.window.isDestroyed() &&
-      this.window.isClosable()
-    ) {
-      setTabs([], this.window.windowId);
-      this.close();
-    }
-    const view = this.views.find((elm) => elm.id === id);
-    let newActiveView;
-    if (view && view.isActive) {
-      if (this.isFirst(id)) {
-        newActiveView = this.getNextView(id);
+    try {
+      if (
+        !this.window ||
+        this.views.length !== 1 ||
+        this.window.isDestroyed() ||
+        !this.window.isClosable()
+      ) {
+        const view = this.views.find((elm) => elm?.id === id);
+        const newActiveView = view?.isActive
+          ? this.isFirst(id)
+            ? this.getNextView(id)
+            : this.getPrevView(id)
+          : null;
+        newActiveView?.active(!this.isToggled);
+        this.setViews(this.views.filter((elm) => elm?.id !== id));
+        this.window?.removeBrowserView(view?.view);
+        view?.destroy();
+        this.sendTabs();
       } else {
-        newActiveView = this.getPrevView(id);
+        setTabs([], this.window.windowId);
+        this.close();
       }
-    } else {
-      newActiveView = null;
+    } catch (error) {
+      console.error(error);
     }
-    newActiveView?.active(!this.isToggled);
-    this.setViews(this.views.filter((elm) => elm.id !== id));
-    this.window?.removeBrowserView(view.view);
-    view?.destroy();
-    this.sendTabs();
   }
   setViews(views) {
     this.views = views;
   }
   goToLocation(url) {
-    this.views.find((v) => v.isActive).loadURL(url);
-    this.sendTabs();
+    try {
+      const activeView = this.views.find((v) => v?.isActive);
+      if (activeView) {
+        activeView.loadURL(url);
+        this.sendTabs();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   getViews() {
     return this.views;
@@ -340,8 +354,8 @@ export class MainWindow {
     return this.views[0].id === id;
   }
   mapViews() {
-    return this.views.map(
-      ({ id, url, isActive, parentWindow, loading, title, fail }) => ({
+    try {
+      return this.views.map(({ id, url, isActive, parentWindow, loading, title, fail }) => ({
         id,
         url,
         active: isActive,
@@ -349,16 +363,24 @@ export class MainWindow {
         title,
         loading,
         fail,
-      })
-    );
+      }));
+    } catch (error) {
+      console.error(error);
+      return [];
+    }
   }
   reOrderViews(tabs) {
-    const newOrderedList = tabs.map((id) =>
-      this.views.find((v) => v.id === id)
-    );
-    this.setViews(newOrderedList);
-    this.sendTabs();
+    try {
+      const newOrderedList = tabs.map((id) =>
+        this.views.find((v) => v?.id === id)
+      );
+      this.setViews(newOrderedList);
+      this.sendTabs();
+    } catch (error) {
+      console.error(error);
+    }
   }
+  
   hideAllViews() {
     this.views.forEach((view) => view.hide());
   }
