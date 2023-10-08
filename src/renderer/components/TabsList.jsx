@@ -81,7 +81,7 @@ const TabsList = ({ tabs, tabsDispatch }) => {
             </div>
           )}
         </Droppable>
-      </DragDropContext>      
+      </DragDropContext>
     </div>
   );
 };

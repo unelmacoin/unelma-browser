@@ -257,19 +257,22 @@ webview {
 /* Starts -- Search suggestion */
 .suggestion-container {
   position: absolute;
-  top: 85%;
+  top: 80%;
   left: 0;
   width: 100%;
-  background: #d2d7df;
-  padding: 1rem;
+  min-width: 200px;
+  background: var(--whiteAndBlack);
+  color: var(--body-font-color);
+  padding: 12px;
+  font-size: 14px;
   border-radius: 8px;
-  box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.1);
-  z-index: 100;
-  animation: height 1s ease-in-out;
+  box-shadow: 0 0 1px 1px #ffffff84;
+  z-index: 999;
+  animation: opacity 1s ease-in-out;
   overflow: hidden;
 }
 
-@keyframes height {
+@keyframes opacity {
   0% {
     opacity: 0;
   }
@@ -285,16 +288,9 @@ webview {
   margin-bottom: 1rem;
 }
 
-.btn-container__close-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #999;
-  transition: all 0.3s ease;
-}
-
-.btn-container__close-btn:hover {
-  background-color: #e8e8e8;
+.btn-container__close-btn img {
+  filter: invert(var(--invert));
+  background-color: transparent;
 }
 
 .suggestion-container__list ul {
@@ -305,41 +301,36 @@ webview {
 
 .suggestion-container__list ul li {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  padding: 0 1rem;
+  gap: 1rem;
   transition: all 0.3s ease;
+  padding: 16px 12px;
   border-radius: 8px;
 }
 
-.list-image {
-  flex: 0;
-  filter: invert(0.5);
-  transition: all 0.5s ease;
+.historyicon {
+  background-color: transparent;
+  filter: invert(var(--invert));
 }
 
 .list-link {
-  flex: 1;
-  padding: 1rem;
-  color: #333;
+  display: block;
+  flex-grow: 1;
+  color: var(--body-font-color);
+  height: 100%;
+  width: 100%;
+  background: transparent;
 }
 
 .suggestion-container__list ul li:hover {
-  background: purple;
-  color: #333;
+  background-color: #99999933;
 }
 
-.suggestion-container__list ul li:hover > .list-image {
-  filter: invert();
+.hide {
+  display: none;
 }
 
-.suggestion-container__list ul li:hover > .list-image:nth-child(3) {
-  transform: translateX(5px);
-}
-
-.suggestion-container__list ul li:hover > .list-link {
-  color: #fff;
-}
 /* Ends -- Search Suggestion ********/
 
 #root #app-sidebar #location-form input::placeholder {

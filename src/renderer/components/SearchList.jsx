@@ -1,63 +1,83 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import earth from "../../img/earth-icon.png";
-import rightArrow from "../../img/arrow-right-icon.png";
+import React, { useEffect, useReducer } from "react";
+import { GET_SEARCH_HISTORY } from "../../constants/global/channels";
+import { SET_SEARCH_HISTORY } from "../../constants/renderer/actions";
+import HistoryList from "./HistoryList.jsx";
 import close from "../../img/close-icon.png";
+import searchHistoryReducer from "../reducers/searchHistoryReducer";
 
 const SearchList = ({ handleClose }) => {
-  const searchHistory = useSelector((state) => state.searchHistory);
-  console.log(searchHistory);
+  const [searchHistory, searchHistoryDispatcher] = useReducer(
+    searchHistoryReducer,
+    []
+  );
 
-  // const searchHistory = [
-  //   { id: 1, url: "sample url", website: "sample website" },
-  //   { id: 1, url: "sample url", website: "sample website" },
-  //   { id: 1, url: "sample url", website: "sample website" },
-  // ];
+  const getSearchHistory = async () => {
+    try {
+      await window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
+        searchHistoryDispatcher({
+          type: SET_SEARCH_HISTORY,
+          payload: {
+            searchHistory: searchHistoryVal,
+          },
+        });
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const renderHistoryList = (items) =>
-    items.map(({ id, url, website }) => (
-      <li key={id}>
-        <img
-          className="list-image"
-          src={earth}
-          alt="earth icon"
-          width={20}
-          height={20}
-          aria-disabled
-        />
-        <a className="list-link" href={url} target="_blank noreferer">
-          {website}
-        </a>
-        <img
-          className="list-image"
-          src={rightArrow}
-          alt="right arrow icon"
-          aria-disabled
-          width={20}
-          height={20}
-        />
-      </li>
-    ));
+  useEffect(() => {
+    getSearchHistory();
+  }, []);
+
+  // Get url hostname
+  const parsedUrl = (url) => {
+    const link = new URL(url);
+    let hostName = link.hostname;
+    hostName = hostName.replace(/^https?:\/\//, "");
+    return hostName;
+  };
+
+  // Getting top 3 urls
+  const urlOccurrences = {};
+  //counting url ocurrences for each url
+  searchHistory.forEach((search) => {
+    const url = search.url;
+    urlOccurrences[url] = (urlOccurrences[url] || 0) + 1;
+  });
+
+  searchHistory.sort((a, b) => urlOccurrences[b.url] - urlOccurrences[a.url]);
+  const top3urls = Object.entries(urlOccurrences)
+    .sort(([, countA], [, countB]) => countB - countA)
+    .slice(0, 3)
+    .map(([url]) => url);
 
   return (
-    <div className="suggestion-container">
-      <div className="btn-container">
-        <p style={{ fontWeight: "bold", paddingLeft: "1rem" }}>Top Searches</p>
-        <button className="btn-container__close-btn" onClick={handleClose}>
-          <img
-            src={close}
-            alt="close icon"
-            width={20}
-            height={20}
-            aria-label="close icon"
-          />
-        </button>
-      </div>
-
-      <div className="suggestion-container__list">
-        <ul>{renderHistoryList(searchHistory)}</ul>
-      </div>
-    </div>
+    searchHistory.length > 0 && (
+      <>
+        <div className="btn-container">
+          <p style={{ fontWeight: "bold", paddingLeft: "1rem" }}>
+            Top Searches
+          </p>
+          <button className="btn-container__close-btn" onClick={handleClose}>
+            <img
+              src={close}
+              alt="close icon"
+              width={20}
+              height={20}
+              aria-label="close icon"
+            />
+          </button>
+        </div>
+        <div className="suggestion-container__list">
+          <ul>
+            {top3urls.map((url, i) => (
+              <HistoryList key={i} item={url} parsedUrl={parsedUrl} />
+            ))}
+          </ul>
+        </div>
+      </>
+    )
   );
 };
 
