@@ -11,15 +11,17 @@ const SearchList = ({ handleClose }) => {
     []
   );
 
-  const getSearchHistory = async () => {
+  const getSearchHistory = () => {
     try {
-      await window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
+      window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
           type: SET_SEARCH_HISTORY,
           payload: {
             searchHistory: searchHistoryVal,
           },
         });
+        // Set searchHistory to local storage.
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistoryVal));
       });
     } catch (error) {
       console.log(error);
@@ -28,6 +30,17 @@ const SearchList = ({ handleClose }) => {
 
   useEffect(() => {
     getSearchHistory();
+    // fetch search history from the local storage -- if available.
+    const savedSearchHistory = localStorage.getItem("searchHistory");
+    if (savedSearchHistory) {
+      const parsedSearchHistory = JSON.parse(savedSearchHistory);
+      searchHistoryDispatcher({
+        type: SET_SEARCH_HISTORY,
+        payload: {
+          searchHistory: parsedSearchHistory,
+        },
+      });
+    }
   }, []);
 
   // Get url hostname
@@ -45,7 +58,7 @@ const SearchList = ({ handleClose }) => {
     const url = search.url;
     urlOccurrences[url] = (urlOccurrences[url] || 0) + 1;
   });
-
+  // Sorting according to ocurrences
   searchHistory.sort((a, b) => urlOccurrences[b.url] - urlOccurrences[a.url]);
   const top3urls = Object.entries(urlOccurrences)
     .sort(([, countA], [, countB]) => countB - countA)
