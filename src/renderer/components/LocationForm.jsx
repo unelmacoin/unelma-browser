@@ -42,7 +42,12 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
 
   return (
     <div className="location-container">
-      <form id="location-form" onSubmit={handleSubmit}>
+      <form
+        id="location-form"
+        onSubmit={handleSubmit}
+        onMouseEnter={() => setShowSearchList(true)}
+        onMouseLeave={() => setShowSearchList(false)}
+      >
         <input
           id="location-input"
           type="text"
@@ -51,16 +56,18 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
           onFocus={handleFocusChange}
           placeholder={location ? "" : "Search with Google or enter address…"}
         />
+        <div
+          className={`suggestion-container ${!showSearchList ? "hide" : " "}`}
+        >
+          {
+            <SearchList
+              handleClose={handleCloseSearchList}
+              tabsDispatch={tabsDispatch}
+              setShowSearchList={() => setShowSearchList(false)}
+            />
+          }
+        </div>
       </form>
-      <div className={`suggestion-container ${!showSearchList ? "hide" : " "}`}>
-        {
-          <SearchList
-            handleClose={handleCloseSearchList}
-            tabsDispatch={tabsDispatch}
-            setShowSearchList={() => setShowSearchList(false)}
-          />
-        }
-      </div>
     </div>
   );
 };

@@ -257,7 +257,7 @@ webview {
 /* Starts -- Search suggestion */
 .suggestion-container {
   position: absolute;
-  top: 80%;
+  top: 100%;
   left: 0;
   width: 100%;
   min-width: 200px;
@@ -268,7 +268,7 @@ webview {
   border-radius: 8px;
   box-shadow: 0 0 1px 1px #ffffff84;
   z-index: 999;
-  animation: opacity 1s ease-in-out;
+  animation: opacity 0.5s ease-in-out;
   overflow: hidden;
 }
 
@@ -333,6 +333,10 @@ webview {
 }
 
 /* Ends -- Search Suggestion ********/
+
+#location-form {
+  position: relative;
+}
 
 #root #app-sidebar #location-form input::placeholder {
   color: var(--search-location-container);

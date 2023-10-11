@@ -1,9 +1,26 @@
 const { app } = require("electron");
 import { UNELMA_SUPPORT_URL } from "../../constants/global/urls";
 import { MainWindow } from "./MainWindow";
+import {
+  ADD_VIEW,
+  ADD_TAB,
+  mergeChannel,
+} from "../../constants/global/channels";
 
 const isMac = process.platform === "darwin";
 let mainWindow;
+
+const handleAddNewTab = (url) => {
+  const newTab = defaultTab(window.id, url);
+  window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
+  tabsDispatch({
+    type: ADD_TAB,
+    payload: {
+      tab: { ...newTab },
+    },
+  });
+  setShowSearchList(false);
+};
 
 export const template = [
   ...(isMac
