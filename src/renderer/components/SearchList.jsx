@@ -1,11 +1,17 @@
 import React, { useEffect, useReducer } from "react";
-import { GET_SEARCH_HISTORY } from "../../constants/global/channels";
+import {
+  GET_SEARCH_HISTORY,
+  ADD_VIEW,
+  ADD_TAB,
+  mergeChannel,
+} from "../../constants/global/channels";
 import { SET_SEARCH_HISTORY } from "../../constants/renderer/actions";
+import { defaultTab } from "../utils/tabs";
+import searchHistoryReducer from "../reducers/searchHistoryReducer";
 import HistoryList from "./HistoryList.jsx";
 import close from "../../img/close-icon.png";
-import searchHistoryReducer from "../reducers/searchHistoryReducer";
 
-const SearchList = ({ handleClose }) => {
+const SearchList = ({ handleClose, tabsDispatch, setShowSearchList }) => {
   const [searchHistory, searchHistoryDispatcher] = useReducer(
     searchHistoryReducer,
     []
@@ -29,7 +35,6 @@ const SearchList = ({ handleClose }) => {
   };
 
   useEffect(() => {
-    getSearchHistory();
     // fetch search history from the local storage -- if available.
     const savedSearchHistory = localStorage.getItem("searchHistory");
     if (savedSearchHistory) {
@@ -40,6 +45,8 @@ const SearchList = ({ handleClose }) => {
           searchHistory: parsedSearchHistory,
         },
       });
+    } else {
+      getSearchHistory();
     }
   }, []);
 
@@ -65,6 +72,18 @@ const SearchList = ({ handleClose }) => {
     .slice(0, 3)
     .map(([url]) => url);
 
+  const handleAddTab = (url) => {
+    const newTab = defaultTab(window.id, url);
+    window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
+    tabsDispatch({
+      type: ADD_TAB,
+      payload: {
+        tab: { ...newTab },
+      },
+    });
+    setShowSearchList(false);
+  };
+
   return (
     searchHistory.length > 0 && (
       <>
@@ -85,7 +104,12 @@ const SearchList = ({ handleClose }) => {
         <div className="suggestion-container__list">
           <ul>
             {top3urls.map((url, i) => (
-              <HistoryList key={i} item={url} parsedUrl={parsedUrl} />
+              <HistoryList
+                key={i}
+                item={url}
+                parsedUrl={parsedUrl}
+                handleAddTabClick={() => handleAddTab(url)}
+              />
             ))}
           </ul>
         </div>

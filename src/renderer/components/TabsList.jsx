@@ -22,7 +22,6 @@ const TabsList = ({ tabs, tabsDispatch }) => {
   };
   function handleOnDragEnd(result) {
     if (!result.destination) return;
-
     const items = Array.from(tabs);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);

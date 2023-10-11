@@ -25,6 +25,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
       mergeChannel(GO_TO_LOCATION, window.id),
       handleSearch(location)
     );
+    setShowSearchList(false); // Close search suggestions in url submit/search
   };
   useEffect(() => {
     setLocation(activeTabURL || UNELMA_DEFAULT_URL);
@@ -35,7 +36,7 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
     setShowSearchList(true);
   };
 
-  const handleClose = () => {
+  const handleCloseSearchList = () => {
     setShowSearchList(false);
   };
 
@@ -52,7 +53,13 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
         />
       </form>
       <div className={`suggestion-container ${!showSearchList ? "hide" : " "}`}>
-        {<SearchList handleClose={handleClose} />}
+        {
+          <SearchList
+            handleClose={handleCloseSearchList}
+            tabsDispatch={tabsDispatch}
+            setShowSearchList={() => setShowSearchList(false)}
+          />
+        }
       </div>
     </div>
   );
