@@ -1,10 +1,10 @@
-@import './theme.css';
+@import "./theme.css";
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color:var(--body-backGround-transparent); ;
+  background-color: var(--body-backGround-transparent);
 }
 
 body {
@@ -64,11 +64,10 @@ webview {
 .top-bar #window-controls-close {
   background-color: #ff5a52;
 }
-.top-bar #window-controls-close svg ,
+.top-bar #window-controls-close svg,
 .top-bar #window-controls-unmaximize svg,
 .top-bar #window-controls-maximize svg,
-.top-bar #window-controls-minimize svg
-{
+.top-bar #window-controls-minimize svg {
   background-color: transparent;
 }
 .top-bar #window-controls-unmaximize,
@@ -112,7 +111,6 @@ webview {
 #app-sidebar #controllers #window-controllers {
   display: flex;
   align-items: center;
-  
 }
 
 #app-sidebar.toggled-sidebar #window-controllers {
@@ -160,16 +158,16 @@ webview {
 #menu {
   width: 225px;
   border-radius: 7px;
-  background-color:var( --body-backGround);
+  background-color: var(--body-backGround);
   position: absolute;
   top: 30px;
   left: 0;
   transform: scale(0, 0);
   transition: 0.3s;
-  box-shadow: 0px 0px 7px var( --body-font-grey-shade);
+  box-shadow: 0px 0px 7px var(--body-font-grey-shade);
   z-index: 100000;
 }
-#closeMenu{
+#closeMenu {
   width: 100%;
   color: white;
   padding: 5px 5px 0 0;
@@ -178,25 +176,25 @@ webview {
   align-content: flex-end;
   flex-direction: row-reverse;
 }
-#closeMenuSpan{
+#closeMenuSpan {
   height: 30px;
   width: 30px;
   border-radius: 50%;
- background-color: #f47373;
- margin:1px;
+  background-color: #f47373;
+  margin: 1px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
 }
 #menu .menu-item button,
-#menu .menu-item a  {
-  width:100%;
+#menu .menu-item a {
+  width: 100%;
   display: flex;
   align-items: center;
   padding: 14px 25px;
   cursor: pointer;
-  color: var( --body-font-color);
+  color: var(--body-font-color);
   font-size: 16px;
 }
 
@@ -212,7 +210,7 @@ webview {
 
 #menu-list .menu-item:hover {
   margin-right: 1rem;
-  border-radius: 20px 20px 20px 0 !important; 
+  border-radius: 20px 20px 20px 0 !important;
 }
 
 #menu.open {
@@ -249,11 +247,97 @@ webview {
   cursor: pointer;
 }
 .location-container {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
+
+/* Starts -- Search suggestion */
+.suggestion-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  min-width: 200px;
+  background: var(--whiteAndBlack);
+  color: var(--body-font-color);
+  padding: 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 0 1px 1px #ffffff84;
+  z-index: 999;
+  animation: opacity 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.btn-container__close-btn img {
+  filter: invert(var(--invert));
+  background-color: transparent;
+}
+
+.suggestion-container__list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suggestion-container__list ul li {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  padding: 16px 12px;
+  border-radius: 8px;
+}
+
+.historyicon {
+  background-color: transparent;
+  filter: invert(var(--invert));
+}
+
+.list-link {
+  display: block;
+  flex-grow: 1;
+  color: var(--body-font-color);
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.suggestion-container__list ul li:hover {
+  background-color: #99999933;
+}
+
+.hide {
+  display: none;
+}
+
+/* Ends -- Search Suggestion ********/
+
+#location-form {
+  position: relative;
+}
+
 #root #app-sidebar #location-form input::placeholder {
   color: var(--search-location-container);
   font-size: 13px;
@@ -288,7 +372,7 @@ webview {
   text-align: start;
   padding: 10px;
   margin: 15px 0;
-  color: var( --search-location-container);
+  color: var(--search-location-container);
   cursor: pointer;
 }
 
@@ -337,17 +421,17 @@ input {
   animation: slide-up 0.1s;
   background-color: transparent;
 }
-.tab button svg{
+.tab button svg {
   background-color: transparent;
 }
 .tab .close {
   cursor: pointer;
   font-size: 10px;
-  padding: 8px 3px; 
+  padding: 8px 3px;
   color: var(--accent-color-reversed);
 }
 .active-tab {
-  background-color: var( --active-tab-bg);
+  background-color: var(--active-tab-bg);
 }
 #webviews-container {
   /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); */
@@ -377,13 +461,13 @@ input {
   color: gold !important;
 }
 
-.bookmark-star-color{
- color: var(--body-font-grey-shade);
+.bookmark-star-color {
+  color: var(--body-font-grey-shade);
 }
 
-.bookmark-star-color-active{
+.bookmark-star-color-active {
   color: gold;
- }
+}
 
 #root #app-sidebar.toggled-sidebar #bookmark-btn {
   margin: 10px 0;
@@ -401,7 +485,7 @@ input {
 }
 @keyframes loading {
   0% {
-    transform: rotate(0deg); 
+    transform: rotate(0deg);
     background-color: transparent;
   }
   100% {
@@ -412,7 +496,7 @@ input {
 #savePasswordDialog {
   display: flex;
   position: absolute;
-  background-color: var(  --whiteAndBlack);
+  background-color: var(--whiteAndBlack);
   padding: 20px;
   border-radius: 7px;
   justify-content: center;
@@ -425,7 +509,7 @@ input {
   z-index: 10000;
 }
 #savePasswordDialog h2 {
-  color: var( --body-font-colors);
+  color: var(--body-font-colors);
   padding: 10px;
   margin-bottom: 10px;
 }
@@ -454,7 +538,6 @@ input {
   color: #e87874;
   background-color: #fff;
   box-shadow: 0 0 1px 1px var(--body-font-color);
-
 }
 @keyframes slide-up {
   0% {

@@ -58,7 +58,7 @@ const Settings = ({
 
   return (
     <Layout>
-      <div class="settings">
+      <div className="settings">
         <SettingsSidebar
           activeItem={activeItem}
           setActiveItem={setActiveItem}
