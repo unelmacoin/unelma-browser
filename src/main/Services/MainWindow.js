@@ -59,7 +59,6 @@ export class MainWindow {
       minWidth: 1000,
       webPreferences: {
         nodeIntegration: true,
-
         devTools: true,
         contextIsolation: true,
         nodeIntegrationInSubFrames: true,
