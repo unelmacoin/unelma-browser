@@ -14,7 +14,7 @@ import {
   REMOVE_FROM_SEARCH_HISTORY,
   RESET_ALL_TABS,
 } from "../../constants/global/channels";
-import { template } from "./TopBarMenu";
+import {topBarMenuList} from "./TopBarMenu.js"
 const fs = require("fs");
 const path = require("path");
 const Store = require("electron-store");
@@ -28,8 +28,7 @@ export class App {
     let closeWindow = this.closeWindow.bind(this);
 
     function createWindow() {
-      const menuTemplate = template;
-      const menu = Menu.buildFromTemplate(menuTemplate);
+      const menu = Menu.buildFromTemplate(topBarMenuList);
       Menu.setApplicationMenu(menu);
     }
 
