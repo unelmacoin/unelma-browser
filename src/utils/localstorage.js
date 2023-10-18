@@ -2,24 +2,27 @@ export const setLocalStorage = (name, items) => {
     localStorage.setItem(name, JSON.stringify(items));
 }
 export const getLocalStorage = (name) => {
-    const data = JSON.parse(localStorage.getItem(name));
+    const data = JSON.parse(localStorage.getItem(name)) || {
+        initLoad:2,
+        dialIsOpen:true,
+    };
     if (Object.values(data).length > 0) {
         if (parseInt(data.initLoad) === 1) {
             localStorage.setItem(name, JSON.stringify({
-                "initLoad":"2",
-                "dialIsOpen":"true",
+                "initLoad":2,
+                "dialIsOpen":true,
             }));
             
             return {
-                "initLoad":"1",
-                "dialIsOpen":false,
+                initLoad:1,
+                dialIsOpen:false,
             };
         } 
         else
         {
             return {
-                    "initLoad":"2",
-                    "dialIsOpen":true,
+                    initLoad:2,
+                    dialIsOpen:true,
                 };
             
             }
@@ -27,12 +30,12 @@ export const getLocalStorage = (name) => {
     
     else {
         localStorage.setItem(name, JSON.stringify({
-            "initLoad":"3",
+            "initLoad":2,
             "dialIsOpen":true,
         }));
         return {
-            "initLoad":"3",
-            "dialIsOpen":true,
+            initLoad:2,
+            dialIsOpen:true,
         };
     }
 }
