@@ -9,6 +9,7 @@ import {
   MINIMIZE,
   UN_MAXIMIZE,
 } from "../../constants/global/channels";
+import { setLocalStorage } from "../../utils/localstorage";
 
 const TopBar = ({ menu, setMenu }) => {
   const [maximize, setMaximize] = useState(true);
@@ -24,6 +25,10 @@ const TopBar = ({ menu, setMenu }) => {
     window.api.send(MINIMIZE, window.id);
   };
   const handleClose = () => {
+    setLocalStorage('initValue',{
+      "initLoad":"1",
+      "dialIsOpen":"false",
+  })
     window.api.send(CLOSE_WINDOW, window.id);
   };
   useEffect(() => {

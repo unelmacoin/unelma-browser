@@ -16,6 +16,8 @@ import Bookmarks from "./views/Bookmarks.jsx";
 import History from "./views/History.jsx";
 import Settings from "./views/Settings/Settings.jsx";
 import {
+  CLOSE_WINDOW,
+  CREATE_WINDOW,
   GET_AUTH_INFO,
   GET_BOOKMARKS,
   GET_CURRENT_TABS,
@@ -25,6 +27,7 @@ import {
   RESET_ALL_TABS,
   WINDOW_READY,
 } from "../constants/global/channels";
+import { getLocalStorage } from "../utils/localstorage";
 
 const App = () => {
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -37,42 +40,55 @@ const App = () => {
   const [passwords, passwordsDispatch] = useReducer(passwordsReducer, []);
   const [loginDialogInfo, setLoginDialogInfo] = useState();
   const [menu, setMenu] = useState(false);
-  let initLoad = 0;
+  const initValue = getLocalStorage("initValue");
+  const [ref, setRef] = useState(1);
+  const initLoad = initValue.initLoad;
+  const dialIsOpen = initValue.dialIsOpen;
   useEffect(() => {
     window.api.receive(WINDOW_READY, async (id) => {
       window.id = id;
       window.api.receive(mergeChannel(GET_CURRENT_TABS, id), async (tabs) => {
-        console.log("initaload value found", initLoad);
-        if (initLoad !== 0) {
-          console.log("not the first init load", initLoad);
-          tabsDispatch({
-            type: SET_TABS,
-            payload: {
-              tabs,
-            },
-          });
-        } else {
-          try {
-            const result = await window.api.openDialog();
-            if (result.response === 0) {
+        try {
+          if (initLoad == 1 && dialIsOpen == false) {
+
+
+            if (initLoad == 1 && dialIsOpen == false) {
+              const result = await window.api.openDialog();
+              if (result.response === 1) {
+                await window.api.send(RESET_ALL_TABS, id);
+                window.api.send(CLOSE_WINDOW, window.id);
+                await window.api.send(CREATE_WINDOW);
+              } else  {
+                setRef(2);
+                window.location.reload();
+                tabsDispatch({
+                  type: "SET_TABS",
+                  payload: {
+                    tabs,
+                  },
+                });
+              }
+            } else {
               tabsDispatch({
                 type: "SET_TABS",
                 payload: {
                   tabs,
                 },
               });
-              console.log("restore all tab done", initLoad);
-            } else if (result.response === 1) {
-              await window.api.send(RESET_ALL_TABS, id);
-              console.log("reset all tab done", initLoad);
-              console.log("no");
             }
-          } catch (error) {
-            console.error("Error displaying dialog:", error);
+          } else {
+                       tabsDispatch({
+              type: "SET_TABS",
+              payload: {
+                tabs,
+              },
+            });
           }
+        } catch (error) {
+          console.error("please review the folllowng error:", error);
         }
-        initLoad = 1;
       });
+
       window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
         searchHistoryDispatcher({
           type: SET_SEARCH_HISTORY,
@@ -106,7 +122,9 @@ const App = () => {
           window.innerHeight + "px";
       });
     });
-  }, [openSidebar]);
+
+    // setLocalStorage('initValue',3)
+  }, [openSidebar, ref]);
 
   const handleCloseThreeButtonMenu = () => {
     if (menu === true) setMenu(false);

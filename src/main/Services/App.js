@@ -115,7 +115,7 @@ export class App {
           appDataPath = path.join(os.homedir(), 'Library/Application Support/Unelma_Browser/');
           break;
         case 'win32':
-          appDataPath = path.join(os.homedir(), 'AppData/Local/Unelma_Browser/');
+          appDataPath = path.join(os.homedir(), 'AppData/Local/electron/');
           break;
         case 'linux':
           appDataPath = path.join(os.homedir(), '.config/Unelma_Browser/');
@@ -124,13 +124,16 @@ export class App {
           console.log('Platform not supported');
           return;
       }
-       console.log(appDataPath)
       const cachePath = path.join(appDataPath, 'Cache');
       const cookiesPath = path.join(appDataPath, 'Cookies');
-    
+  
       try {
-        fs.rmSync(cachePath, { recursive: true, force: true });
-        fs.unlinkSync(cookiesPath);
+        if (fs.existsSync(cachePath)) {
+          fs.rmSync(cachePath, { recursive: true, force: true });
+        }
+        if (fs.existsSync(cookiesPath)) {
+          fs.unlinkSync(cookiesPath);
+        }
         return 'Cache and cookies cleared successfully';
       } catch (error) {
         throw new Error('Failed to clear cache and cookies: ' + error.message);
