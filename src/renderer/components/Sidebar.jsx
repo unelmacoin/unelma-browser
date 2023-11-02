@@ -17,19 +17,22 @@ const Sidebar = ({
   bookmarks,
   loginDialogInfo,
   setLoginDialogInfo,
-  setMenu ={setMenu},
-  menu={menu},
+  setMenu = { setMenu },
+  menu = { menu },
 }) => {
- 
-  
-     const renderSavePasswordDialog = () =>
-       loginDialogInfo && (
-         <SavePasswordDialog
-           info={loginDialogInfo}
-           setLoginDialogInfo={setLoginDialogInfo}
-          
-         />
-       );
+  const renderSavePasswordDialog = () =>
+    loginDialogInfo && (
+      <SavePasswordDialog
+        info={loginDialogInfo}
+        setLoginDialogInfo={setLoginDialogInfo}
+      />
+    );
+
+  const [sidebarWidth, setSidebarWidth] = useState(
+    openSidebar
+      ? `${window.innerWidth * 0.21}px`
+      : `${window.innerWidth * 0.02}px`
+  );
   useEffect(() => {
     window.addEventListener("resize", () => {
       document.getElementById("app-sidebar").style.width = openSidebar
@@ -37,16 +40,58 @@ const Sidebar = ({
         : `${window.innerWidth * 0.02}px`;
     });
   }, [openSidebar]);
+
+  const initResizeFunction = () => {
+    const resizer = document.querySelector("#resizer");
+    const sidebar = document.querySelector("#app-sidebar");
+
+    let x, initialWidth;
+
+    const mouseDownHandler = (e) => {
+      x = e.clientX;
+      initialWidth = parseInt(window.getComputedStyle(sidebar).width, 10);
+      console.log(initialWidth);
+
+      document.addEventListener("mousemove", mouseMoveHandler);
+      document.addEventListener("mouseup", mouseUpHandler);
+    };
+
+    const mouseMoveHandler = (e) => {
+      const dx = e.clientX - x;
+      let newWidth = initialWidth + dx;
+      const screenWidth = screen.innerWidth;
+      const minWidth = 180;
+      // Limit the minimum width
+      if (newWidth < minWidth) {
+        newWidth = minWidth;
+      } else if (newWidth > screenWidth) {
+        newWidth = screenWidth;
+      }
+
+      setSidebarWidth(`${newWidth}px`);
+    };
+
+    const mouseUpHandler = () => {
+      document.removeEventListener("mousemove", mouseMoveHandler);
+      document.removeEventListener("mouseup", mouseUpHandler);
+    };
+
+    resizer.addEventListener("mousedown", mouseDownHandler);
+  };
+
+  useEffect(() => {
+    initResizeFunction();
+  }, []);
+
   return (
     <div
       id="app-sidebar"
       className={`${!openSidebar && "toggled-sidebar"}`}
       style={{
-        width: openSidebar
-          ? `${window.innerWidth * 0.21}px`
-          : `${window.innerWidth * 0.02}px`,
+        width: sidebarWidth,
       }}
     >
+      <div id="resizer"></div>
       {renderSavePasswordDialog()}
       <div id="controllers">
         <MenuButton setMenu={setMenu} menu={menu} openSidebar={openSidebar} />
