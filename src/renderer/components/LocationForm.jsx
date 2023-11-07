@@ -25,49 +25,45 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
       mergeChannel(GO_TO_LOCATION, window.id),
       handleSearch(location)
     );
-    setShowSearchList(false); // Close search suggestions in url submit/search
+    setShowSearchList(false); // Close search suggestions in url submit/search **
   };
+
+  const handleInputFocus = () => {
+    setTimeout(() => {
+      setShowSearchList(true), 200;
+    });
+  };
+
+  const handleInputBlur = () => {
+    setTimeout(() => setShowSearchList(false), 200);
+  };
+
   useEffect(() => {
     setLocation(activeTabURL || UNELMA_DEFAULT_URL);
   }, [tabs]);
-
-  const handleFocusChange = () => {
-    setLocation("");
-    setShowSearchList(true);
-  };
-
-  const handleCloseSearchList = () => {
-    setShowSearchList(false);
-  };
 
   return (
     <div className="location-container">
       <form
         id="location-form"
         onSubmit={handleSubmit}
-        onMouseEnter={() => setShowSearchList(true)}
-        onMouseLeave={() => setShowSearchList(false)}
+        onClick={handleInputFocus}
+        onBlur={handleInputBlur}
       >
         <input
           id="location-input"
           type="text"
           value={location}
           onChange={handleChange}
-          onFocus={handleFocusChange}
           placeholder={location ? "" : "Search with Google or enter address…"}
         />
-        <div
-          className={`suggestion-container ${!showSearchList ? "hide" : " "}`}
-        >
-          {
-            <SearchList
-              handleClose={handleCloseSearchList}
-              tabsDispatch={tabsDispatch}
-              setShowSearchList={() => setShowSearchList(false)}
-            />
-          }
-        </div>
       </form>
+      <SearchList
+        handleClose={() => setShowSearchList(false)}
+        tabsDispatch={tabsDispatch}
+        setShowSearchList={() => setShowSearchList(false)}
+        showSearchList={showSearchList}
+      />
     </div>
   );
 };

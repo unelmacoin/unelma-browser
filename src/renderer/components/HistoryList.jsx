@@ -1,10 +1,9 @@
 import React from "react";
 import historyIcon from "../../img/history-icon.png";
 
-const HistoryList = ({ id, item, parsedUrl, handleAddTabClick }) => {
-
+const HistoryList = ({ item, parsedUrl, handleAddTabClick }) => {
   return (
-    <li key={id}>
+    <li>
       <img
         className="historyicon"
         src={historyIcon}
@@ -12,9 +11,9 @@ const HistoryList = ({ id, item, parsedUrl, handleAddTabClick }) => {
         height={20}
         width={20}
       />
-      <p className="list-link" onClick={() => handleAddTabClick(item)}>
+      <a className="list-link" onClick={() => handleAddTabClick(item)}>
         {parsedUrl(item)}
-      </p>
+      </a>
     </li>
   );
 };

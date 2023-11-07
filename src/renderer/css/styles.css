@@ -237,8 +237,21 @@ webview {
   background-color: var(--search-location-container-bg);
   border-radius: 8px;
   font-size: 13px;
+  font-family: inherit;
   color: var(--search-location-container);
 }
+
+#root #app-sidebar #location-form input:focus {
+  background-color: var(--whiteAndBlack);
+  font-size: 1rem;
+  border-radius: 0;
+  box-shadow: 0 0 1px 1px #ffffff84;
+}
+
+#root #app-sidebar #location-form input:focus + .suggestion-container {
+  border-radius: 0;
+}
+
 #root #app-sidebar .location-container button {
   padding: 10px;
   border-radius: 8px;
@@ -252,23 +265,24 @@ webview {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  z-index: 900;
 }
 
 /* Starts -- Search suggestion */
 .suggestion-container {
   position: absolute;
-  top: 100%;
+  top: 76%;
   left: 0;
   width: 100%;
   min-width: 200px;
   background: var(--whiteAndBlack);
   color: var(--body-font-color);
-  padding: 12px;
-  font-size: 14px;
-  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  border-top: 1px solid #eeeeee;
   box-shadow: 0 0 1px 1px #ffffff84;
   z-index: 999;
-  animation: opacity 0.5s ease-in-out;
+  animation: opacity 500ms ease-in-out;
   overflow: hidden;
 }
 
@@ -306,7 +320,6 @@ webview {
   gap: 1rem;
   transition: all 0.3s ease;
   padding: 16px 12px;
-  border-radius: 8px;
 }
 
 .historyicon {
