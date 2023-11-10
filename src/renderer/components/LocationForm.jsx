@@ -4,6 +4,7 @@ import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { UPDATE_ACTIVE_TAB } from "../../constants/renderer/actions";
 import { handleSearch } from "../utils/handleSearch";
 import SearchList from "./SearchList.jsx";
+import "../css/LocationForm.css";
 
 const LocationForm = ({ tabsDispatch, tabs }) => {
   const activeTabURL = tabs.find((tab) => tab.active)?.url;
@@ -29,13 +30,11 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
   };
 
   const handleInputFocus = () => {
-    setTimeout(() => {
-      setShowSearchList(true), 200;
-    });
+    setShowSearchList(true);
   };
 
   const handleInputBlur = () => {
-    setTimeout(() => setShowSearchList(false), 200);
+    setTimeout(() => setShowSearchList(false), 200); // Allows new tab loading before closing the dialog/historylist box
   };
 
   useEffect(() => {
@@ -44,17 +43,14 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
 
   return (
     <div className="location-container">
-      <form
-        id="location-form"
-        onSubmit={handleSubmit}
-        onClick={handleInputFocus}
-        onBlur={handleInputBlur}
-      >
+      <form id="location-form" onSubmit={handleSubmit}>
         <input
           id="location-input"
           type="text"
           value={location}
           onChange={handleChange}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
           placeholder={location ? "" : "Search with Google or enter address…"}
         />
       </form>

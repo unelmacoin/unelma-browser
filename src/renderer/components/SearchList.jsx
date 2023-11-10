@@ -10,6 +10,7 @@ import { defaultTab } from "../utils/tabs";
 import searchHistoryReducer from "../reducers/searchHistoryReducer";
 import HistoryList from "./HistoryList.jsx";
 import close from "../../img/close-icon.png";
+import "../css/SearchList.css";
 
 const SearchList = ({
   handleClose,

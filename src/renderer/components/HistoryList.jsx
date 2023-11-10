@@ -1,5 +1,6 @@
 import React from "react";
 import historyIcon from "../../img/history-icon.png";
+import "../css/HistoryList.css";
 
 const HistoryList = ({ item, parsedUrl, handleAddTabClick }) => {
   return (

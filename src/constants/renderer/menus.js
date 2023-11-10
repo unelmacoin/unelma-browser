@@ -6,7 +6,7 @@ import uniqid from "uniqid";
 export const settingsSidebarMenuItems = [
    {
     id: uniqid(),
-    label: "Setting",
+    label: "Settings",
     name:'setting',
     icon: (active) => (
       <FiSettings fontSize={20} color={active ? "#e87874" : "lightgray"} />
