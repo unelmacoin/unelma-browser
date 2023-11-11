@@ -86,7 +86,7 @@ const Menu = ({ menu, setMenu }) => {
             setMenu(false);
           }}
         >
-          <span>{icon}</span>
+          <span className="menu-icon">{icon}</span>
           <span>{label}</span>
         </button>
       </li>
