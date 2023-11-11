@@ -29,7 +29,8 @@ const LocationForm = ({ tabsDispatch, tabs }) => {
     setShowSearchList(false); // Close search suggestions in url submit/search **
   };
 
-  const handleInputFocus = () => {
+  const handleInputFocus = (e) => {
+    e.target.select(); // Selects url inside input
     setShowSearchList(true);
   };
 
