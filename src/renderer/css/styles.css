@@ -188,15 +188,23 @@ webview {
   background-color: #f47373;
 }
 
+#menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px 12px 12px; /* 0 at top because close button has given enough gap */
+}
+
 .menu-item-link {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   width: 100%;
   gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
   font-size: 1rem;
   font-family: inherit;
+  border-radius: 8px;
   color: var(--body-font-color);
 }
 .menu-item-link:hover,
@@ -205,9 +213,13 @@ webview {
   color: #fff;
 }
 
-#menu-list .menu-item:hover {
+.menu-icon {
+  font-size: 18px;
+}
+
+/* #menu-list .menu-item:hover {
   border-radius: 20px 20px 20px 0 !important;
-} 
+}  */
 
 #menu.open {
   transform: scale(1, 1);
@@ -217,9 +229,8 @@ webview {
   display: none;
 }
 
-/* Ends -- Search Suggestion ********/*/
-
-#location-form {
+/* Ends -- Search Suggestion ********/
+*/ #location-form {
   position: relative;
 }
 
