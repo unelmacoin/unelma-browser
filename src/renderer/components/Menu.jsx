@@ -17,7 +17,7 @@ import "../css/theme.css";
 const menuItems = () => [
   {
     label: "Bookmarks",
-    icon: <IoBookmarksOutline/>,
+    icon: <IoBookmarksOutline />,
     path: "/bookmarks",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));
@@ -25,7 +25,7 @@ const menuItems = () => [
   },
   {
     label: "History",
-    icon: <BiHistory/>,
+    icon: <BiHistory />,
     path: "/history",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));
@@ -33,28 +33,28 @@ const menuItems = () => [
   },
   {
     label: "New Window",
-    icon: <BsWindowSidebar/>,
+    icon: <BsWindowSidebar />,
     action: () => {
       window.api.send(CREATE_WINDOW);
     },
   },
   {
     label: "Close tabs",
-    icon: <IoClose/>,
+    icon: <IoClose />,
     action: () => {
       window.api.send((RESET_WINDOW_TABS, window.id));
     },
   },
   {
     label: "Clear all tabs",
-    icon: <AiOutlineClear/>,
+    icon: <AiOutlineClear />,
     action: () => {
       window.api.send(RESET_ALL_TABS, window.id);
     },
   },
   {
     label: "Settings",
-    icon: <FiSettings/>,
+    icon: <FiSettings />,
     path: "/settings",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));

@@ -190,6 +190,8 @@ webview {
 
 .menu-item-link {
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
   gap: 1rem;
   padding: 1rem 1.5rem;
