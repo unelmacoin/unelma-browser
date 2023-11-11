@@ -92,11 +92,11 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.4.0",
-    "react-router-dom": "^5.2.0",
+    "react-router-dom": "^6.2.0",
     "smalltalk": "^4.1.1",
     "style-loader": "^3.3.1",
     "uniqid": "^5.4.0",
-    "update-electron-app": "^2.0.1",
+    "update-electron-app": "^3.0.0",
     "url-loader": "^4.1.1",
     "v8-compile-cache": "^2.3.0"
   },
@@ -170,7 +170,7 @@
                 {
                   "html": "./src/index.html",
                   "js": "./src/renderer.js",
-                  "name": "unelma_browser",
+                  "name": "/unelma_browser",
                   "preload": {
                     "js": "./src/preload.js"
                   }

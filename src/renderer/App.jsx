@@ -1,5 +1,5 @@
 import React, { useEffect, useReducer, useState } from "react";
-import { HashRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import tabReducer from "./reducers/tabReducer";
 import {
   SET_BOOKMARKS,
@@ -130,18 +130,20 @@ const App = () => {
     if (menu === true) setMenu(false);
   };
 
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) {
-      document.querySelector("#root").setAttribute("data-theme", storedTheme);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedTheme = localStorage.getItem("theme");
+  //   if (storedTheme) {
+  //     console.log("???????????????????????//////////////////////////////////////////////// **********", document.getElementById("#root"))
+  //     document.querySelector("#root").setAttribute("data-theme", storedTheme);
+  //   }
+  // }, []);
 
   return (
     <div onClick={handleCloseThreeButtonMenu}>
       <Router>
-        <Route exact path="/">
-          <Home
+        <Routes>
+        <Route  path="/"
+         element={<Home
             loginDialogInfo={loginDialogInfo}
             setLoginDialogInfo={setLoginDialogInfo}
             tabsDispatch={tabsDispatch}
@@ -153,10 +155,10 @@ const App = () => {
             searchHistory={searchHistory}
             setMenu={setMenu}
             menu={menu}
-          ></Home>
-        </Route>
-        <Route exact path="/settings">
-          <Settings
+          />
+         }
+        />
+        <Route  path="/settings" element={ <Settings
             passwords={passwords}
             passwordsDispatch={passwordsDispatch}
             bookmarksDispatcher={bookmarksDispatcher}
@@ -164,21 +166,21 @@ const App = () => {
             searchHistory={searchHistory}
             searchHistoryDispatcher={searchHistoryDispatcher}
           />
-        </Route>
-        <Route exact path="/history">
-          <History
+        }
+        />
+        <Route  path="/history" element ={<History
             tabsDispatch={tabsDispatch}
             searchHistory={searchHistory}
             searchHistoryDispatcher={searchHistoryDispatcher}
-          />
-        </Route>
-        <Route exact path="/bookmarks">
-          <Bookmarks
+          />}
+        />
+        <Route  path="/bookmarks" element={<Bookmarks
             tabsDispatch={tabsDispatch}
             bookmarks={bookmarks}
             bookmarksDispatcher={bookmarksDispatcher}
+          />}
           />
-        </Route>
+          </Routes>
       </Router>
     </div>
   );
