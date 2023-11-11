@@ -5,3 +5,5 @@ dist/
 .env
 .vscode
 .history
+package-lock.json
+.gitignore
