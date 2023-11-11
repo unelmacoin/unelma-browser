@@ -36,12 +36,12 @@ const SiteData = ({
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      if (selectedOptions.length > 0 ) {
-      const confirmation = await smalltalk.prompt(
-        "Confirmation",
-        "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
-      );
-      if (confirmation === "DEL") {
+      if (selectedOptions.length > 0) {
+        const confirmation = await smalltalk.prompt(
+          "Confirmation",
+          "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
+        );
+        if (confirmation === "DEL") {
           for (let selectedOption of selectedOptions) {
             switch (selectedOption) {
               case "password":
@@ -84,14 +84,14 @@ const SiteData = ({
                 }
 
                 break;
-                case "cacheData":
-                  try {
-                    const result = await window.api.clearCacheAndCookies();
-                    console.log(result); 
-                  } catch (error) {
-                    console.error(error); 
-                  }
-                  break;
+              case "cacheData":
+                try {
+                  const result = await window.api.clearCacheAndCookies();
+                  console.log(result);
+                } catch (error) {
+                  console.error(error);
+                }
+                break;
               default:
                 break;
             }
@@ -99,13 +99,12 @@ const SiteData = ({
           new Notification(
             `${selectedOptions.join(", ").toString()} : Deleted`
           );
-   
+        } else {
+          new Notification("Confirmation Value Error");
+        }
       } else {
-        new Notification("Confirmation Value Error");
+        new Notification("Make a selection to Delete");
       }
-    } else {
-      new Notification("Make a selection to Delete");
-    }
     } catch (error) {
       console.log(error);
       new Notification("Deletion cancelled");
@@ -123,62 +122,63 @@ const SiteData = ({
   }
 
   return (
-    <div className="container">
-      <h2>Clear Browser Data</h2>
-      <div className="options">
-        <label>
+    <div className="browserData-container">
+      <h2 className="browserData-container__header">Clear Browser Data</h2>
+      <form className="options">
+        <div className="inputSet">
+          <label htmlFor="dltPassword">Delete Passwords</label>
           <input
+            name="dltPassword"
+            id="dltPassword"
             type="checkbox"
             value="password"
             onChange={handleOptionChange}
           />
-          Password
-        </label>
-        <br />
-        <label>
+        </div>
+        <div className="inputSet">
+          <label htmlFor="dltHistory">Delete History</label>
           <input
             type="checkbox"
             value="history"
             onChange={handleOptionChange}
           />
-          History
-        </label>
-        <br />
-        <label>
+        </div>
+        <div className="inputSet">
+          <label htmlFor="dltBookmarks">Delete Bookmarks</label>
           <input
+            name="dltBookmarks"
+            id="dltBookmarks"
             type="checkbox"
             value="bookmarks"
             onChange={handleOptionChange}
           />
-          Bookmarks
-        </label>
-        <br />
-        <label>
+        </div>
+        <div className="inputSet">
+          <label htmlFor="dltCache">Clear Cache/Cookies</label>
           <input
+            name="dltCache"
+            id="dltCache"
             type="checkbox"
             value="cacheData"
             onChange={handleOptionChange}
           />
-          Clear Cache / Cookies
-        </label>
-      </div>
-      <br />
-      <div className="duration">
-        <label>
-          Duration (in days) to delete (starts from today):
+        </div>
+        <div className="inputSet">
+          <label htmlFor="duration">
+            Choose duration in days, starting from today
+          </label>
           <input
             type="number"
             value={duration}
             onChange={handleDurationChange}
-            placeholder="Days Number e.g. 3"
+            placeholder="No. of days e.g. 3"
             title="Previous number('s) of days data will be deleted"
           />
-        </label>
-      </div>
-      <br />
-      <button className="deleteButton" onClick={(e) => handleDelete(e)}>
-        Delete
-      </button>
+        </div>
+        <button className="deleteButton" onClick={(e) => handleDelete(e)}>
+          Delete
+        </button>
+      </form>
     </div>
   );
 };
