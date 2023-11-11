@@ -1,0 +1,117 @@
+@import "./theme.css";
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  background-color: rgba(119, 119, 119, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-container {
+  position: relative;
+  max-width: 33vw;
+  background-color: var(--whiteAndBlack);
+  padding: 24px;
+  border-radius: 8px;
+}
+
+.modal__close {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 40px;
+  height: 40px;
+  font-size: 24px;
+  border-radius: 50px;
+  border: 3px solid var(--whiteAndBlack);
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+.modal__header {
+  font-size: 18px;
+  margin-bottom: 24px;
+  font-weight: 800;
+  color: var(--body-font-color);
+}
+
+.confirmationForm {
+  margin-top: 24px;
+}
+
+#confirmationText {
+  width: 100%;
+  border: 1px solid #aeaeae83;
+  padding: 8px 16px;
+  font-family: inherit;
+  font-size: 16px;
+  color: var(--body-font-color);
+  border-radius: 4px;
+}
+
+#confirmationText:focus {
+  outline: 3px solid #aeaeae;
+}
+
+.notification {
+  margin: 16px 0;
+  padding: 12px;
+  font-size: 1px;
+  border-radius: 4px;
+}
+
+.bg-red {
+  background: rgb(255, 229, 229);
+  color: var(--accent-color);
+}
+
+.bg-green {
+  background: rgb(219, 255, 217);
+  color: rgb(19, 103, 19);
+}
+
+.btnSet {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 18px;
+  gap: 8px;
+}
+
+.btnOk,
+.btnCancel {
+  padding: 12px 24px;
+  font-family: inherit;
+  font-size: 16px;
+  border-radius: 50px;
+  transition: all 300ms ease;
+}
+
+.btnOk {
+  background-color: var(--accent-color);
+  color: #fff;
+}
+
+.btnCancel {
+  background-color: transparent;
+  color: var(--body-font-color);
+  box-shadow: 0 0 0 1px #aeaeae; /* Works as BORDER without taking extra space */
+}
+
+button:disabled,
+.disabled {
+  background-color: rgb(119, 119, 119);
+  color: #c0c0c0;
+  user-select: none;
+  cursor: no-drop;
+}
+
+button:disabled:hover,
+.disabled:hover {
+  background-color: rgb(119, 119, 119);
+}

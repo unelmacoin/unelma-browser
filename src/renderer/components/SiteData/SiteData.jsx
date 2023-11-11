@@ -5,6 +5,7 @@ import {
   REMOVE_PASSWORD,
   REMOVE_SEARCH_HISTORY,
 } from "../../../constants/renderer/actions";
+import Modal from "../Modal.jsx";
 
 const SiteData = ({
   bookmarks,
@@ -14,9 +15,11 @@ const SiteData = ({
   searchHistory,
   searchHistoryDispatcher,
 }) => {
-  const smalltalk = require("smalltalk");
+  const checkboxValues = ["passwords", "history", "bookmark", "cacheData"];
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [duration, setDuration] = useState("");
+  const [inputText, setInputText] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
   const handleOptionChange = (e) => {
     const optionValue = e.target.value;
@@ -33,18 +36,27 @@ const SiteData = ({
     setDuration(e.target.value);
   };
 
+  const inputChangeHandler = (e) => {
+    setInputText(e.target.value.trim());
+  };
+
+  const deletetionSuccessNotification = () => {
+    setShowModal(false);
+    alert(`${selectedOptions.join(", ").toString()} successfully deleted.`);
+    setSelectedOptions([]);
+    setDuration("");
+    setInputText("");
+  };
+
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
       if (selectedOptions.length > 0) {
-        const confirmation = await smalltalk.prompt(
-          "Confirmation",
-          "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
-        );
-        if (confirmation === "DEL") {
+        setShowModal(true);
+        if (inputText === "DEL") {
           for (let selectedOption of selectedOptions) {
             switch (selectedOption) {
-              case "password":
+              case "passwords":
                 const passwordFilters =
                   duration > 0 ? filterByDays(passwords, duration) : passwords;
                 for (let passwordFilter of passwordFilters) {
@@ -70,8 +82,7 @@ const SiteData = ({
                   });
                 }
                 break;
-
-              case "bookmarks":
+              case "bookmark":
                 const bookmarkFilters =
                   duration > 0 ? filterByDays(bookmarks, duration) : bookmarks;
                 for (let bookmarkFilter of bookmarkFilters) {
@@ -82,7 +93,6 @@ const SiteData = ({
                     },
                   });
                 }
-
                 break;
               case "cacheData":
                 try {
@@ -96,18 +106,15 @@ const SiteData = ({
                 break;
             }
           }
-          new Notification(
-            `${selectedOptions.join(", ").toString()} : Deleted`
-          );
-        } else {
-          new Notification("Confirmation Value Error");
+          deletetionSuccessNotification();
         }
       } else {
-        new Notification("Make a selection to Delete");
+        alert("Make a selection to delete.");
       }
     } catch (error) {
       console.log(error);
-      new Notification("Deletion cancelled");
+      setShowModal(false);
+      alert("Deletion process cancelled.");
     }
   };
 
@@ -122,47 +129,21 @@ const SiteData = ({
   }
 
   return (
-    <div className="browserData-container">
+    <div className="browserData-container" style={{ position: "relative" }}>
       <h2 className="browserData-container__header">Clear Browser Data</h2>
       <form className="options">
-        <div className="inputSet">
-          <label htmlFor="dltPassword">Delete Passwords</label>
-          <input
-            name="dltPassword"
-            id="dltPassword"
-            type="checkbox"
-            value="password"
-            onChange={handleOptionChange}
-          />
-        </div>
-        <div className="inputSet">
-          <label htmlFor="dltHistory">Delete History</label>
-          <input
-            type="checkbox"
-            value="history"
-            onChange={handleOptionChange}
-          />
-        </div>
-        <div className="inputSet">
-          <label htmlFor="dltBookmarks">Delete Bookmarks</label>
-          <input
-            name="dltBookmarks"
-            id="dltBookmarks"
-            type="checkbox"
-            value="bookmarks"
-            onChange={handleOptionChange}
-          />
-        </div>
-        <div className="inputSet">
-          <label htmlFor="dltCache">Clear Cache/Cookies</label>
-          <input
-            name="dltCache"
-            id="dltCache"
-            type="checkbox"
-            value="cacheData"
-            onChange={handleOptionChange}
-          />
-        </div>
+        {checkboxValues.map((value) => (
+          <div key={value} className="inputSet">
+            <label htmlFor={value}>Delete {value}</label>
+            <input
+              id={value}
+              type="checkbox"
+              value={value}
+              checked={selectedOptions.includes(value)}
+              onChange={(e) => handleOptionChange(e)}
+            />
+          </div>
+        ))}
         <div className="inputSet">
           <label htmlFor="duration">
             Choose duration in days, starting from today
@@ -175,10 +156,24 @@ const SiteData = ({
             title="Previous number('s) of days data will be deleted"
           />
         </div>
-        <button className="deleteButton" onClick={(e) => handleDelete(e)}>
+        <button
+          disabled={selectedOptions.length <= 0}
+          className={`deleteButton ${
+            selectedOptions.length <= 0 ? "disabled" : ""
+          }`}
+          onClick={(e) => handleDelete(e)}
+        >
           Delete
         </button>
       </form>
+      {showModal && (
+        <Modal
+          changeHandler={inputChangeHandler}
+          deleteHandler={handleDelete}
+          closeModalHandler={() => setShowModal(false)}
+          inputText={inputText}
+        />
+      )}
     </div>
   );
 };

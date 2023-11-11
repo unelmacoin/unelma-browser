@@ -9,13 +9,8 @@
   border-radius: 8px;
   -webkit-app-region: no-drag;
   z-index: 1000000;
-  color: var(--search-location-container);
+  color: var(--body-font-color);
   transition: all 300ms;
-}
-
-.backward-btn:hover,
-.backward-btn:active {
-  background-color: #99999933;
 }
 
 .backward-btn__icon {
@@ -23,5 +18,5 @@
 }
 
 .backward-btn:hover .backward-btn__icon {
-  transform: translateX(-4px);
+  transform: translateX(-5px);
 }
