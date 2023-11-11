@@ -17,19 +17,16 @@ const Sidebar = ({
   bookmarks,
   loginDialogInfo,
   setLoginDialogInfo,
-  setMenu ={setMenu},
-  menu={menu},
+  setMenu = { setMenu },
+  menu = { menu },
 }) => {
- 
-  
-     const renderSavePasswordDialog = () =>
-       loginDialogInfo && (
-         <SavePasswordDialog
-           info={loginDialogInfo}
-           setLoginDialogInfo={setLoginDialogInfo}
-          
-         />
-       );
+  const renderSavePasswordDialog = () =>
+    loginDialogInfo && (
+      <SavePasswordDialog
+        info={loginDialogInfo}
+        setLoginDialogInfo={setLoginDialogInfo}
+      />
+    );
   useEffect(() => {
     window.addEventListener("resize", () => {
       document.getElementById("app-sidebar").style.width = openSidebar

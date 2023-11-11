@@ -1,0 +1,59 @@
+@import "./theme.css";
+
+.suggestion-container {
+  position: absolute;
+  top: 78%;
+  left: 0;
+  width: 100%;
+  min-width: 200px;
+  background: var(--whiteAndBlack);
+  color: var(--body-font-color);
+  padding: 10px;
+  font-size: 1rem;
+  border-top: 1px solid #eeeeee;
+  box-shadow: 0 0 1px 1px #ffffff84;
+  overflow: hidden;
+  z-index: -1;
+  animation: fadeIn 500ms;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.btn-container__close-btn img {
+  filter: invert(var(--invert));
+  background-color: transparent;
+}
+
+.suggestion-container__list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suggestion-container__list ul li {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  padding: 16px 12px;
+}
+
+.suggestion-container__list ul li:hover {
+  background-color: #99999933;
+}

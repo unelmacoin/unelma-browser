@@ -1,0 +1,50 @@
+@import "./theme.css";
+
+#root #app-sidebar.toggled-sidebar #navigation-controllers button {
+  margin: 10px 0;
+}
+#root #app-sidebar.toggled-sidebar #location-form {
+  display: none;
+}
+
+#location-form,
+.location-input {
+  width: 100%;
+  margin: 20px 0;
+  border-radius: 8px;
+  background-color: var(--search-location-container-bg);
+  color: var(--search-location-container);
+}
+
+#location-input {
+  width: 100%;
+  font-size: 13px;
+  font-family: inherit;
+  padding: 10px;
+  pointer-events: all;
+  transition: all 500ms;
+  color: var(--search-location-container);
+}
+
+#location-input:focus {
+  background-color: var(--whiteAndBlack);
+  font-size: 1rem;
+  border-radius: 0;
+  box-shadow: 0 0 1px 1px #ffffff84;
+}
+
+#root #app-sidebar .location-container button {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--search-location-container);
+  cursor: pointer;
+}
+.location-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  z-index: 999;
+}

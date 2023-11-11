@@ -1,0 +1,16 @@
+@import "./theme.css";
+
+.historyicon {
+  background-color: transparent;
+  filter: invert(var(--invert));
+}
+
+.list-link {
+  display: block;
+  flex-grow: 1;
+  color: var(--body-font-color);
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
