@@ -9,7 +9,7 @@ export const handleSearch = (value) => {
   } else if (isURL(value)) {
     return `https://${value}`;
   } else {
-    return `https://www.unelmas.com/web?q=${value.split(" ").join("+")}`;
+    return `https://www.google.com/search?q=${value.split(" ").join("+")}`;
   }
 };
 
