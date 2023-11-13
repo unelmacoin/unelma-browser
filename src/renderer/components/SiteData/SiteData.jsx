@@ -48,6 +48,11 @@ const SiteData = ({
     setInputText("");
   };
 
+  const closeModalHandler = () => {
+    setShowModal(false);
+    setInputText("");
+  };
+
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
@@ -118,7 +123,7 @@ const SiteData = ({
     }
   };
 
-  function filterByDays(items, maxDays) {
+  const filterByDays = (items, maxDays) => {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - maxDays);
 
@@ -126,7 +131,7 @@ const SiteData = ({
       const time = new Date(item.time);
       return time >= cutoff;
     });
-  }
+  };
 
   return (
     <div className="browserData-container" style={{ position: "relative" }}>
@@ -170,7 +175,7 @@ const SiteData = ({
         <Modal
           changeHandler={inputChangeHandler}
           deleteHandler={handleDelete}
-          closeModalHandler={() => setShowModal(false)}
+          closeModalHandler={closeModalHandler}
           inputText={inputText}
         />
       )}
