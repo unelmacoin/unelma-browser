@@ -162,56 +162,64 @@ webview {
   position: absolute;
   top: 30px;
   left: 0;
+  font-family: inherit;
+  font-size: 1rem;
   transform: scale(0, 0);
   transition: 0.3s;
   box-shadow: 0px 0px 7px var(--body-font-grey-shade);
   z-index: 100000;
 }
-#closeMenu {
-  width: 100%;
-  color: white;
-  padding: 5px 5px 0 0;
-  font-size: 20px;
+
+.closeMenu-container {
   display: flex;
-  align-content: flex-end;
-  flex-direction: row-reverse;
+  justify-content: flex-end;
 }
-#closeMenuSpan {
+#closeMenu {
   height: 30px;
   width: 30px;
-  border-radius: 50%;
-  background-color: #f47373;
-  margin: 1px;
-  display: flex;
-  align-items: center;
+  color: white;
+  font-size: 20px;
+  border-radius: 50px;
+  margin: 0.5rem;
+  margin-left: auto;
+  display: inline-flex;
   justify-content: center;
-  cursor: pointer;
-}
-#menu .menu-item button,
-#menu .menu-item a {
-  width: 100%;
-  display: flex;
   align-items: center;
-  padding: 14px 25px;
-  cursor: pointer;
+  background-color: #f47373;
+}
+
+#menu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px 12px 12px; /* 0 at top because close button has given enough gap */
+}
+
+.menu-item-link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  gap: 1rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border-radius: 8px;
   color: var(--body-font-color);
-  font-size: 16px;
 }
-
-#menu .menu-item button span,
-#menu .menu-item a span {
-  margin-left: 10px;
-}
-
-#menu-list .menu-item:hover,
-#menu-list .menu-item:hover * {
+.menu-item-link:hover,
+.menu-item-link:active {
   background-color: var(--accent-color-hover);
+  color: #fff;
 }
 
-#menu-list .menu-item:hover {
-  margin-right: 1rem;
-  border-radius: 20px 20px 20px 0 !important;
+.menu-icon {
+  font-size: 18px;
 }
+
+/* #menu-list .menu-item:hover {
+  border-radius: 20px 20px 20px 0 !important;
+}  */
 
 #menu.open {
   transform: scale(1, 1);
@@ -222,8 +230,7 @@ webview {
 }
 
 /* Ends -- Search Suggestion ********/
-
-#location-form {
+*/ #location-form {
   position: relative;
 }
 

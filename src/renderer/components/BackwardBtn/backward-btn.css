@@ -1,10 +1,22 @@
 .backward-btn {
-  top: 20px;
-  left:  20px;
-  position: fixed;
-   -webkit-app-region: no-drag;
-   z-index: 1000000;
+  display: inline-flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 14px;
+  margin-bottom: 14px;
+  gap: 0.5rem;
+  padding: 14px;
+  border-radius: 8px;
+  -webkit-app-region: no-drag;
+  z-index: 1000000;
+  color: var(--body-font-color);
+  transition: all 300ms;
 }
-.backward-btn a{
-  color: var(--search-location-container);
+
+.backward-btn__icon {
+  transition: all 300ms ease-in-out;
+}
+
+.backward-btn:hover .backward-btn__icon {
+  transform: translateX(-5px);
 }
