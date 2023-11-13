@@ -39,7 +39,7 @@ const Settings = ({
                   />
                 ))
               ) : (
-                <EmptyList label="password list" />
+                <EmptyList label="Password list" />
               )}
             </div>
           </div>
