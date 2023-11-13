@@ -259,9 +259,11 @@ export class MainWindow {
         this.sendTabs();
       });
       view?.contents?.addListener("did-stop-loading", (e) => {
+        e.sender = view?.contents;
         finishLoading(e);
       });
       view?.contents?.addListener("did-finish-load", (e) => {
+        e.sender = view?.contents;
         finishLoading(e);
         addHistory({
           id: uniqid(),
@@ -272,6 +274,7 @@ export class MainWindow {
         this.send(GET_SEARCH_HISTORY, getSearchHistory());
       });
       view?.contents?.addListener("did-frame-finish-load", (e) => {
+        e.sender = view?.contents;
         finishLoading(e);
       });
       view?.contents?.setWindowOpenHandler(({ url }) => {

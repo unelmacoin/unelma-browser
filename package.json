@@ -92,11 +92,11 @@
     "react-beautiful-dnd": "^13.0.0",
     "react-dom": "^18.0.0",
     "react-icons": "^4.4.0",
-    "react-router-dom": "^6.2.0",
+    "react-router-dom": "^5.2.0",
     "smalltalk": "^4.1.1",
     "style-loader": "^3.3.1",
     "uniqid": "^5.4.0",
-    "update-electron-app": "^3.0.0",
+    "update-electron-app": "^2.0.1",
     "url-loader": "^4.1.1",
     "v8-compile-cache": "^2.3.0"
   },
@@ -159,9 +159,9 @@
         }
       ],
       "plugins": [
-        [
-          "@electron-forge/plugin-webpack",
-          {
+        {
+          "name":"@electron-forge/plugin-webpack",
+          "config":{
             "devContentSecurityPolicy": "default-src * self blob: data: gap:; style-src * self 'unsafe-inline' blob: data: gap:; script-src * 'self' 'unsafe-eval' 'unsafe-inline' blob: data: gap:; object-src * 'self' blob: data: gap:; img-src * self 'unsafe-inline' blob: data: gap:; connect-src self * 'unsafe-inline' blob: data: gap:; frame-src * self blob: data: gap:;",
             "mainConfig": "./webpack.main.config.js",
             "renderer": {
@@ -178,7 +178,7 @@
               ]
             }
           }
-        ]
+        }
       ]
     }
   }
