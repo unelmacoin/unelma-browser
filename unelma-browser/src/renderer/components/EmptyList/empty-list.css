@@ -1,0 +1,7 @@
+#empty-list {
+  padding: 20px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--empty-list-font);
+  text-transform: capitalize;
+}
