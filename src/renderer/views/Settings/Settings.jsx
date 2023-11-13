@@ -23,34 +23,41 @@ const Settings = ({
   const settingMainWindow = () => {
     switch (renderTab) {
       case "password":
-        return passwords.length > 0 ? (
-          passwords.map(({ id, site, password, username }) => (
-            <PasswordItem
-              key={id}
-              site={site}
-              password={password}
-              username={username}
-              id={id}
-              passwordsDispatch={passwordsDispatch}
-            />
-          ))
-        ) : (
-          <EmptyList label="password list" />
+        return (
+          <div className="passwords-wrapper">
+            <h2 className="passwords-header">Saved Passwords</h2>
+            <div className="passwords-container">
+              {passwords.length > 0 ? (
+                passwords.map(({ id, site, password, username }) => (
+                  <PasswordItem
+                    key={id}
+                    site={site}
+                    password={password}
+                    username={username}
+                    id={id}
+                    passwordsDispatch={passwordsDispatch}
+                  />
+                ))
+              ) : (
+                <EmptyList label="password list" />
+              )}
+            </div>
+          </div>
         );
-        break;
       case "clearCache":
-        return <SiteData 
-        passwords={passwords}
-        passwordsDispatch={passwordsDispatch}
-        bookmarksDispatcher={bookmarksDispatcher}
-        bookmarks={bookmarks}
-        searchHistory={searchHistory}
-        searchHistoryDispatcher={searchHistoryDispatcher}
-        />;
-        break;
+        return (
+          <SiteData
+            passwords={passwords}
+            passwordsDispatch={passwordsDispatch}
+            bookmarksDispatcher={bookmarksDispatcher}
+            bookmarks={bookmarks}
+            searchHistory={searchHistory}
+            searchHistoryDispatcher={searchHistoryDispatcher}
+          />
+        );
+
       default:
         return <BrowserSettingsPage />;
-        break;
     }
   };
 

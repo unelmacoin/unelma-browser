@@ -2,6 +2,7 @@
   background: var(--body-backGround);
   display: flex;
   width: 100%;
+  height: 100%;
   height: 97% !important;
   margin-top: 10px;
   border-radius: 7px;
@@ -11,6 +12,7 @@
 
 #settings-content {
   position: relative;
+  overflow-y: scroll;
   width: 100%;
   height: 100%;
   padding: 15px;
@@ -58,11 +60,28 @@ input[type="checkbox"] {
   font-size: 18px;
   font-family: inherit;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   margin-left: auto; /* Moves to rightmost position */
 }
 
 .save-button:hover,
 .save-button:active {
   background-color: #e05854;
+}
+
+.passwords-wrapper {
+  padding: 20px;
+}
+
+.passwords-header {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.passwords-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
 }

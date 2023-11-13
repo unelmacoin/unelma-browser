@@ -1,7 +1,11 @@
+@import "../../css/theme.css";
+
 #empty-list {
-  padding: 20px;
-  font-weight: bold;
+  padding: 24px;
+  font-size: 18px;
+  background-color: #e8787413;
+  border: 1px solid var(--accent-color);
+  border-radius: 8px;
   text-align: center;
-  color: var(--empty-list-font);
-  text-transform: capitalize;
+  color: var(--accent-color);
 }
