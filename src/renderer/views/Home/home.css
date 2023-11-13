@@ -1,7 +1,0 @@
-#home {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  -webkit-app-region: no-drag;
-  height: 100%;
-}
