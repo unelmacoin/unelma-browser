@@ -36,7 +36,6 @@ const PasswordItem = ({
     if (text) {
       navigator.clipboard.writeText(text).then(
         () => {
-          console.log("text copied");
           setShowTooltip(true);
           setTimeout(() => setShowTooltip(false), 3000); // Allows tooltip to show for 3 seconds !
         },

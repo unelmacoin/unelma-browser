@@ -3,7 +3,6 @@ import EmptyList from "../../components/EmptyList/EmptyList.jsx";
 import Layout from "../../components/Layout/Layout.jsx";
 import PasswordItem from "../../components/PasswordItem/PasswordItem.jsx";
 import { settingsSidebarMenuItems } from "../../../constants/renderer/menus";
-// import SettingsSidebar from "../../components/SettingsSidebar/SettingsSidebar.jsx";
 import "./settings.css";
 import SiteData from "../../components/SiteData/SiteData.jsx";
 import SettingsSidebar from "../../components/SettingsSidebar/SettingsSidebar.jsx";
