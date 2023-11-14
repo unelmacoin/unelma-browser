@@ -49,7 +49,9 @@ const Settings = ({
                 <EmptyList label="Password list" />
               )}
               {showAddPassword && (
-                <AddPassword hideModal={() => setShowAddPassword(false)} />
+                <AddPassword
+                  hideModal={() => setShowAddPassword(false)}
+                />
               )}
             </div>
           </div>

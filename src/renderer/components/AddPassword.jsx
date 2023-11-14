@@ -22,7 +22,7 @@ const AddPassword = ({ hideModal }) => {
   const handleSavePassword = (e) => {
     e.preventDefault();
     window.api.send(mergeChannel(SAVE_LOGIN_INFO, window.id), textInput);
-    setTimeout(() => hideModal(), 1000); // Hides the modal after 1 second, allows enough time to save url/password
+    setTimeout(() => hideModal(), 1000); // Hides the modal after 1 second, allows enough time to save url/password/
   };
   return (
     <div className="backdrop">
