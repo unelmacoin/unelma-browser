@@ -32,9 +32,9 @@ const PasswordItem = ({
       },
     });
   };
-  const handleCopyText = () => {
-    if (username) {
-      navigator.clipboard.writeText(username).then(
+  const handleCopyText = (text) => {
+    if (text) {
+      navigator.clipboard.writeText(text).then(
         () => {
           console.log("text copied");
           setShowTooltip(true);
@@ -68,7 +68,10 @@ const PasswordItem = ({
               value={username}
               disabled
             />
-            <button className="copy-icon" onClick={handleCopyText}>
+            <button
+              className="copy-icon-username"
+              onClick={() => handleCopyText(username)}
+            >
               <BsClipboard />
             </button>
           </div>
@@ -85,6 +88,12 @@ const PasswordItem = ({
             />
             <button className="visibility-icon" onClick={handleToggle}>
               {!toggled ? <BsEyeFill /> : <BsEyeSlashFill />}
+            </button>
+            <button
+              className="copy-icon-psw"
+              onClick={() => handleCopyText(password)}
+            >
+              <BsClipboard />
             </button>
           </div>
         </div>
