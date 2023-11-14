@@ -5,7 +5,6 @@ import {
   REMOVE_PASSWORD,
   REMOVE_SEARCH_HISTORY,
 } from "../../../constants/renderer/actions";
-import Modal from "../Modal.jsx";
 
 const SiteData = ({
   bookmarks,
@@ -15,11 +14,9 @@ const SiteData = ({
   searchHistory,
   searchHistoryDispatcher,
 }) => {
-  const checkboxValues = ["passwords", "history", "bookmark", "cacheData"];
+  const smalltalk = require("smalltalk");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [duration, setDuration] = useState("");
-  const [inputText, setInputText] = useState("");
-  const [showModal, setShowModal] = useState(false);
 
   const handleOptionChange = (e) => {
     const optionValue = e.target.value;
@@ -36,32 +33,18 @@ const SiteData = ({
     setDuration(e.target.value);
   };
 
-  const inputChangeHandler = (e) => {
-    setInputText(e.target.value.trim());
-  };
-
-  const deletetionSuccessNotification = () => {
-    setShowModal(false);
-    alert(`${selectedOptions.join(", ").toString()} successfully deleted.`);
-    setSelectedOptions([]);
-    setDuration("");
-    setInputText("");
-  };
-
-  const closeModalHandler = () => {
-    setShowModal(false);
-    setInputText("");
-  };
-
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      if (selectedOptions.length > 0) {
-        setShowModal(true);
-        if (inputText === "DEL") {
+      if (selectedOptions.length > 0 ) {
+      const confirmation = await smalltalk.prompt(
+        "Confirmation",
+        "This action is Irreversible. To confirm deletion, type 'DEL' and press OK:"
+      );
+      if (confirmation === "DEL") {
           for (let selectedOption of selectedOptions) {
             switch (selectedOption) {
-              case "passwords":
+              case "password":
                 const passwordFilters =
                   duration > 0 ? filterByDays(passwords, duration) : passwords;
                 for (let passwordFilter of passwordFilters) {
@@ -87,7 +70,8 @@ const SiteData = ({
                   });
                 }
                 break;
-              case "bookmark":
+
+              case "bookmarks":
                 const bookmarkFilters =
                   duration > 0 ? filterByDays(bookmarks, duration) : bookmarks;
                 for (let bookmarkFilter of bookmarkFilters) {
@@ -98,32 +82,37 @@ const SiteData = ({
                     },
                   });
                 }
+
                 break;
-              case "cacheData":
-                try {
-                  const result = await window.api.clearCacheAndCookies();
-                  console.log(result);
-                } catch (error) {
-                  console.error(error);
-                }
-                break;
+                case "cacheData":
+                  try {
+                    const result = await window.api.clearCacheAndCookies();
+                    console.log(result); 
+                  } catch (error) {
+                    console.error(error); 
+                  }
+                  break;
               default:
                 break;
             }
           }
-          deletetionSuccessNotification();
-        }
+          new Notification(
+            `${selectedOptions.join(", ").toString()} : Deleted`
+          );
+   
       } else {
-        alert("Make a selection to delete.");
+        new Notification("Confirmation Value Error");
       }
+    } else {
+      new Notification("Make a selection to Delete");
+    }
     } catch (error) {
       console.log(error);
-      setShowModal(false);
-      alert("Deletion process cancelled.");
+      new Notification("Deletion cancelled");
     }
   };
 
-  const filterByDays = (items, maxDays) => {
+  function filterByDays(items, maxDays) {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - maxDays);
 
@@ -131,54 +120,65 @@ const SiteData = ({
       const time = new Date(item.time);
       return time >= cutoff;
     });
-  };
+  }
 
   return (
-    <div className="browserData-container" style={{ position: "relative" }}>
-      <h2 className="browserData-container__header">Clear Browser Data</h2>
-      <form className="options">
-        {checkboxValues.map((value) => (
-          <div key={value} className="inputSet">
-            <label htmlFor={value}>Delete {value}</label>
-            <input
-              id={value}
-              type="checkbox"
-              value={value}
-              checked={selectedOptions.includes(value)}
-              onChange={(e) => handleOptionChange(e)}
-            />
-          </div>
-        ))}
-        <div className="inputSet">
-          <label htmlFor="duration">
-            Choose duration in days, starting from today
-          </label>
+    <div className="container">
+      <h2>Clear Browser Data</h2>
+      <div className="options">
+        <label>
+          <input
+            type="checkbox"
+            value="password"
+            onChange={handleOptionChange}
+          />
+          Password
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            value="history"
+            onChange={handleOptionChange}
+          />
+          History
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            value="bookmarks"
+            onChange={handleOptionChange}
+          />
+          Bookmarks
+        </label>
+        <br />
+        <label>
+          <input
+            type="checkbox"
+            value="cacheData"
+            onChange={handleOptionChange}
+          />
+          Clear Cache / Cookies
+        </label>
+      </div>
+      <br />
+      <div className="duration">
+        <label>
+          Duration (in days) to delete (starts from today):
           <input
             type="number"
             value={duration}
             onChange={handleDurationChange}
-            placeholder="No. of days e.g. 3"
+            placeholder="Days Number e.g. 3"
             title="Previous number('s) of days data will be deleted"
           />
-        </div>
-        <button
-          disabled={selectedOptions.length <= 0}
-          className={`deleteButton ${
-            selectedOptions.length <= 0 ? "disabled" : ""
-          }`}
-          onClick={(e) => handleDelete(e)}
-        >
-          Delete
-        </button>
-      </form>
-      {showModal && (
-        <Modal
-          changeHandler={inputChangeHandler}
-          deleteHandler={handleDelete}
-          closeModalHandler={closeModalHandler}
-          inputText={inputText}
-        />
-      )}
+        </label>
+      </div>
+      <br />
+      <button className="deleteButton" onClick={(e) => handleDelete(e)}>
+        Delete
+      </button>
     </div>
   );
 };

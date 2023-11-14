@@ -40,23 +40,21 @@ const BrowserSettingsPage = () => {
   };
   return (
     <div className="settings-page">
-      <h2 className="settings__header">Browser Settings</h2>
+      <h2>Browser Settings</h2>
       <div className="setting-controls">
         <div className="setting-option">
-          <label htmlFor="notifications">Enable Notifications</label>
+          <label htmlFor="notifications">Enable Notifications:</label>
           <input
             type="checkbox"
-            name="notifications"
             id="notifications"
             checked={showNotification}
             onChange={toggleNotification}
           />
         </div>
         <div className="setting-option">
-          <label htmlFor="darkMode">Toggle Dark Mode</label>
+          <label htmlFor="darkMode">Dark Mode:</label>
           <input
             type="checkbox"
-            name="darkMode"
             id="darkMode"
             onChange={toggleTheme}
             checked={darkMode === "light" ? false : true}

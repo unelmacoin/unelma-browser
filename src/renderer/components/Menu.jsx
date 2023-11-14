@@ -1,23 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  mergeChannel,
-  CREATE_WINDOW,
+import { mergeChannel , CREATE_WINDOW,
   HIDE_VIEWS,
   RESET_ALL_TABS,
-  RESET_WINDOW_TABS,
-} from "../../constants/global/channels";
+  RESET_WINDOW_TABS, } from "../../constants/global/channels";
 import { BiHistory } from "react-icons/bi";
 import { BsWindowSidebar } from "react-icons/bs";
 import { IoBookmarksOutline, IoClose } from "react-icons/io5";
 import { FiSettings } from "react-icons/fi";
 import { AiOutlineClear } from "react-icons/ai";
-import "../css/theme.css";
+import '../css/theme.css';
 
 const menuItems = () => [
   {
     label: "Bookmarks",
-    icon: <IoBookmarksOutline />,
+    icon: <IoBookmarksOutline fontSize="20" />,
     path: "/bookmarks",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));
@@ -25,7 +22,7 @@ const menuItems = () => [
   },
   {
     label: "History",
-    icon: <BiHistory />,
+    icon: <BiHistory fontSize="20" />,
     path: "/history",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));
@@ -33,75 +30,71 @@ const menuItems = () => [
   },
   {
     label: "New Window",
-    icon: <BsWindowSidebar />,
+    icon: <BsWindowSidebar fontSize="20" />,
     action: () => {
       window.api.send(CREATE_WINDOW);
     },
   },
   {
     label: "Close tabs",
-    icon: <IoClose />,
+    icon: <IoClose fontSize="20" />,
     action: () => {
       window.api.send((RESET_WINDOW_TABS, window.id));
     },
   },
   {
     label: "Clear all tabs",
-    icon: <AiOutlineClear />,
+    icon: <AiOutlineClear fontSize="20" />,
     action: () => {
       window.api.send(RESET_ALL_TABS, window.id);
     },
   },
   {
     label: "Settings",
-    icon: <FiSettings />,
+    icon: <FiSettings fontSize="20" />,
     path: "/settings",
     action: () => {
       window.api.send(mergeChannel(HIDE_VIEWS, window.id));
     },
   },
 ];
-const Menu = ({ menu, setMenu }) => {
-  const renderItems = menuItems().map(({ label, icon, action, path }) =>
-    path ? (
-      <li key={label} className="menu-item">
-        <Link
-          className="menu-item-link"
-          to={path}
-          onClick={() => {
-            action();
-            setMenu(false);
-          }}
-        >
-          <span className="menu-icon">{icon}</span>
-          <span>{label}</span>
-        </Link>
-      </li>
-    ) : (
-      <li key={label} className="menu-item">
-        <button
-          className="menu-item-link"
-          onClick={() => {
-            action();
-            setMenu(false);
-          }}
-        >
-          <span className="menu-icon">{icon}</span>
-          <span>{label}</span>
-        </button>
-      </li>
-    )
+const Menu = ({ menu, setMenu}) => {
+  const renderItems = menuItems().map(
+    ({ label, icon, action, path }) =>
+      path ? (
+        <li key={label} className="menu-item">
+          <Link className='menu-iten-link'
+            to={path}
+            onClick={() => {
+              action();
+              setMenu(false);
+            }}
+          >
+            {icon}
+            <span> {label}</span>
+          </Link>
+        </li>
+      ) : (
+        <li key={label} className="menu-item">
+          <button className='menu-iten-link'
+            onClick={() => {
+              action();
+              setMenu(false);
+            }}
+          >
+            {icon}
+            <span> {label}</span>
+          </button>
+        </li>
+      )
   );
-  const handleCloseThreeButtonMenu = () => {
-    if (menu === true) setMenu(false);
-  };
+  const handleCloseThreeButtonMenu =() =>{
+    if (menu === true)  setMenu(false)
+   
+  }
   return (
     <div id="menu" className={`${menu && "open"} popMenu`}>
-      <div className="closeMenu-container">
-        <button id="closeMenu" onClick={handleCloseThreeButtonMenu}>
-          &times;
-        </button>
-      </div>
+      <div id="closeMenu"><span id="closeMenuSpan" onClick={handleCloseThreeButtonMenu}>X</span> </div>
       <ul id="menu-list">{renderItems}</ul>
     </div>
   );

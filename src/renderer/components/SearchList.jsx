@@ -10,40 +10,44 @@ import { defaultTab } from "../utils/tabs";
 import searchHistoryReducer from "../reducers/searchHistoryReducer";
 import HistoryList from "./HistoryList.jsx";
 import close from "../../img/close-icon.png";
-import "../css/SearchList.css";
 
-const SearchList = ({
-  handleClose,
-  tabsDispatch,
-  showSearchList,
-  setShowSearchList,
-}) => {
+const SearchList = ({ handleClose, tabsDispatch, setShowSearchList }) => {
   const [searchHistory, searchHistoryDispatcher] = useReducer(
     searchHistoryReducer,
     []
   );
 
+  const getSearchHistory = () => {
+    try {
+      window.api.receive(GET_SEARCH_HISTORY, (searchHistoryVal) => {
+        searchHistoryDispatcher({
+          type: SET_SEARCH_HISTORY,
+          payload: {
+            searchHistory: searchHistoryVal,
+          },
+        });
+        // Set searchHistory to local storage.
+        localStorage.setItem("searchHistory", JSON.stringify(searchHistoryVal));
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getSearchHistory = async () => {
-      try {
-        const receiveCallback = (searchHistoryVal) => {
-          searchHistoryDispatcher({
-            type: SET_SEARCH_HISTORY,
-            payload: {
-              searchHistory: searchHistoryVal,
-            },
-          });
-        };
-
-        // Subscribe to the event
-        window.api.receive(GET_SEARCH_HISTORY, receiveCallback);
-
-        return receiveCallback; // Return the callback for later cleanup
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getSearchHistory();
+    // fetch search history from the local storage -- if available.
+    const savedSearchHistory = localStorage.getItem("searchHistory");
+    if (savedSearchHistory) {
+      const parsedSearchHistory = JSON.parse(savedSearchHistory);
+      searchHistoryDispatcher({
+        type: SET_SEARCH_HISTORY,
+        payload: {
+          searchHistory: parsedSearchHistory,
+        },
+      });
+    } else {
+      getSearchHistory();
+    }
   }, []);
 
   // Get url hostname
@@ -62,7 +66,6 @@ const SearchList = ({
     urlOccurrences[url] = (urlOccurrences[url] || 0) + 1;
   });
   // Sorting according to ocurrences
-
   searchHistory.sort((a, b) => urlOccurrences[b.url] - urlOccurrences[a.url]);
   const top3urls = Object.entries(urlOccurrences)
     .sort(([, countA], [, countB]) => countB - countA)
@@ -78,45 +81,40 @@ const SearchList = ({
         tab: { ...newTab },
       },
     });
-    console.log("new tab added");
     setShowSearchList(false);
   };
 
   return (
-    <div
-      className={`suggestion-container ${
-        !showSearchList ||
-        searchHistory.length === 0 ||
-        searchHistory === undefined
-          ? "hide"
-          : ""
-      }`}
-    >
-      <div className="btn-container">
-        <p style={{ paddingLeft: "1rem" }}>Top Searches</p>
-        <button className="btn-container__close-btn" onClick={handleClose}>
-          <img
-            src={close}
-            alt="close icon"
-            width={20}
-            height={20}
-            aria-label="close icon"
-          />
-        </button>
-      </div>
-      <div className="suggestion-container__list">
-        <ul>
-          {top3urls.map((url, i) => (
-            <HistoryList
-              key={i}
-              item={url}
-              parsedUrl={parsedUrl}
-              handleAddTabClick={() => handleAddTab(url)}
+    searchHistory.length > 0 && (
+      <>
+        <div className="btn-container">
+          <p style={{ fontWeight: "bold", paddingLeft: "1rem" }}>
+            Top Searches
+          </p>
+          <button className="btn-container__close-btn" onClick={handleClose}>
+            <img
+              src={close}
+              alt="close icon"
+              width={20}
+              height={20}
+              aria-label="close icon"
             />
-          ))}
-        </ul>
-      </div>
-    </div>
+          </button>
+        </div>
+        <div className="suggestion-container__list">
+          <ul>
+            {top3urls.map((url, i) => (
+              <HistoryList
+                key={i}
+                item={url}
+                parsedUrl={parsedUrl}
+                handleAddTabClick={() => handleAddTab(url)}
+              />
+            ))}
+          </ul>
+        </div>
+      </>
+    )
   );
 };
 

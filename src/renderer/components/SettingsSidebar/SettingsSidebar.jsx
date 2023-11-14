@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { settingsSidebarMenuItems } from "../../../constants/renderer/menus";
 import BackwardBtn from "../BackwardBtn/BackwardBtn.jsx";
 import "./settingsSidebar.css";
-
+import { Link } from "react-router-dom";
 
 const SettingsSidebar = ({ activeItem, setActiveItem, setRenderTab }) => {
   const renderItems = () => {

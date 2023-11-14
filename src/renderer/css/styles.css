@@ -162,67 +162,170 @@ webview {
   position: absolute;
   top: 30px;
   left: 0;
-  font-family: inherit;
-  font-size: 1rem;
   transform: scale(0, 0);
   transition: 0.3s;
   box-shadow: 0px 0px 7px var(--body-font-grey-shade);
   z-index: 100000;
 }
-
-.closeMenu-container {
-  display: flex;
-  justify-content: flex-end;
-}
 #closeMenu {
+  width: 100%;
+  color: white;
+  padding: 5px 5px 0 0;
+  font-size: 20px;
+  display: flex;
+  align-content: flex-end;
+  flex-direction: row-reverse;
+}
+#closeMenuSpan {
   height: 30px;
   width: 30px;
-  color: white;
-  font-size: 20px;
-  border-radius: 50px;
-  margin: 0.5rem;
-  margin-left: auto;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  border-radius: 50%;
   background-color: #f47373;
-}
-
-#menu-list {
+  margin: 1px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 12px 12px 12px; /* 0 at top because close button has given enough gap */
-}
-
-.menu-item-link {
-  display: flex;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+#menu .menu-item button,
+#menu .menu-item a {
   width: 100%;
-  gap: 1rem;
-  padding: 1rem;
-  font-size: 1rem;
-  font-family: inherit;
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 14px 25px;
+  cursor: pointer;
   color: var(--body-font-color);
+  font-size: 16px;
 }
-.menu-item-link:hover,
-.menu-item-link:active {
+
+#menu .menu-item button span,
+#menu .menu-item a span {
+  margin-left: 10px;
+}
+
+#menu-list .menu-item:hover,
+#menu-list .menu-item:hover * {
   background-color: var(--accent-color-hover);
-  color: #fff;
 }
 
-.menu-icon {
-  font-size: 18px;
-}
-
-/* #menu-list .menu-item:hover {
+#menu-list .menu-item:hover {
+  margin-right: 1rem;
   border-radius: 20px 20px 20px 0 !important;
-}  */
+}
 
 #menu.open {
   transform: scale(1, 1);
+}
+
+#root #app-sidebar #location-form {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+}
+#root #app-sidebar.toggled-sidebar #navigation-controllers button {
+  margin: 10px 0;
+}
+#root #app-sidebar.toggled-sidebar #location-form {
+  display: none;
+}
+
+#root #app-sidebar #location-form input {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--search-location-container-bg);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--search-location-container);
+}
+#root #app-sidebar .location-container button {
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--search-location-container);
+  cursor: pointer;
+}
+.location-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Starts -- Search suggestion */
+.suggestion-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  min-width: 200px;
+  background: var(--whiteAndBlack);
+  color: var(--body-font-color);
+  padding: 12px;
+  font-size: 14px;
+  border-radius: 8px;
+  box-shadow: 0 0 1px 1px #ffffff84;
+  z-index: 999;
+  animation: opacity 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.btn-container__close-btn img {
+  filter: invert(var(--invert));
+  background-color: transparent;
+}
+
+.suggestion-container__list ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.suggestion-container__list ul li {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+  padding: 16px 12px;
+  border-radius: 8px;
+}
+
+.historyicon {
+  background-color: transparent;
+  filter: invert(var(--invert));
+}
+
+.list-link {
+  display: block;
+  flex-grow: 1;
+  color: var(--body-font-color);
+  height: 100%;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.suggestion-container__list ul li:hover {
+  background-color: #99999933;
 }
 
 .hide {
@@ -230,7 +333,8 @@ webview {
 }
 
 /* Ends -- Search Suggestion ********/
-*/ #location-form {
+
+#location-form {
   position: relative;
 }
 
