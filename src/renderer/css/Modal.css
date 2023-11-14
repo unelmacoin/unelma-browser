@@ -95,6 +95,7 @@
 
 .btnOk {
   background-color: var(--accent-color);
+  box-shadow: 0 0 0 1px var(--accent-color); /* Works as BORDER without taking extra space */
   color: #fff;
 }
 
@@ -107,6 +108,7 @@
 button:disabled,
 .disabled {
   background-color: rgb(119, 119, 119);
+  box-shadow: 0 0 0 1px rgb(119, 119, 119);
   color: #c0c0c0;
   user-select: none;
   cursor: no-drop;
