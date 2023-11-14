@@ -83,3 +83,17 @@ input[type="checkbox"] {
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 30px;
 }
+
+.add-password {
+  display: block;
+  margin: 0 0 16px auto; /* Margin left = auto, places button to the right */
+  padding: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  border-radius: 4px;
+  transition: all 300ms ease;
+}
+
+.add-password:is(:hover, :active) {
+  background-color: #aeaeae7c;
+}
