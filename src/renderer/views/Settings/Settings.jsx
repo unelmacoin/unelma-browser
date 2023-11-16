@@ -21,6 +21,28 @@ const Settings = ({
   const [showAddPassword, setShowAddPassword] = useState(false);
   const [activeItem, setActiveItem] = useState(settingsSidebarMenuItems[0].id);
 
+  const passwordsContainer = (
+    <div className="passwords-container">
+      {passwords.length > 0 ? (
+        passwords.map(({ id, site, password, username }) => (
+          <PasswordItem
+            key={id}
+            site={site}
+            password={password}
+            username={username}
+            id={id}
+            passwordsDispatch={passwordsDispatch}
+          />
+        ))
+      ) : (
+        <EmptyList label="Password list" />
+      )}
+      {showAddPassword && (
+        <AddPassword hideModal={() => setShowAddPassword(false)} />
+      )}
+    </div>
+  );
+
   const settingMainWindow = () => {
     switch (renderTab) {
       case "password":
@@ -33,27 +55,7 @@ const Settings = ({
             >
               &#43; Add Password
             </button>
-            <div className="passwords-container">
-              {passwords.length > 0 ? (
-                passwords.map(({ id, site, password, username }) => (
-                  <PasswordItem
-                    key={id}
-                    site={site}
-                    password={password}
-                    username={username}
-                    id={id}
-                    passwordsDispatch={passwordsDispatch}
-                  />
-                ))
-              ) : (
-                <EmptyList label="Password list" />
-              )}
-              {showAddPassword && (
-                <AddPassword
-                  hideModal={() => setShowAddPassword(false)}
-                />
-              )}
-            </div>
+            {passwordsContainer}
           </div>
         );
       case "clearCache":

@@ -15,14 +15,15 @@ const AddPassword = ({ hideModal }) => {
     setTextInput({ ...textInput, [e.target.name]: e.target.value });
   };
 
-  const handleShowPassword = () => {
+  const handleShowPassword = (e) => {
+    e.preventDefault();
     setHidePassword(!hidePassword);
   };
 
   const handleSavePassword = (e) => {
     e.preventDefault();
     window.api.send(mergeChannel(SAVE_LOGIN_INFO, window.id), textInput);
-    setTimeout(() => hideModal(), 1000); // Hides the modal after 1 second, allows enough time to save url/password/
+    setTimeout(() => hideModal(), 500); // Hides the modal after half a second, allows enough time to save url, username and password.
   };
   return (
     <div className="backdrop">
