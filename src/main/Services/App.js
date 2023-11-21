@@ -50,9 +50,9 @@ export class App {
 
     app.whenReady().then(() => {
 
-      const updateUnelmaBrowser = require('update-electron-app');
+      const { updateElectronApp } = require('update-electron-app')
 
-      updateUnelmaBrowser({
+      updateElectronApp({
         updateInterval: '1 hour',
         notifyUser: true,
         logger: require('electron-log')
