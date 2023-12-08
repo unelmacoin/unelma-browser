@@ -1,9 +1,9 @@
-const { decrypt, encrypt } = require("../utils/encryption");
-const Store = require("electron-store");
-const uniqid = require("uniqid");
+const { decrypt, encrypt } = require('../utils/encryption');
+const Store = require('electron-store');
+const uniqid = require('uniqid');
 const store = new Store();
 
-const OBJECT_NAME = 'password-autofill-v01'
+const OBJECT_NAME = 'password-autofill-v01';
 module.exports = {
   getAuthInfo: () => {
     const authInfo = store.get(OBJECT_NAME) || [];
@@ -14,14 +14,25 @@ module.exports = {
   },
   addAuthInfo: (info) => {
     let authInfo = store.get(OBJECT_NAME) || [];
-    if (!authInfo.find(({ id }) => id === info.id)) {
+
+    const existingPasswordIndex = authInfo.findIndex(
+      (item) => item.id === info.id
+    );
+    // Searches existing password.
+    // If true, updates the edited password. If false, adds new password.
+    if (existingPasswordIndex !== -1) {
+      authInfo[existingPasswordIndex] = {
+        ...authInfo[existingPasswordIndex],
+        ...info,
+        password: encrypt(info.password),
+      };
+    } else {
       authInfo.push({
         ...info,
         password: encrypt(info.password),
         id: uniqid(),
       });
     }
-  
     store.set(OBJECT_NAME, authInfo);
   },
   removeFromAuthInfo: (id) => {
