@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import {
   BsEyeFill,
   BsEyeSlashFill,
@@ -17,22 +17,30 @@ import Modal from '../Modal.jsx';
 const PasswordItem = ({
   id,
   site,
-  username,
+  username: user,
   password: pass,
   passwordsDispatch,
 }) => {
   const [password, setPassword] = useState(pass);
+  const [username, setUsername] = useState(user);
   const [toggled, setToggled] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalInput, setModalInput] = useState('');
   const [pswEditMode, setPswEditMode] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showTooltip, setShowTooltip] = useState({
+    show: false,
+    message: '',
+  });
 
   const handleToggle = () => {
     setToggled(!toggled);
   };
   const handleChangePassword = (e) => {
     setPassword(e.target.value);
+  };
+
+  const handleChangeUsername = (e) => {
+    setUsername(e.target.value);
   };
   const handleRemove = async () => {
     await passwordsDispatch({
@@ -45,13 +53,16 @@ const PasswordItem = ({
 
   const passwordEditHandler = () => {
     setPswEditMode(true);
-    inputRef.current.focus();
   };
   const handleCopyText = (text) => {
     if (text) {
       navigator.clipboard.writeText(text).then(
         () => {
-          setShowTooltip(true);
+          setShowTooltip({
+            ...showTooltip,
+            show: true,
+            message: 'Text copied to clipboard.',
+          });
           setTimeout(() => setShowTooltip(false), 3000); // Allows tooltip to show for 3 seconds !
         },
         () => console.log('Error copying the text.')
@@ -72,9 +83,16 @@ const PasswordItem = ({
           id,
           updatedPassword: {
             password: password,
+            username: username,
           },
         },
       });
+      setShowTooltip({
+        ...showTooltip,
+        show: true,
+        message: 'Username and password saved successfully.',
+      });
+      setTimeout(() => setShowTooltip(false), 3000);
     }
     setPswEditMode(false);
   };
@@ -96,7 +114,8 @@ const PasswordItem = ({
               className='username-input'
               name='username-input'
               value={username}
-              disabled
+              onChange={!pswEditMode ? null : handleChangeUsername}
+              disabled={!pswEditMode}
             />
             <button
               className='copy-icon-username'
@@ -136,12 +155,12 @@ const PasswordItem = ({
         >
           {!pswEditMode ? (
             <>
-              <span>Edit Password</span>
+              <span>Edit</span>
               <BsFillPencilFill />
             </>
           ) : (
             <>
-              <span>Save Password</span>
+              <span>Save</span>
               <BsFloppy2Fill />
             </>
           )}
@@ -161,8 +180,8 @@ const PasswordItem = ({
           deleteHandler={handleRemove}
         />
       )}
-      {showTooltip && (
-        <p className='copyTextTooltip'>Text copied to clipboard !</p>
+      {showTooltip.show && (
+        <p className='copyTextTooltip'>{showTooltip.message}</p>
       )}
     </div>
   );

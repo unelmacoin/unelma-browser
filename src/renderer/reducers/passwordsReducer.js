@@ -18,8 +18,12 @@ const passwordsReducer = (state, action) => {
       return [...state, action.payload.password];
     }
     case UPDATE_PASSWORD: {
-      const { id, updatedPassword } = action.payload;
-      window.api.send(ADD_AUTH_INFO, { id, ...updatedPassword });
+      const { id, updatedPassword, updatedUsername } = action.payload;
+      window.api.send(ADD_AUTH_INFO, {
+        id,
+        ...updatedUsername,
+        ...updatedPassword,
+      });
       return state.map((password) =>
         password.id === id ? { ...password, ...updatedPassword } : password
       );
