@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../css/bookmarks.css";
-import "../css/pagesResponsive.css"
+import "../css/pagesResponsive.css";
 import { FaTimes } from "react-icons/fa";
 import { REMOVE_BOOKMARK } from "../../constants/renderer/actions";
 import uniqid from "uniqid";
