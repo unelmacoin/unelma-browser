@@ -1,0 +1,14 @@
+.pagesContainer{
+    font-Size:11px !important;
+    height: 100vh; 
+    transition: width 0.3s ease;
+    white-Space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pagesContainer_default{
+    width: 100%;
+}
+.pagesContainer_click{
+    width:  22%;
+}

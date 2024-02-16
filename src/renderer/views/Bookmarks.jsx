@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/bookmarks.css";
+import "../css/pagesResponsive.css"
 import { FaTimes } from "react-icons/fa";
 import { REMOVE_BOOKMARK } from "../../constants/renderer/actions";
 import uniqid from "uniqid";
@@ -10,6 +11,7 @@ import BackwardBtn from "../components/BackwardBtn/BackwardBtn.jsx";
 import Layout from "../components/Layout/Layout.jsx";
 import { ADD_VIEW, mergeChannel } from "../../constants/global/channels";
 const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
+  const [expanded, setExpanded] = useState(false);
   const sortedKeys = Object.keys(categorizeByDate(bookmarks)).sort((a, b) => {
     if (a.includes("Today")) return -1;
     if (b.includes("Today")) return 1;
@@ -23,11 +25,12 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
   });
   const renderBookmarksItems = (items) =>
     items.map(({ id, url, time }) => (
-      <li key={id} className="item">
-        <div className="item-content">
+      <li key={id} className="item" >
+        <div className="item-content" >
           <p className="time">{dateFormat(new Date(time), "h:MM TT")}</p>
           <button className="item-url-links"
             onClick={() => {
+              setExpanded(true);
               window.api.send(mergeChannel(ADD_VIEW, window.id), {
                 id: uniqid(),
                 url,
@@ -35,7 +38,7 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
               document.querySelector(".backward-btn a").click();
             }}
           >
-            {url.length > 40 ? `${url.slice(0, 40)}...` : url}
+            {expanded ? `${url.slice(0, 15)}...` : url.length > 40 ? `${url.slice(0, 40)}...` : url}
           </button>
         </div>
         <button className="item-url-links"
@@ -67,9 +70,11 @@ const Bookmarks = ({ bookmarks, bookmarksDispatcher }) => {
     );
   return (
     <Layout>
-      <div id="bookmarks" className="active-bookmarks">
+      <div className={`pagesContainer ${expanded? "pagesContainer_click": "pagesContainer_default"} `}>
+      <div id="bookmarks" >
         <BackwardBtn />
         <ul id="categories-list">{renderBookmarksCategories()}</ul>
+      </div>
       </div>
     </Layout>
   );
