@@ -16,7 +16,11 @@
     "provider": "github",
     "releaseType": "release"
   },
-  "files": ["package.json", "app/**/*", "node_modules"],
+  "files": [
+    "package.json",
+    "app/**/*",
+    "node_modules"
+  ],
   "postinstall": "electron-builder install-app-deps",
   "build": {
     "appId": "com.unelmas.browser",
@@ -76,7 +80,7 @@
     "css-loader": "^6.7.1",
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.1",
-    "electron": "^v28.2.0",
+    "electron": "^v29.1.5",
     "electron-builder": "^23.1.0",
     "electron-context-menu": "^3.3.0",
     "electron-log": "^5.0.0-beta.24",
@@ -101,9 +105,19 @@
   },
   "config": {
     "make_targets": {
-      "win32": ["nsis"],
-      "darwin": ["zip", "dmg"],
-      "linux": ["deb", "rpm", "flatpak", "snap"]
+      "win32": [
+        "nsis"
+      ],
+      "darwin": [
+        "zip",
+        "dmg"
+      ],
+      "linux": [
+        "deb",
+        "rpm",
+        "flatpak",
+        "snap"
+      ]
     },
     "forge": {
       "publishers": [
@@ -134,7 +148,9 @@
         },
         {
           "name": "@electron-forge/maker-zip",
-          "platforms": ["darwin"]
+          "platforms": [
+            "darwin"
+          ]
         },
         {
           "name": "@electron-forge/maker-deb",
