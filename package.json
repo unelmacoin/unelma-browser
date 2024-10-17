@@ -80,7 +80,7 @@
     "css-loader": "^6.7.1",
     "dateformat": "^5.0.3",
     "dotenv": "^16.0.1",
-    "electron": "^v29.1.5",
+    "electron": "^v33.0.0",
     "electron-builder": "^23.1.0",
     "electron-context-menu": "^3.3.0",
     "electron-log": "^5.0.0-beta.24",
