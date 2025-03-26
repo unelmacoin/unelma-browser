@@ -12,13 +12,31 @@ import {
 const TabsList = ({ tabs, tabsDispatch }) => {
   const handleAddTab = () => {
     const newTab = defaultTab(window.id);
-    window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
-    tabsDispatch({
-      type: ADD_TAB,
-      payload: {
-        tab: { ...newTab },
-      },
-    });
+
+    // Add delay for macOS Sequoia to prevent layout issues
+    if (window.api && window.api.isMacOSSequoia) {
+      // First update the UI
+      tabsDispatch({
+        type: ADD_TAB,
+        payload: {
+          tab: { ...newTab },
+        },
+      });
+
+      // Then send to main process with slight delay
+      setTimeout(() => {
+        window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
+      }, 50);
+    } else {
+      // Original behavior for other platforms
+      window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
+      tabsDispatch({
+        type: ADD_TAB,
+        payload: {
+          tab: { ...newTab },
+        },
+      });
+    }
   };
   function handleOnDragEnd(result) {
     if (!result.destination) return;
