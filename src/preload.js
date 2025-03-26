@@ -1,4 +1,5 @@
 const { contextBridge, ipcRenderer } = require("electron");
+const os = require("os");
 const {
   RECIEVE_CHANNELS,
   GET_LOGIN_INFO,
@@ -7,6 +8,11 @@ const {
   REQUEST_START,
   FINISH_NAVIGATE,
 } = require("./constants/global/channels");
+
+let macOSVersion = null;
+if (process.platform === "darwin") {
+  macOSVersion = parseInt(process.getSystemVersion().split(".")[0]);
+}
 
 contextBridge.exposeInMainWorld("api", {
   send: (channel, data) => {
@@ -19,17 +25,22 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
+
   clearCacheAndCookies: () => {
-    ipcRenderer.invoke('clear-cache-and-cookies');
+    ipcRenderer.invoke("clear-cache-and-cookies");
   },
+
   openDialog: async () => {
-    ipcRenderer.send('open-dialog');
-    return new Promise(resolve => {
-      ipcRenderer.once('dialog-closed', (event, result) => {
+    ipcRenderer.send("open-dialog");
+    return new Promise((resolve) => {
+      ipcRenderer.once("dialog-closed", (event, result) => {
         resolve(result);
       });
     });
   },
+  platform: process.platform,
+  macOSVersion: macOSVersion,
+  isMacOSSequoia: process.platform === "darwin" && macOSVersion >= 15,
 });
 window.addEventListener("load", () => {
   const commonInputnames = /user|email|login|phone/;
@@ -75,7 +86,6 @@ window.addEventListener("load", () => {
 
   const onBeforeRequest = () => {
     getAdsBoxs([...document.getElementsByTagName("*")]).forEach((ad) => {
-      
       ad.remove();
     });
     if (new URL(window.location.href).hostname === "www.youtube.com") {
