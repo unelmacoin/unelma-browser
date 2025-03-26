@@ -20,7 +20,7 @@ export class View {
   y;
   hidden;
   constructor({ url, parentWindow, id, isActive, isToggled }) {
-    if(parentWindow?.getBounds()) {
+    if (parentWindow?.getBounds()) {
       if (!parentWindow?.isDestroyed()) {
         this.parentWindow = parentWindow;
         this.id = id;
@@ -103,8 +103,32 @@ export class View {
     }
   }
   active(isToggled) {
-    this.isActive = true;
-    this.fit(isToggled);
+    try {
+      this.isActive = true;
+      if (this.view && !this.view.isDestroyed()) {
+        const bounds = this.parentWindow.getBounds();
+
+        const isMacOSSequoiaOrLater =
+          process.platform === "darwin" &&
+          parseInt(process.getSystemVersion().split(".")[0]) >= 15;
+
+        const topMargin = isMacOSSequoiaOrLater ? 80 : 70;
+        const heightAdjustment = isMacOSSequoiaOrLater ? 100 : 90;
+
+        this.view.setBounds({
+          x: isToggled ? 20 : 220,
+          y: topMargin,
+          width: isToggled ? bounds.width - 40 : bounds.width - 240,
+          height: bounds.height - heightAdjustment,
+        });
+        this.view.setAutoResize({
+          width: true,
+          height: true,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
   deActive() {
     this.isActive = false;
