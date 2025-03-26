@@ -443,3 +443,41 @@ input {
     height: 35px;
   }
 }
+
+/* Add macOS Sequoia specific adjustments */
+@media screen and (platform: macos) {
+  /* Adjust tab container for macOS */
+  #root #tabs {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Adjust tab scrolling container for macOS Sequoia */
+  html[data-macos-version="15"] #root #tabs #actual-tabs,
+  html[data-macos-version="16"] #root #tabs #actual-tabs {
+    max-height: 650px; /* Reduced height for Sequoia */
+    padding-bottom: 10px;
+  }
+
+  /* Fix tab appearance in Sequoia */
+  html[data-macos-version="15"] .tab,
+  html[data-macos-version="16"] .tab {
+    height: 38px; /* Slightly taller tabs for Sequoia */
+    padding: 10px;
+  }
+
+  /* Fix tab animation in Sequoia */
+  html[data-macos-version="15"] .tab p,
+  html[data-macos-version="16"] .tab p {
+    animation: none; /* Disable animation that causes layout issues */
+    height: 38px;
+    line-height: 38px;
+  }
+
+  /* Adjust webviews container for Sequoia */
+  html[data-macos-version="15"] #webviews-container,
+  html[data-macos-version="16"] #webviews-container {
+    height: calc(100% - 20px);
+    margin-top: 10px;
+  }
+}
