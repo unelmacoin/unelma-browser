@@ -46,6 +46,9 @@ export class MainWindow {
   constructor(id, initialUrl) {
     this.views = [];
     this.isToggled = false;
+
+    const isMAcOSSequoiaOrLater = process.platform == 'darwin' && parseInt(process.getSystemVersion().split('.')[0]) >= 15;
+
     this.window = new BrowserWindow({
       transparent: true,
       title: 'UnelmaSearch - Browser',
@@ -54,7 +57,8 @@ export class MainWindow {
       backgroundColor: 'rgba(0,0,0,0)',
       icon: path.join(__dirname, './img/unp.ico'),
       frame: false,
-      titleBarStyle: 'hidden',
+      titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden',
+      trafficLightPosition: isMAcOSSequoiaOrLater?{x: 12, y:12} : undefined,
       minHeight: 600,
       minWidth: 1000,
       webPreferences: {
