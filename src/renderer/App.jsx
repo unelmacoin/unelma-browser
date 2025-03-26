@@ -132,6 +132,9 @@ const App = () => {
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
+    if (window.api && window.api.platform === 'darwin' && window.api.macOSVersion) {
+      document.documentElement.setAttribute('data-macos-version', window.api.macOSVersion.toString());
+    }
     if (storedTheme) {
       document.querySelector("#root").setAttribute("data-theme", storedTheme);
     }
