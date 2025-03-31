@@ -20,7 +20,7 @@ export class View {
   y;
   hidden;
   constructor({ url, parentWindow, id, isActive, isToggled }) {
-    if(parentWindow?.getBounds()) {
+    if (parentWindow?.getBounds()) {
       if (!parentWindow?.isDestroyed()) {
         this.parentWindow = parentWindow;
         this.id = id;
@@ -177,5 +177,39 @@ export class View {
   }
   get contents() {
     return this.view?.webContents;
+  }
+  fitToWidth(sidebarWidth) {
+    if (!this.parentWindow?.isDestroyed()) {
+      // Calculate new dimensions
+      const newWidth =
+        Math.floor(this.parentWindow.getBounds().width) -
+        sidebarWidth -
+        PADDING * 2 -
+        SIDE_BAR_RIGHT_MARGIN;
+      const newX = sidebarWidth + PADDING + SIDE_BAR_RIGHT_MARGIN;
+      const newHeight =
+        this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
+
+      // Only update if dimensions have changed
+      if (
+        this.width !== newWidth ||
+        this.x !== newX ||
+        this.height !== newHeight
+      ) {
+        this.width = newWidth;
+        this.x = newX;
+        this.height = newHeight;
+
+        // Use setPosition and setSize separately for better performance
+        if (this.view) {
+          this.view.setBounds({
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+          });
+        }
+      }
+    }
   }
 }
