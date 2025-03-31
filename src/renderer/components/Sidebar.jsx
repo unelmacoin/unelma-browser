@@ -17,8 +17,9 @@ const Sidebar = ({
   bookmarks,
   loginDialogInfo,
   setLoginDialogInfo,
-  setMenu = { setMenu },
-  menu = { menu },
+  setMenu,
+  menu,
+  style,
 }) => {
   const renderSavePasswordDialog = () =>
     loginDialogInfo && (
@@ -27,22 +28,12 @@ const Sidebar = ({
         setLoginDialogInfo={setLoginDialogInfo}
       />
     );
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      document.getElementById("app-sidebar").style.width = openSidebar
-        ? `${window.innerWidth * 0.21}px`
-        : `${window.innerWidth * 0.02}px`;
-    });
-  }, [openSidebar]);
+
   return (
     <div
       id="app-sidebar"
       className={`${!openSidebar && "toggled-sidebar"}`}
-      style={{
-        width: openSidebar
-          ? `${window.innerWidth * 0.21}px`
-          : `${window.innerWidth * 0.02}px`,
-      }}
+      style={style}
     >
       {renderSavePasswordDialog()}
       <div id="controllers">
