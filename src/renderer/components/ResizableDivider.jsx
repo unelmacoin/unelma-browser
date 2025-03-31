@@ -5,9 +5,9 @@ import "./ResizableDivider.css";
 const ResizableDivider = ({
   position,
   onResize,
-  minWidth = 100,
-  collapseThreshold = 120,
-  collapsedWidth = 40,
+  minWidth = 80,
+  collapseThreshold = 80,
+  collapsedWidth = 80,
 }) => {
   const [isResizing, setIsResizing] = useState(false);
 
@@ -20,6 +20,9 @@ const ResizableDivider = ({
       // Handle collapsing
       if (newWidth <= collapseThreshold) {
         onResize(collapsedWidth);
+        document
+          .getElementById("app-sidebar")
+          ?.classList.add("toggled-sidebar");
         window.api.send(RESIZE_WINDOW, {
           windowId: window.id,
           width: collapsedWidth,
@@ -28,12 +31,11 @@ const ResizableDivider = ({
       }
 
       // Handle expanding
-      if (
-        newWidth > collapseThreshold &&
-        newWidth >= minWidth &&
-        newWidth < window.innerWidth - 100
-      ) {
+      if (newWidth > collapseThreshold && newWidth >= minWidth) {
         onResize(newWidth);
+        document
+          .getElementById("app-sidebar")
+          ?.classList.remove("toggled-sidebar");
         window.api.send(RESIZE_WINDOW, {
           windowId: window.id,
           width: newWidth,
