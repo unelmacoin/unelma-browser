@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Layout from "../../components/Layout/Layout.jsx";
 import Sidebar from "../../components/Sidebar.jsx";
+import ResizableDivider from "../../components/ResizableDivider.jsx";
 import "./home.css";
+
 const Home = ({
   tabsDispatch,
   bookmarksDispatcher,
@@ -14,9 +16,39 @@ const Home = ({
   setMenu,
   menu,
 }) => {
+  const [sidebarWidth, setSidebarWidth] = useState(240);
+  const homeRef = useRef(null);
+  const lastValidWidth = useRef(240);
+  const COLLAPSED_WIDTH = 40;
+  const DEFAULT_EXPANDED_WIDTH = 240;
+
+  // Update CSS variable for sidebar width
+  useEffect(() => {
+    document.documentElement.style.setProperty(
+      "--sidebar-width",
+      `${sidebarWidth}px`
+    );
+  }, [sidebarWidth]);
+
+  // Handle toggle button state changes
+  useEffect(() => {
+    if (!openSidebar) {
+      setSidebarWidth(COLLAPSED_WIDTH);
+    } else {
+      setSidebarWidth(lastValidWidth.current);
+    }
+  }, [openSidebar]);
+
+  const handleResize = (newWidth) => {
+    setSidebarWidth(newWidth);
+    if (newWidth > COLLAPSED_WIDTH) {
+      lastValidWidth.current = newWidth;
+    }
+  };
+
   return (
-    <Layout setMenu={setMenu} menu ={menu}>
-      <div id="home" >
+    <Layout setMenu={setMenu} menu={menu}>
+      <div id="home" ref={homeRef}>
         <Sidebar
           tabs={tabs}
           tabsDispatch={tabsDispatch}
@@ -27,11 +59,20 @@ const Home = ({
           loginDialogInfo={loginDialogInfo}
           setLoginDialogInfo={setLoginDialogInfo}
           setMenu={setMenu}
-          menu ={menu}
+          menu={menu}
+          style={{ width: `${sidebarWidth}px` }}
+        />
+        <ResizableDivider
+          position={sidebarWidth}
+          onResize={handleResize}
+          minWidth={100}
+          collapseThreshold={120}
+          collapsedWidth={COLLAPSED_WIDTH}
         />
         <div
           id="webviews-container"
           className={`${!openSidebar && "toggled-container"}`}
+          style={{ left: openSidebar ? `${sidebarWidth}px` : undefined }}
         ></div>
       </div>
     </Layout>
