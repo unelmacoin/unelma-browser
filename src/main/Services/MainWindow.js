@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, session } from 'electron';
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import {
   ACTIVATE_VIEW,
   ADD_VIEW,
@@ -24,19 +24,20 @@ import {
   TOGGLE_WINDOW,
   WINDOW_READY,
   FINISH_NAVIGATE,
-} from '../../constants/global/channels';
-import { UNELMA_DEFAULT_URL } from '../../constants/global/urls';
-import { getBookmarks } from '../controllers/bookmarks';
-import { addAuthInfo, getAuthInfo } from '../controllers/passwords';
-import { addHistory, getSearchHistory } from '../controllers/searchHistory';
-import { getWindowTabs, setTabs, resetWindowTabs } from '../controllers/tabs';
-import { handleWindowsControlsMessaging } from '../utils/ipc';
-import { View } from './View';
-const fs = require('fs');
-const uniqid = require('uniqid');
-const path = require('path');
-const Store = require('electron-store');
-import * as ABPFilterParser from 'abp-filter-parser';
+  RESIZE_WINDOW,
+} from "../../constants/global/channels";
+import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
+import { getBookmarks } from "../controllers/bookmarks";
+import { addAuthInfo, getAuthInfo } from "../controllers/passwords";
+import { addHistory, getSearchHistory } from "../controllers/searchHistory";
+import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
+import { handleWindowsControlsMessaging } from "../utils/ipc";
+import { View } from "./View";
+const fs = require("fs");
+const uniqid = require("uniqid");
+const path = require("path");
+const Store = require("electron-store");
+import * as ABPFilterParser from "abp-filter-parser";
 
 const store = new Store();
 export class MainWindow {
@@ -48,13 +49,13 @@ export class MainWindow {
     this.isToggled = false;
     this.window = new BrowserWindow({
       transparent: true,
-      title: 'UnelmaSearch - Browser',
+      title: "UnelmaSearch - Browser",
       width: 1024,
       height: 768,
-      backgroundColor: 'rgba(0,0,0,0)',
-      icon: path.join(__dirname, './img/unp.ico'),
+      backgroundColor: "rgba(0,0,0,0)",
+      icon: path.join(__dirname, "./img/unp.ico"),
       frame: false,
-      titleBarStyle: 'hidden',
+      titleBarStyle: "hidden",
       minHeight: 600,
       minWidth: 1000,
       webPreferences: {
@@ -124,6 +125,14 @@ export class MainWindow {
           }
         }
       });
+      ipcMain.on(RESIZE_WINDOW, (_, { windowId, width }) => {
+        if (this.window && this.window.windowId === windowId) {
+          const activeView = this.views.find((v) => v.isActive && !v.hidden);
+          if (activeView) {
+            activeView.fitToWidth(width);
+          }
+        }
+      });
       ipcMain.on(
         mergeChannel(GO_TO_LOCATION, this.window.windowId),
         (_, url) => {
@@ -150,8 +159,8 @@ export class MainWindow {
       ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
         this.removeView(id);
       });
-      this.window.webContents.on('did-finish-load', () => {
-        this.window.addListener('resize', () => {
+      this.window.webContents.on("did-finish-load", () => {
+        this.window.addListener("resize", () => {
           this.views.find((v) => v.isActive && !v.hidden)?.fit(!this.isToggled);
         });
         this.send(WINDOW_READY, this.window.windowId);
@@ -160,7 +169,7 @@ export class MainWindow {
         this.send(GET_SEARCH_HISTORY, getSearchHistory());
         this.send(GET_BOOKMARKS, getBookmarks());
         this.send(GET_AUTH_INFO, getAuthInfo());
-        this.window.on('closed', () => {
+        this.window.on("closed", () => {
           this.window = null;
         });
       });
@@ -187,9 +196,9 @@ export class MainWindow {
         });
       }
       session.defaultSession.webRequest.onSendHeaders(
-        { urls: ['https://*/*'] },
+        { urls: ["https://*/*"] },
         function (details) {
-          if (details?.webContents?.getType() === 'browserView') {
+          if (details?.webContents?.getType() === "browserView") {
             details?.webContents?.send(
               REQUEST_START,
               details?.webContents?.getURL()
@@ -200,10 +209,10 @@ export class MainWindow {
 
       let parsedFilterData = {};
 
-      let currentPageDomain = 'slashdot.org';
-      ABPFilterParser.parse(store.get('easylist'), parsedFilterData);
+      let currentPageDomain = "slashdot.org";
+      ABPFilterParser.parse(store.get("easylist"), parsedFilterData);
       this.window.webContents.session.webRequest.onBeforeRequest(
-        { urls: ['https://*/*'] },
+        { urls: ["https://*/*"] },
         (details, callback) => {
           let urlToCheck = details.url;
           if (
@@ -213,12 +222,12 @@ export class MainWindow {
             })
           ) {
             callback({ cancel: true });
-            if (details?.webContents?.getType() === 'browserView') {
-              details?.webContents?.send('as', details?.webContents?.getURL());
+            if (details?.webContents?.getType() === "browserView") {
+              details?.webContents?.send("as", details?.webContents?.getURL());
             }
           } else {
-            if (details?.webContents?.getType() === 'browserView') {
-              details?.webContents?.send('as', details?.webContents?.getURL());
+            if (details?.webContents?.getType() === "browserView") {
+              details?.webContents?.send("as", details?.webContents?.getURL());
             }
             callback({});
           }
@@ -246,22 +255,22 @@ export class MainWindow {
         if (!e.sender?.getURL()) this.removeView(props.id);
         view?.contents?.send(FINISH_NAVIGATE);
       };
-      view?.contents?.addListener('did-start-loading', (e) => {
+      view?.contents?.addListener("did-start-loading", (e) => {
         view.startLoad();
         this.sendTabs();
       });
-      view?.contents?.addListener('did-navigate', () => {
+      view?.contents?.addListener("did-navigate", () => {
         view?.contents?.send(FINISH_NAVIGATE);
       });
-      view?.contents?.addListener('did-fail-load', () => {
+      view?.contents?.addListener("did-fail-load", () => {
         view.failLoad();
         this.sendTabs();
       });
-      view?.contents?.addListener('did-stop-loading', (e) => {
+      view?.contents?.addListener("did-stop-loading", (e) => {
         e.sender = view?.contents;
         finishLoading(e);
       });
-      view?.contents?.addListener('did-finish-load', (e) => {
+      view?.contents?.addListener("did-finish-load", (e) => {
         e.sender = view?.contents;
         finishLoading(e);
         addHistory({
@@ -272,7 +281,7 @@ export class MainWindow {
 
         this.send(GET_SEARCH_HISTORY, getSearchHistory());
       });
-      view?.contents?.addListener('did-frame-finish-load', (e) => {
+      view?.contents?.addListener("did-frame-finish-load", (e) => {
         e.sender = view?.contents;
         finishLoading(e);
       });
@@ -283,7 +292,7 @@ export class MainWindow {
           id: uniqid(),
           isToggled: this.isToggled,
         });
-        return { action: 'deny' };
+        return { action: "deny" };
       });
       this.sendTabs();
     }
