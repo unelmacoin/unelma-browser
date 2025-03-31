@@ -1,0 +1,22 @@
+.resizer {
+  width: 4px;
+  cursor: col-resize;
+  height: 100%;
+  background-color: var(--redish-shade-background);
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  opacity: 0.5;
+  user-select: none;
+  -webkit-user-select: none;
+  /* transition: all 0.1s ease; */
+  margin: 0px 0px 0px 27px;
+}
+
+.resizer:hover,
+.resizer.dragging {
+  /* background-color: var(--redish-shade-background); */
+  opacity: 1;
+  width: 3px;
+  margin: 0px 0px 0px 27px;
+}
