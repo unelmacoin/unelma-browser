@@ -22,6 +22,7 @@ export const ACTIVATE_VIEW = "ACTIVATE_VIEW";
 export const ADD_VIEW = "ADD_VIEW";
 export const REMOVE_VIEW = "REMOVE_VIEW";
 export const TOGGLE_WINDOW = "TOGGLE_WINDOW";
+export const RESIZE_WINDOW = "RESIZE_WINDOW";
 export const HIDE_VIEWS = "HIDE_VIEWS";
 export const SHOW_VIEWS = "SHOW_VIEWS";
 export const GO_FORWARD = "GO_FORWARD";
@@ -68,6 +69,7 @@ export const SEND_CHANNELS = [
   ADD_VIEW,
   REMOVE_VIEW,
   TOGGLE_WINDOW,
+  RESIZE_WINDOW,
   HIDE_VIEWS,
   SHOW_VIEWS,
   GO_FORWARD,
