@@ -65,14 +65,14 @@ const Home = ({
         <ResizableDivider
           position={sidebarWidth}
           onResize={handleResize}
-          minWidth={100}
-          collapseThreshold={120}
+          minWidth={80}
+          collapseThreshold={80}
           collapsedWidth={COLLAPSED_WIDTH}
         />
         <div
           id="webviews-container"
           className={`${!openSidebar && "toggled-container"}`}
-          style={{ left: openSidebar ? `${sidebarWidth}px` : undefined }}
+          style={{ left: `${sidebarWidth}px` }}
         ></div>
       </div>
     </Layout>
