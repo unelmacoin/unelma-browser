@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, session } from "electron";
+import { BrowserWindow, ipcMain, session } from "electron";
 import {
   ACTIVATE_VIEW,
   ADD_VIEW,
@@ -33,11 +33,9 @@ import { addHistory, getSearchHistory } from "../controllers/searchHistory";
 import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
 import { handleWindowsControlsMessaging } from "../utils/ipc";
 import { View } from "./View";
-const fs = require("fs");
 const uniqid = require("uniqid");
 const path = require("path");
 const Store = require("electron-store");
-import * as ABPFilterParser from "abp-filter-parser";
 
 const store = new Store();
 export class MainWindow {
@@ -207,31 +205,14 @@ export class MainWindow {
         }
       );
 
-      let parsedFilterData = {};
-
-      let currentPageDomain = "slashdot.org";
-      ABPFilterParser.parse(store.get("easylist"), parsedFilterData);
       this.window.webContents.session.webRequest.onBeforeRequest(
         { urls: ["https://*/*"] },
         (details, callback) => {
-          let urlToCheck = details.url;
-          if (
-            ABPFilterParser.matches(parsedFilterData, urlToCheck, {
-              domain: currentPageDomain,
-              elementTypeMaskMap: ABPFilterParser.elementTypes.SCRIPT,
-            })
-          ) {
-            callback({ cancel: true });
-            if (details?.webContents?.getType() === "browserView") {
-              details?.webContents?.send("as", details?.webContents?.getURL());
-            }
-          } else {
             if (details?.webContents?.getType() === "browserView") {
               details?.webContents?.send("as", details?.webContents?.getURL());
             }
             callback({});
           }
-        }
       );
     }
   }
