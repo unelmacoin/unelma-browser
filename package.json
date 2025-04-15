@@ -1,6 +1,6 @@
 {
-  "name": "Unelma_Browser",
-  "version": "3.2.0",
+  "name": "unelma-browser",
+  "version": "3.2.1",
   "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
   "scripts": {

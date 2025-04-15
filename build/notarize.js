@@ -17,8 +17,9 @@ exports.default = async function notarizing(context) {
     path.join(context.appOutDir, `${appName}.app`)
   );
   const appleId = process.env.APPLE_ID;
-  const teamId = process.env.APPLE_TEAMID;
-  const appleIdPassword = process.env.APPLE_ID_PASSWORD;
+  const teamId = process.env.APPLE_TEAM_ID;
+  const appleAppSpecificPassword = process.env.APPLE_APP_SPECIFIC_PASSWORD; // Updated variable name
+
   if (!appleId) {
     console.warn('Not notarizing: Missing APPLE_ID environment variable');
     return;
@@ -27,9 +28,9 @@ exports.default = async function notarizing(context) {
     console.warn('Not notarizing: Missing APPLE_TEAMID environment variable');
     return;
   }
-  if (!appleIdPassword) {
+  if (!appleAppSpecificPassword) {
     console.warn(
-      'Not notarizing: Missing APPLE_ID_PASSWORD environment variable'
+      'Not notarizing: Missing APPLE_APP_SPECIFIC_PASSWORD environment variable'
     );
     return;
   }
@@ -38,6 +39,6 @@ exports.default = async function notarizing(context) {
     appPath,
     appleId,
     teamId,
-    appleIdPassword,
+    appleIdPassword: appleAppSpecificPassword, // Map to the expected key
   });
 };
