@@ -5,9 +5,9 @@ import "./ResizableDivider.css";
 const ResizableDivider = ({
   position,
   onResize,
-  minWidth = 80,
-  collapseThreshold = 80,
-  collapsedWidth = 80,
+  minWidth,
+  collapseThreshold,
+  collapsedWidth,
 }) => {
   const [isResizing, setIsResizing] = useState(false);
 

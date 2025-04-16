@@ -1,7 +1,6 @@
 #home {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
   -webkit-app-region: no-drag;
   height: 100%;
   position: relative;
