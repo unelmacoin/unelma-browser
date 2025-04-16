@@ -60,10 +60,10 @@ const Home = ({
           setLoginDialogInfo={setLoginDialogInfo}
           setMenu={setMenu}
           menu={menu}
-          style={{ width: `${sidebarWidth}px` }}
+          style={{ width: `calc(${sidebarWidth}px - 20px)` }}
         />
         <ResizableDivider
-          position={sidebarWidth}
+          position={sidebarWidth - 40}
           onResize={handleResize}
           minWidth={80}
           collapseThreshold={80}
@@ -72,7 +72,7 @@ const Home = ({
         <div
           id="webviews-container"
           className={`${!openSidebar && "toggled-container"}`}
-          style={{ left: `${sidebarWidth}px` }}
+          style={{ left: `${sidebarWidth}px`, width: `calc(100vw - ${sidebarWidth}px)` }}
         ></div>
       </div>
     </Layout>
