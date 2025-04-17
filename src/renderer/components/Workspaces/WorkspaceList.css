@@ -31,10 +31,12 @@
   padding: 12px;
   cursor: pointer;
   border-radius: 6px;
+  margin-top: 4px;
   margin-bottom: 4px;
   transition: background-color 0.2s;
   position: relative;
   background-color: var(--root-background);
+  border-top: 0.5px solid var(--body-font-grey-shade);
 }
 
 .workspace-item:hover {
@@ -71,7 +73,7 @@
   font-size: 12px;
   color: var(--body-font-color);
   background-color: var(--body-font-grey-shade);
-  opacity: 0.2;
+  opacity: 0.7;
   padding: 2px 6px;
   border-radius: 10px;
   margin-left: 8px;
@@ -113,7 +115,7 @@
 
 .workspace-footer {
   padding: 16px;
-  
+
   background-color: var(--root-background);
 }
 
