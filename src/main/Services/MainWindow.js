@@ -75,6 +75,7 @@ export class MainWindow {
           parentWindow: this.window,
           id: tab.id,
           isToggled: this.isToggled,
+          workspaceId: tab.workspaceId,
         });
       });
       ipcMain.on(
@@ -176,11 +177,12 @@ export class MainWindow {
       const windowTabs = getWindowTabs(this.window.windowId);
       if (windowTabs.length === 0) {
         this.addView({
-          url: !initialUrl ? UNELMA_DEFAULT_URL : initialUrl, // Loads custom link if given a paremeter otherwise loads, default url.
+          url: !initialUrl ? UNELMA_DEFAULT_URL : initialUrl,
           parentWindow: this.window,
           isActive: true,
           id: uniqid(),
           isToggled: this.isToggled,
+          workspaceId: "default",
         });
       } else {
         windowTabs.forEach((tab) => {
@@ -190,6 +192,7 @@ export class MainWindow {
             isActive: tab.active,
             id: tab.id,
             isToggled: this.isToggled,
+            workspaceId: tab.workspaceId || "default",
           });
         });
       }
@@ -208,11 +211,11 @@ export class MainWindow {
       this.window.webContents.session.webRequest.onBeforeRequest(
         { urls: ["https://*/*"] },
         (details, callback) => {
-            if (details?.webContents?.getType() === "browserView") {
-              details?.webContents?.send("as", details?.webContents?.getURL());
-            }
-            callback({});
+          if (details?.webContents?.getType() === "browserView") {
+            details?.webContents?.send("as", details?.webContents?.getURL());
           }
+          callback({});
+        }
       );
     }
   }
@@ -348,7 +351,16 @@ export class MainWindow {
   mapViews() {
     try {
       return this.views.map(
-        ({ id, url, isActive, parentWindow, loading, title, fail }) => ({
+        ({
+          id,
+          url,
+          isActive,
+          parentWindow,
+          loading,
+          title,
+          fail,
+          workspaceId,
+        }) => ({
           id,
           url,
           active: isActive,
@@ -356,6 +368,7 @@ export class MainWindow {
           title,
           loading,
           fail,
+          workspaceId,
         })
       );
     } catch (error) {
