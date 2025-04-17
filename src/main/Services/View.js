@@ -19,7 +19,8 @@ export class View {
   loading;
   y;
   hidden;
-  constructor({ url, parentWindow, id, isActive, isToggled }) {
+  workspaceId;
+  constructor({ url, parentWindow, id, isActive, isToggled, workspaceId }) {
     if (parentWindow?.getBounds()) {
       if (!parentWindow?.isDestroyed()) {
         this.parentWindow = parentWindow;
@@ -33,6 +34,7 @@ export class View {
         this.height =
           this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
         this.y = TOP_BAR_HEIGHT;
+        this.workspaceId = workspaceId;
         if (!isToggled) {
           this.width =
             Math.floor(this.parentWindow.getBounds().width * 0.8) -
