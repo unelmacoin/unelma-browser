@@ -171,15 +171,15 @@ export class MainWindow {
       ipcMain.on(GET_CUSTOM_WORKSPACES, (event) => {
         event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
       });
-      ipcMain.on(ADD_CUSTOM_WORKSPACE, (_, workspace) => {
+      ipcMain.on(ADD_CUSTOM_WORKSPACE, (event, workspace) => {
         addCustomWorkspace(workspace);
         event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
       });
-      ipcMain.on(UPDATE_CUSTOM_WORKSPACE, (_, { id, name }) => {
+      ipcMain.on(UPDATE_CUSTOM_WORKSPACE, (event, { id, name }) => {
         updateCustomWorkspace(id, { name });
         event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
       });
-      ipcMain.on(DELETE_CUSTOM_WORKSPACE, (_, workspaceId) => {
+      ipcMain.on(DELETE_CUSTOM_WORKSPACE, (event, workspaceId) => {
         deleteCustomWorkspace(workspaceId);
         event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
       });
