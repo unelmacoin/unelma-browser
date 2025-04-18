@@ -14,13 +14,13 @@ module.exports = {
   },
 
   addCustomWorkspace: (workspace) => {
-    try {
-      const workspaces = store.get(WORKSPACES_KEY) || [];
-      if (!workspaces.find((w) => w.id === workspace.id)) {
-        store.set(WORKSPACES_KEY, [...workspaces, workspace]);
-      }
-    } catch (error) {
-      console.error("Error adding workspace:", error);
+    if (!workspace || !workspace.id || typeof workspace.id !== "string") {
+      console.error("Invalid workspace object:", workspace);
+      return;
+    }
+    const workspaces = store.get(WORKSPACES_KEY) || [];
+    if (!workspaces.find((w) => w.id === workspace.id)) {
+      store.set(WORKSPACES_KEY, [...workspaces, workspace]);
     }
   },
 
