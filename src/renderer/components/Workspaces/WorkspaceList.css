@@ -80,6 +80,69 @@
   margin-right: 8px;
 }
 
+.workspace-actions {
+  display: flex;
+  gap: 4px;
+  margin-right: 8px;
+}
+
+.workspace-action-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--body-font-color);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  border-radius: 4px;
+}
+
+.workspace-action-btn:hover {
+  background-color: var(--body-font-grey-shade);
+  opacity: 1;
+}
+
+.workspace-action-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.workspace-edit-form {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  margin-right: 8px;
+}
+
+.workspace-edit-form input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--body-font-grey-shade);
+  border-radius: 4px;
+  background-color: var(--root-background);
+  color: var(--body-font-color);
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.workspace-edit-form input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.workspace-edit-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.new-workspace-form {
+  background-color: var(--accent-color);
+  opacity: 0.8;
+}
+
 .toggle-button {
   background: none;
   border: none;
@@ -115,8 +178,42 @@
 
 .workspace-footer {
   padding: 16px;
-
   background-color: var(--root-background);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.new-workspace-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.new-workspace-button:hover:not(:disabled) {
+  background-color: var(--accent-color-hover);
+}
+
+.new-workspace-button:disabled {
+  background-color: var(--body-font-grey-shade);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.new-workspace-button svg {
+  margin-right: 8px;
+}
+
+.new-workspace-button span {
+  font-size: 14px;
 }
 
 .new-tab-button {
