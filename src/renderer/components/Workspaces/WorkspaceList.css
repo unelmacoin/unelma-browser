@@ -3,7 +3,9 @@
   flex-direction: column;
   height: 100%;
   background-color: var(--root-background);
-  width: 250px;
+  width: 100%;
+  max-width: 400px;
+  min-width: 200px;
   overflow-y: auto;
 }
 
