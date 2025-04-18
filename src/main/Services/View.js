@@ -34,7 +34,7 @@ export class View {
         this.height =
           this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
         this.y = TOP_BAR_HEIGHT;
-        this.workspaceId = workspaceId;
+        this.workspaceId = workspaceId || "default";
         if (!isToggled) {
           this.width =
             Math.floor(this.parentWindow.getBounds().width * 0.8) -
