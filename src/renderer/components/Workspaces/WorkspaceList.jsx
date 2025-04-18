@@ -48,7 +48,7 @@ const WorkspaceList = ({
 
   useEffect(() => {
     // Load custom workspaces
-    window.api.receive(GET_CUSTOM_WORKSPACES, (workspaces) => {
+    const handler = (workspaces) => {
       setCustomWorkspaces(workspaces);
       // Initialize expanded state for custom workspaces
       const newExpandedState = { ...expandedWorkspaces };
@@ -56,8 +56,13 @@ const WorkspaceList = ({
         newExpandedState[ws.id] = true;
       });
       setExpandedWorkspaces(newExpandedState);
-    });
+    };
+    window.api.receive(GET_CUSTOM_WORKSPACES, handler);
     window.api.send(GET_CUSTOM_WORKSPACES);
+
+    return () => {
+      window.api.remove(GET_CUSTOM_WORKSPACES, handler);
+    };
   }, []);
 
   useEffect(() => {
