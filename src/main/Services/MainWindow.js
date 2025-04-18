@@ -25,6 +25,10 @@ import {
   WINDOW_READY,
   FINISH_NAVIGATE,
   RESIZE_WINDOW,
+  GET_CUSTOM_WORKSPACES,
+  ADD_CUSTOM_WORKSPACE,
+  UPDATE_CUSTOM_WORKSPACE,
+  DELETE_CUSTOM_WORKSPACE,
 } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
 import { getBookmarks } from "../controllers/bookmarks";
@@ -33,6 +37,12 @@ import { addHistory, getSearchHistory } from "../controllers/searchHistory";
 import { getWindowTabs, setTabs, resetWindowTabs } from "../controllers/tabs";
 import { handleWindowsControlsMessaging } from "../utils/ipc";
 import { View } from "./View";
+import {
+  getCustomWorkspaces,
+  addCustomWorkspace,
+  updateCustomWorkspace,
+  deleteCustomWorkspace,
+} from "../controllers/workspaces";
 const uniqid = require("uniqid");
 const path = require("path");
 const Store = require("electron-store");
@@ -157,6 +167,21 @@ export class MainWindow {
       });
       ipcMain.on(mergeChannel(REMOVE_VIEW, this.window.windowId), (_, id) => {
         this.removeView(id);
+      });
+      ipcMain.on(GET_CUSTOM_WORKSPACES, (event) => {
+        event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
+      });
+      ipcMain.on(ADD_CUSTOM_WORKSPACE, (_, workspace) => {
+        addCustomWorkspace(workspace);
+        event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
+      });
+      ipcMain.on(UPDATE_CUSTOM_WORKSPACE, (_, { id, name }) => {
+        updateCustomWorkspace(id, { name });
+        event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
+      });
+      ipcMain.on(DELETE_CUSTOM_WORKSPACE, (_, workspaceId) => {
+        deleteCustomWorkspace(workspaceId);
+        event.reply(GET_CUSTOM_WORKSPACES, getCustomWorkspaces());
       });
       this.window.webContents.on("did-finish-load", () => {
         this.window.addListener("resize", () => {
