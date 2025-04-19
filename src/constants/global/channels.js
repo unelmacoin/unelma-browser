@@ -91,4 +91,10 @@ export const RECIEVE_CHANNELS = [
   OPEN_SIDEBAR,
 ];
 
+// Workspace Management Channels
+export const GET_CUSTOM_WORKSPACES = "GET_CUSTOM_WORKSPACES";
+export const ADD_CUSTOM_WORKSPACE = "ADD_CUSTOM_WORKSPACE";
+export const UPDATE_CUSTOM_WORKSPACE = "UPDATE_CUSTOM_WORKSPACE";
+export const DELETE_CUSTOM_WORKSPACE = "DELETE_CUSTOM_WORKSPACE";
+
 export const mergeChannel = (channel, id) => `${channel}-${id}`;

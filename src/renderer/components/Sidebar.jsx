@@ -7,6 +7,7 @@ import NavigationControls from "./NavigationControls.jsx";
 import SavePasswordDialog from "./SavePasswordDialog.jsx";
 import TabsList from "./TabsList.jsx";
 import WindowControllers from "./WindowControllers.jsx";
+import WorkspaceList from "./Workspaces/WorkspaceList.jsx";
 
 const Sidebar = ({
   tabs,
@@ -21,6 +22,12 @@ const Sidebar = ({
   menu,
   style,
 }) => {
+  const [activeWorkspace, setActiveWorkspace] = useState("default");
+
+  const handleWorkspaceSelect = (workspaceId) => {
+    setActiveWorkspace(workspaceId);
+  };
+
   const renderSavePasswordDialog = () =>
     loginDialogInfo && (
       <SavePasswordDialog
@@ -58,7 +65,12 @@ const Sidebar = ({
         tabsDispatch={tabsDispatch}
         tabs={tabs}
       />
-      <TabsList tabs={tabs} tabsDispatch={tabsDispatch} />
+      <WorkspaceList
+        tabs={tabs}
+        tabsDispatch={tabsDispatch}
+        activeWorkspace={activeWorkspace}
+        onWorkspaceSelect={handleWorkspaceSelect}
+      />
     </div>
   );
 };

@@ -1,12 +1,26 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import { ACTIVATE_VIEW, mergeChannel, REMOVE_VIEW } from "../../constants/global/channels";
-import { ACTIVATE_TAB, REMOVE_TAB } from "../../constants/renderer/actions";
+import {
+  ACTIVATE_VIEW,
+  mergeChannel,
+  REMOVE_VIEW,
+} from "../../constants/global/channels";
+import { ACTIVATE_TAB, CLOSE_TAB } from "../../constants/renderer/actions";
 import { handleFavicon } from "../utils/handleFavicon";
 import LoadingIndicator from "./LoadingIndicator.jsx";
-const Tab = ({ id, title, active, tabsDispatch, loading, url, type, fail }) => {
+const Tab = ({
+  id,
+  title,
+  active,
+  tabsDispatch,
+  loading,
+  url,
+  type,
+  fail,
+  workspaceId,
+}) => {
   const handleClose = () => {
-    tabsDispatch({ type: REMOVE_TAB, payload: { id } });
+    tabsDispatch({ type: CLOSE_TAB, payload: { tabId: id, workspaceId } });
   };
   const closeNodes = ["path", "svg", "BUTTON"];
   const handleActivateTab = (e) => {
@@ -17,7 +31,7 @@ const Tab = ({ id, title, active, tabsDispatch, loading, url, type, fail }) => {
       window.api.send(mergeChannel(ACTIVATE_VIEW, window.id), id);
       tabsDispatch({
         type: ACTIVATE_TAB,
-        payload: { id, windowId: window.id },
+        payload: { tabId: id, workspaceId },
       });
     }
   };

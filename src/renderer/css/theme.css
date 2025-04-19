@@ -18,6 +18,7 @@
   --search-location-container: #333333b2;
   --search-location-container-bg: #33333321;
   --whiteAndBlack: white;
+  --workspace-list-bg: #beb8dd;
   --invert: 0.5;
 }
 
@@ -40,6 +41,7 @@
   --search-location-container-bg: #33333321;
   --whiteAndBlack: black;
   --invert: 1;
+  --workspace-list-bg: #beb8dd;
 }
 
 .popMenu {
