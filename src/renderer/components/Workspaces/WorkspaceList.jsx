@@ -132,12 +132,25 @@ const WorkspaceList = ({
 
   const handleDeleteWorkspace = (workspaceId) => {
     if (confirm("Are you sure you want to delete this workspace?")) {
-      window.api.send(DELETE_CUSTOM_WORKSPACE, workspaceId);
-      setCustomWorkspaces(
-        customWorkspaces.filter((ws) => ws.id !== workspaceId)
-      );
-      if (activeWorkspace === workspaceId) {
-        onWorkspaceSelect("default");
+      try {
+        // Send the request to the main process
+        window.api.send(DELETE_CUSTOM_WORKSPACE, workspaceId);
+
+        // Optimistically update the UI
+        setCustomWorkspaces(
+          customWorkspaces.filter((ws) => ws.id !== workspaceId)
+        );
+
+        // If the deleted workspace was active, switch to default
+        if (activeWorkspace === workspaceId) {
+          onWorkspaceSelect("default");
+        }
+      } catch (error) {
+        // Handle any errors that might occur during the process
+        console.error("Error deleting workspace:", error);
+        alert(
+          `Failed to delete workspace: ${error.message || "Unknown error"}`
+        );
       }
     }
   };
@@ -145,32 +158,48 @@ const WorkspaceList = ({
   const handleSaveWorkspace = () => {
     if (!newWorkspaceName.trim()) return;
 
-    if (editingWorkspace === "new") {
-      // Create new workspace
-      const newWorkspace = {
-        id: `custom-${Date.now()}`,
-        name: newWorkspaceName.trim(),
-        icon: FaBox,
-      };
-      window.api.send(ADD_CUSTOM_WORKSPACE, newWorkspace);
-      setCustomWorkspaces([...customWorkspaces, newWorkspace]);
-    } else {
-      // Rename existing workspace
-      window.api.send(UPDATE_CUSTOM_WORKSPACE, {
-        id: editingWorkspace,
-        name: newWorkspaceName.trim(),
-      });
-      setCustomWorkspaces(
-        customWorkspaces.map((ws) =>
-          ws.id === editingWorkspace
-            ? { ...ws, name: newWorkspaceName.trim() }
-            : ws
-        )
-      );
-    }
+    try {
+      if (editingWorkspace === "new") {
+        // Create new workspace
+        const newWorkspace = {
+          id: `custom-${Date.now()}`,
+          name: newWorkspaceName.trim(),
+          icon: FaBox,
+        };
 
-    setEditingWorkspace(null);
-    setNewWorkspaceName("");
+        // Send the request to the main process
+        window.api.send(ADD_CUSTOM_WORKSPACE, newWorkspace);
+
+        // Optimistically update the UI
+        setCustomWorkspaces([...customWorkspaces, newWorkspace]);
+      } else {
+        // Rename existing workspace
+        const updatedWorkspace = {
+          id: editingWorkspace,
+          name: newWorkspaceName.trim(),
+        };
+
+        // Send the request to the main process
+        window.api.send(UPDATE_CUSTOM_WORKSPACE, updatedWorkspace);
+
+        // Optimistically update the UI
+        setCustomWorkspaces(
+          customWorkspaces.map((ws) =>
+            ws.id === editingWorkspace
+              ? { ...ws, name: newWorkspaceName.trim() }
+              : ws
+          )
+        );
+      }
+
+      // Clear the editing state
+      setEditingWorkspace(null);
+      setNewWorkspaceName("");
+    } catch (error) {
+      // Handle any errors that might occur during the process
+      console.error("Error saving workspace:", error);
+      alert(`Failed to save workspace: ${error.message || "Unknown error"}`);
+    }
   };
 
   const handleCancelEdit = () => {
