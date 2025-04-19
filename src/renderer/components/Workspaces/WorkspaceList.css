@@ -37,7 +37,7 @@
   margin-bottom: 4px;
   transition: background-color 0.2s;
   position: relative;
-  background-color: var(--root-background);
+  background-color: var(--workspace-list-bg);
   border-top: 0.5px solid var(--body-font-grey-shade);
 }
 
