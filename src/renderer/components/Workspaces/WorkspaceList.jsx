@@ -349,6 +349,28 @@ const WorkspaceList = ({
     <div className="workspace-list">
       <div className="workspace-header">
         <h2>Workspaces</h2>
+        <div className="workspace-buttons">
+          <button
+            className="new-tab-button"
+            onClick={handleAddTab}
+            disabled={
+              tabs.filter(
+                (tab) => (tab.workspaceId || "default") === activeWorkspace
+              ).length >= TAB_LIMIT
+            }
+          >
+            <FaPlus />
+            <span>New Tab</span>
+          </button>
+          <button
+            className="new-workspace-button"
+            onClick={handleCreateWorkspace}
+            disabled={editingWorkspace !== null}
+          >
+            <FaPlus />
+            <span>New Workspace</span>
+          </button>
+        </div>
       </div>
       <div className="workspaces">
         {workspsaceData.map((workspace) => renderWorkspaceItem(workspace))}
@@ -356,28 +378,6 @@ const WorkspaceList = ({
         {customWorkspaces.map((workspace) =>
           renderWorkspaceItem(workspace, true)
         )}
-      </div>
-      <div className="workspace-footer">
-        <button
-          className="new-workspace-button"
-          onClick={handleCreateWorkspace}
-          disabled={editingWorkspace !== null}
-        >
-          <FaPlus />
-          <span>New Workspace</span>
-        </button>
-        <button
-          className="new-tab-button"
-          onClick={handleAddTab}
-          disabled={
-            tabs.filter(
-              (tab) => (tab.workspaceId || "default") === activeWorkspace
-            ).length >= TAB_LIMIT
-          }
-        >
-          <FaPlus />
-          <span>New Tab</span>
-        </button>
       </div>
     </div>
   );

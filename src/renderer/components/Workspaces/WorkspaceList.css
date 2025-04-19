@@ -178,8 +178,8 @@
   transform: rotate(180deg);
 }
 
-.workspace-footer {
-  padding: 16px;
+.workspace-buttons {
+  padding: 10px;
   background-color: var(--root-background);
   display: flex;
   flex-direction: column;
