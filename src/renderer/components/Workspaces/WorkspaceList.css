@@ -94,9 +94,10 @@
   display: flex;
   align-items: center;
   padding: 8px;
-  background-color: transparent;
+  margin: 2px 0;
+  width: 100%;
+  background-color: var(--whiteAndBlack);
   color: var(--body-font-color);
-  border: 1px solid var(--accent-color);
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
