@@ -8,30 +8,3 @@
   overflow: hidden;
 }
 
-#webviews-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  border-radius: 7px;
-  overflow: hidden;
-  will-change: left;
-}
-
-#webviews-container.toggled-container {
-  left: 0px;
-}
-
-#app-sidebar {
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  min-width: 40px;
-  height: 100%;
-  flex-shrink: 0;
-  z-index: 1;
-  will-change: width;
-  background-color: var(--body-backGround-transparent);
-}
