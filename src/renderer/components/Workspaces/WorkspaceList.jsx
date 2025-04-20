@@ -360,7 +360,12 @@ const WorkspaceList = ({
             <FaPlus />
             <span>New Tab</span>
           </button>
-          <button
+
+        </div>
+      </div>
+      <div className="workspaces">
+        <div className="workspace-buttons">
+        <button
             className="new-workspace-button"
             onClick={handleCreateWorkspace}
             disabled={editingWorkspace !== null}
@@ -369,8 +374,6 @@ const WorkspaceList = ({
             <span>New Workspace</span>
           </button>
         </div>
-      </div>
-      <div className="workspaces">
         {workspsaceData.map((workspace) => renderWorkspaceItem(workspace))}
         {renderNewWorkspaceForm()}
         {customWorkspaces.map((workspace) =>

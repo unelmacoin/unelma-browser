@@ -80,14 +80,11 @@
   text-align: center;
 }
 
-.workspace-footer {
+.workspace-buttons {
   padding: 8px;
   background-color: var(--root-background);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border-top: 1px solid var(--body-font-grey-shade);
 }
+
 
 .new-workspace-button,
 .new-tab-button {
