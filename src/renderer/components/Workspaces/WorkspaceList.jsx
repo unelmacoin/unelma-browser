@@ -217,6 +217,7 @@ const WorkspaceList = ({
 
   const renderWorkspaceItem = (workspace, isCustom = false) => {
     const Icon = workspace.icon;
+    const isExpanded = expandedWorkspaces[workspace.id];
     const workspaceTabs = tabs.filter(
       (tab) => (tab.workspaceId || "default") === workspace.id
     );
@@ -229,6 +230,7 @@ const WorkspaceList = ({
             activeWorkspace === workspace.id ? "active-workspace" : ""
           }`}
           onClick={() => !isEditing && handleWorkspaceClick(workspace.id)}
+          data-tooltip={workspace.name}
         >
           <Icon className="workspace-icon" />
           {isEditing ? (
@@ -276,6 +278,7 @@ const WorkspaceList = ({
                       e.stopPropagation();
                       handleRenameWorkspace(workspace.id, workspace.name);
                     }}
+                    data-tooltip="Rename workspace"
                   >
                     <FaEdit />
                   </button>
@@ -285,6 +288,7 @@ const WorkspaceList = ({
                       e.stopPropagation();
                       handleDeleteWorkspace(workspace.id);
                     }}
+                    data-tooltip="Delete workspace"
                   >
                     <FaTrash />
                   </button>
@@ -297,11 +301,12 @@ const WorkspaceList = ({
               expandedWorkspaces[workspace.id] ? "expanded" : ""
             }`}
             onClick={(e) => handleToggleWorkspace(workspace.id, e)}
+            data-tooltip={isExpanded ? "Collapse" : "Expand"}
           >
-            <FaChevronDown />
+            <FaChevronDown className={isExpanded ? "expanded" : ""} />
           </button>
         </div>
-        {expandedWorkspaces[workspace.id] && (
+        {isExpanded && (
           <TabsList
             tabs={workspaceTabs}
             tabsDispatch={tabsDispatch}
@@ -359,13 +364,13 @@ const WorkspaceList = ({
           >
             <FaPlus />
             <span>New Tab</span>
+            <span>New Tab</span>
           </button>
-
         </div>
       </div>
       <div className="workspaces">
         <div className="workspace-buttons">
-        <button
+          <button
             className="new-workspace-button"
             onClick={handleCreateWorkspace}
             disabled={editingWorkspace !== null}

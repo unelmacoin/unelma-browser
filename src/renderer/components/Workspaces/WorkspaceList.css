@@ -85,7 +85,6 @@
   background-color: var(--root-background);
 }
 
-
 .new-workspace-button,
 .new-tab-button {
   display: flex;
@@ -111,82 +110,6 @@
 .new-tab-button svg {
   margin-right: 8px;
   font-size: 14px;
-}
-
-/* Styles for when the sidebar is toggled (narrow)
-#app-sidebar.toggled-sidebar {
-  width: 48px !important;
-}
-
-#app-sidebar.toggled-sidebar .workspace-item,
-#app-sidebar.toggled-sidebar .tab {
-  padding: 8px;
-  justify-content: center;
-  margin: 4px auto;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-}
-
-#app-sidebar.toggled-sidebar .workspace-icon,
-#app-sidebar.toggled-sidebar .tab img,
-#app-sidebar.toggled-sidebar .tab svg {
-  margin: 0;
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-}
-
-#app-sidebar.toggled-sidebar .workspace-name,
-#app-sidebar.toggled-sidebar .tab-count,
-#app-sidebar.toggled-sidebar .workspace-actions,
-#app-sidebar.toggled-sidebar .workspace-header h2,
-#app-sidebar.toggled-sidebar .tab p,
-#app-sidebar.toggled-sidebar .tab .close,
-#app-sidebar.toggled-sidebar #tabs-header {
-  display: none;
-}
-
-#app-sidebar.toggled-sidebar .workspace-footer,
-#app-sidebar.toggled-sidebar .tabs-footer {
-  padding: 4px;
-}
-
-#app-sidebar.toggled-sidebar .new-workspace-button,
-#app-sidebar.toggled-sidebar .new-tab-button,
-#app-sidebar.toggled-sidebar .tab-action-button {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  justify-content: center;
-  border-radius: 6px;
-}
-
-#app-sidebar.toggled-sidebar .new-workspace-button svg,
-#app-sidebar.toggled-sidebar .new-tab-button svg,
-#app-sidebar.toggled-sidebar .tab-action-button svg {
-  margin: 0;
-}
-
-#app-sidebar.toggled-sidebar .new-workspace-button span,
-#app-sidebar.toggled-sidebar .new-tab-button span,
-#app-sidebar.toggled-sidebar .tab-action-button span {
-  display: none;
-} */
-
-/* Add smooth transitions */
-.workspace-item,
-.workspace-icon,
-.workspace-name,
-.tab-count,
-.new-workspace-button,
-.new-tab-button,
-.tab,
-.tab img,
-.tab svg,
-.tab p,
-.tab .close {
-  transition: all 0.2s ease-in-out;
 }
 
 /* Icon-only mode for narrow sidebar (less than 200px) */
@@ -274,6 +197,21 @@
   }
 }
 
+/* Add smooth transitions */
+.workspace-item,
+.workspace-icon,
+.workspace-name,
+.tab-count,
+.new-workspace-button,
+.new-tab-button,
+.tab,
+.tab img,
+.tab svg,
+.tab p,
+.tab .close {
+  transition: all 0.2s ease-in-out;
+}
+
 /* Additional styles for the narrow-sidebar class */
 .workspace-list.narrow-sidebar .workspace-item {
   padding: 8px;
@@ -327,4 +265,261 @@
 .workspace-list.narrow-sidebar .new-workspace-button span,
 .workspace-list.narrow-sidebar .new-tab-button span {
   font-size: 12px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .workspace-icon {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-name,
+#app-sidebar.narrow-sidebar .tab-count,
+#app-sidebar.narrow-sidebar .workspace-actions {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-header h2 {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspaces {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-sidebar.narrow-sidebar .active-workspace {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+#app-sidebar.narrow-sidebar .active-workspace .workspace-icon {
+  color: var(--whiteAndBlack);
+}
+
+/* Tab styles in narrow sidebar */
+#app-sidebar.narrow-sidebar .tab {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .tab img {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+#app-sidebar.narrow-sidebar .tab p,
+#app-sidebar.narrow-sidebar .tab .close {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .active-tab {
+  background-color: var(--accent-color);
+}
+
+#app-sidebar.narrow-sidebar .active-tab img {
+  filter: brightness(0) invert(1);
+}
+
+#app-sidebar.narrow-sidebar .tabs {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-sidebar.narrow-sidebar .tabs-header {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .tabs-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* Tooltip styles */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  position: relative;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  padding: 4px 8px;
+  background-color: var(--body-backGround);
+  color: var(--body-font-color);
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+  margin-bottom: 4px;
+  border-width: 4px;
+  border-style: solid;
+  border-color: transparent transparent var(--body-backGround) transparent;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item:hover::before,
+#app-sidebar.narrow-sidebar .tab:hover::before,
+#app-sidebar.narrow-sidebar .new-workspace-button:hover::before,
+#app-sidebar.narrow-sidebar .new-tab-button:hover::before,
+#app-sidebar.narrow-sidebar .workspace-actions button:hover::before,
+#app-sidebar.narrow-sidebar .expand-button:hover::before,
+#app-sidebar.narrow-sidebar .close:hover::before,
+#app-sidebar.narrow-sidebar .workspace-item:hover::after,
+#app-sidebar.narrow-sidebar .tab:hover::after,
+#app-sidebar.narrow-sidebar .new-workspace-button:hover::after,
+#app-sidebar.narrow-sidebar .new-tab-button:hover::after,
+#app-sidebar.narrow-sidebar .workspace-actions button:hover::after,
+#app-sidebar.narrow-sidebar .expand-button:hover::after,
+#app-sidebar.narrow-sidebar .close:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ensure tooltips don't get cut off */
+#app-sidebar.narrow-sidebar {
+  overflow: visible;
+}
+
+#app-sidebar.narrow-sidebar .workspaces,
+#app-sidebar.narrow-sidebar .tabs {
+  overflow: visible;
+}
+
+/* Add some spacing to prevent tooltips from overlapping */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  margin-bottom: 8px;
+}
+
+/* Ensure tabs container is properly positioned */
+#app-sidebar.narrow-sidebar .tabs {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure workspace items and tabs have proper stacking context */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  z-index: 2;
+}
+
+/* Ensure tooltips appear above other elements */
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before,
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  z-index: 1000;
 }

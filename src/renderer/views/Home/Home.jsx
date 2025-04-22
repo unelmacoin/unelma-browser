@@ -72,7 +72,7 @@ const Home = ({
         <div
           id="webviews-container"
           className={`${!openSidebar && "toggled-container"}`}
-          style={{ left: `${sidebarWidth}px`, width: `calc(100vw - ${sidebarWidth}px)` }}
+          style={{ transform: `translateX(${sidebarWidth}px)` }}
         ></div>
       </div>
     </Layout>

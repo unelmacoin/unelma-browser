@@ -4,17 +4,31 @@ import "./ResizableDivider.css";
 
 const ResizableDivider = ({ position, onResize, minWidth }) => {
   const [isResizing, setIsResizing] = useState(false);
+  const [currentWidth, setCurrentWidth] = useState(position);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!isResizing) return;
 
       const newWidth = Math.max(minWidth, e.clientX);
+      setCurrentWidth(newWidth);
       onResize(newWidth);
+
+      // Send resize event to main process
       window.api.send(RESIZE_WINDOW, {
         windowId: window.id,
         width: newWidth,
       });
+
+      // Update sidebar class based on width
+      const sidebar = document.getElementById("app-sidebar");
+      if (sidebar) {
+        if (newWidth < 200) {
+          sidebar.classList.add("narrow-sidebar");
+        } else {
+          sidebar.classList.remove("narrow-sidebar");
+        }
+      }
     };
 
     const handleMouseUp = () => {
