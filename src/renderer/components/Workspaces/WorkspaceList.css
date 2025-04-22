@@ -5,7 +5,7 @@
   background-color: var(--root-background);
   width: 100%;
   max-width: 300px;
-  min-width: 180px;
+  min-width: 80px;
   overflow-y: auto;
 }
 
