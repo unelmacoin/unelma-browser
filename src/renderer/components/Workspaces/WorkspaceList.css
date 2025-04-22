@@ -113,7 +113,7 @@
   font-size: 14px;
 }
 
-/* Styles for when the sidebar is toggled (narrow) */
+/* Styles for when the sidebar is toggled (narrow)
 #app-sidebar.toggled-sidebar {
   width: 48px !important;
 }
@@ -172,7 +172,7 @@
 #app-sidebar.toggled-sidebar .new-tab-button span,
 #app-sidebar.toggled-sidebar .tab-action-button span {
   display: none;
-}
+} */
 
 /* Add smooth transitions */
 .workspace-item,
