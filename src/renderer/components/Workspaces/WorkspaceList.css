@@ -1,3 +1,4 @@
+/* Base Workspace List Styles */
 .workspace-list {
   display: flex;
   flex-direction: column;
@@ -29,6 +30,7 @@
   background-color: var(--root-background);
 }
 
+/* Workspace Item Styles */
 .workspace-item {
   display: flex;
   align-items: center;
@@ -80,11 +82,7 @@
   text-align: center;
 }
 
-.workspace-buttons {
-  padding: 8px;
-  background-color: var(--root-background);
-}
-
+/* Button Styles */
 .new-workspace-button,
 .new-tab-button {
   display: flex;
@@ -112,92 +110,161 @@
   font-size: 14px;
 }
 
-/* Icon-only mode for narrow sidebar (less than 200px) */
-@media (max-width: 200px) {
-  #app-sidebar .workspace-item,
-  #app-sidebar .tab {
-    padding: 8px;
-    justify-content: center;
-    margin: 4px auto;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+/* Narrow Sidebar Styles */
+#app-sidebar.narrow-sidebar {
+  overflow: visible;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .workspace-icon,
+#app-sidebar.narrow-sidebar .tab img,
+#app-sidebar.narrow-sidebar .tab svg {
+  margin: 0;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-name,
+#app-sidebar.narrow-sidebar .tab-count,
+#app-sidebar.narrow-sidebar .workspace-actions,
+#app-sidebar.narrow-sidebar .workspace-edit-form,
+#app-sidebar.narrow-sidebar .tab p,
+#app-sidebar.narrow-sidebar .tab .close {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-header h2,
+#app-sidebar.narrow-sidebar .tabs-header,
+#app-sidebar.narrow-sidebar .workspace-footer,
+#app-sidebar.narrow-sidebar .tabs-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button span,
+#app-sidebar.narrow-sidebar .new-tab-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button svg,
+#app-sidebar.narrow-sidebar .new-tab-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspaces,
+#app-sidebar.narrow-sidebar .tabs {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible;
+}
+
+/* Active States */
+#app-sidebar.narrow-sidebar .active-workspace,
+#app-sidebar.narrow-sidebar .active-tab {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+#app-sidebar.narrow-sidebar .active-workspace .workspace-icon,
+#app-sidebar.narrow-sidebar .active-tab img,
+#app-sidebar.narrow-sidebar .active-tab svg {
+  color: var(--whiteAndBlack);
+  opacity: 1;
+}
+
+/* Tooltip Styles */
+#app-sidebar.narrow-sidebar [data-tooltip] {
+  position: relative;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: var(--body-backGround);
+  color: var(--body-font-color);
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: normal;
+  max-width: 200px;
+  word-wrap: break-word;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  bottom: 100%;
+  margin-bottom: 8px;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--body-backGround);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+  bottom: 100%;
+  margin-bottom: 4px;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]:hover::before,
+#app-sidebar.narrow-sidebar [data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dynamic Tooltip Position */
+@media (max-height: 600px) {
+  #app-sidebar.narrow-sidebar [data-tooltip]::before {
+    bottom: auto;
+    top: 100%;
+    margin-top: 8px;
+    margin-bottom: 0;
   }
 
-  #app-sidebar .workspace-icon,
-  #app-sidebar .tab img,
-  #app-sidebar .tab svg {
-    margin-right: 0;
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
-  }
-
-  #app-sidebar .workspace-name,
-  #app-sidebar .tab-count,
-  #app-sidebar .workspace-actions,
-  #app-sidebar .workspace-edit-form,
-  #app-sidebar .tab p,
-  #app-sidebar .tab .close {
-    display: none;
-  }
-
-  #app-sidebar .workspace-header h2,
-  #app-sidebar #tabs-header {
-    display: none;
-  }
-
-  #app-sidebar .workspace-footer,
-  #app-sidebar .tabs-footer {
-    padding: 8px;
-    align-items: center;
-  }
-
-  #app-sidebar .new-workspace-button,
-  #app-sidebar .new-tab-button,
-  #app-sidebar .tab-action-button {
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border-radius: 50%;
-    justify-content: center;
-  }
-
-  #app-sidebar .new-workspace-button span,
-  #app-sidebar .new-tab-button span,
-  #app-sidebar .tab-action-button span {
-    display: none;
-  }
-
-  #app-sidebar .new-workspace-button svg,
-  #app-sidebar .new-tab-button svg,
-  #app-sidebar .tab-action-button svg {
-    margin-right: 0;
-    font-size: 16px;
-  }
-
-  #app-sidebar .workspaces,
-  #app-sidebar #tabs {
-    padding: 4px;
-    align-items: center;
-  }
-
-  /* Active states in icon-only mode */
-  #app-sidebar .active-workspace,
-  #app-sidebar .active-tab {
-    background-color: var(--accent-color);
-    color: var(--whiteAndBlack);
-  }
-
-  #app-sidebar .active-workspace .workspace-icon,
-  #app-sidebar .active-tab img,
-  #app-sidebar .active-tab svg {
-    color: var(--whiteAndBlack);
-    opacity: 1;
+  #app-sidebar.narrow-sidebar [data-tooltip]::after {
+    bottom: auto;
+    top: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+    border-color: transparent;
+    border-bottom-color: var(--body-backGround);
   }
 }
 
-/* Add smooth transitions */
+/* Transitions */
 .workspace-item,
 .workspace-icon,
 .workspace-name,
