@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { throttle } from "lodash";
 import Layout from "../../components/Layout/Layout.jsx";
 import Sidebar from "../../components/Sidebar.jsx";
 import ResizableDivider from "../../components/ResizableDivider.jsx";
@@ -74,37 +75,40 @@ const Home = ({
   }, [openSidebar]);
 
   // Debounced resize handler with main process notification
-  const handleResize = useCallback((newWidth) => {
-    const clampedWidth = Math.max(COLLAPSED_WIDTH, newWidth);
-    const sidebar = document.getElementById("app-sidebar");
+  const handleResize = useCallback(
+    throttle((newWidth) => {
+      const clampedWidth = Math.max(COLLAPSED_WIDTH, newWidth);
+      const sidebar = document.getElementById("app-sidebar");
 
-    if (clampedWidth < NARROW_SIDEBAR_THRESHOLD) {
-      // In narrow mode, maintain the dragged width until toggle is clicked
-      setSidebarWidth(clampedWidth);
-      setIsNarrowMode(true);
-      if (sidebar) {
-        sidebar.classList.add("narrow-sidebar");
+      if (clampedWidth < NARROW_SIDEBAR_THRESHOLD) {
+        // In narrow mode, maintain the dragged width until toggle is clicked
+        setSidebarWidth(clampedWidth);
+        setIsNarrowMode(true);
+        if (sidebar) {
+          sidebar.classList.add("narrow-sidebar");
+        }
+        window.api.send(RESIZE_WINDOW, {
+          width: clampedWidth,
+          windowId: window.id,
+        });
+      } else {
+        setSidebarWidth(clampedWidth);
+        setIsNarrowMode(false);
+        if (sidebar) {
+          sidebar.classList.remove("narrow-sidebar");
+        }
+        lastValidWidth.current = clampedWidth;
+        window.api.send(RESIZE_WINDOW, {
+          width: clampedWidth,
+          windowId: window.id,
+        });
       }
-      window.api.send(RESIZE_WINDOW, {
-        width: clampedWidth,
-        windowId: window.id,
-      });
-    } else {
-      setSidebarWidth(clampedWidth);
-      setIsNarrowMode(false);
-      if (sidebar) {
-        sidebar.classList.remove("narrow-sidebar");
-      }
-      lastValidWidth.current = clampedWidth;
-      window.api.send(RESIZE_WINDOW, {
-        width: clampedWidth,
-        windowId: window.id,
-      });
-    }
 
-    // Update openSidebar state based on width crossing the NARROW_SIDEBAR_THRESHOLD
-    setOpenSidebar(clampedWidth >= NARROW_SIDEBAR_THRESHOLD);
-  }, []);
+      // Update openSidebar state based on width crossing the NARROW_SIDEBAR_THRESHOLD
+      setOpenSidebar(clampedWidth >= NARROW_SIDEBAR_THRESHOLD);
+    }, 33), // 30 fps throttle
+    [setOpenSidebar, setIsNarrowMode, window.api]
+  );
 
   // Calculate webviews container styles based on sidebar state
   const getWebviewsContainerStyle = () => {
