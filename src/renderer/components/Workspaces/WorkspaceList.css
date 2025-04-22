@@ -412,15 +412,16 @@
   content: attr(data-tooltip);
   position: absolute;
   left: 50%;
-  bottom: 100%;
   transform: translateX(-50%);
-  margin-bottom: 8px;
   padding: 4px 8px;
   background-color: var(--body-backGround);
   color: var(--body-font-color);
   font-size: 12px;
   border-radius: 4px;
-  white-space: nowrap;
+  white-space: normal;
+  max-width: 200px;
+  word-wrap: break-word;
+  text-align: center;
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease;
@@ -429,6 +430,19 @@
   pointer-events: none;
 }
 
+/* Position tooltips above by default */
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before {
+  bottom: 100%;
+  margin-bottom: 8px;
+}
+
+/* Arrow styles */
 #app-sidebar.narrow-sidebar .workspace-item::after,
 #app-sidebar.narrow-sidebar .tab::after,
 #app-sidebar.narrow-sidebar .new-workspace-button::after,
@@ -439,12 +453,9 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 100%;
   transform: translateX(-50%);
-  margin-bottom: 4px;
   border-width: 4px;
   border-style: solid;
-  border-color: transparent transparent var(--body-backGround) transparent;
   opacity: 0;
   visibility: hidden;
   transition: all 0.2s ease;
@@ -452,6 +463,20 @@
   pointer-events: none;
 }
 
+/* Arrow pointing up by default */
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  bottom: 100%;
+  margin-bottom: 4px;
+  border-color: transparent transparent var(--body-backGround) transparent;
+}
+
+/* Show tooltips on hover */
 #app-sidebar.narrow-sidebar .workspace-item:hover::before,
 #app-sidebar.narrow-sidebar .tab:hover::before,
 #app-sidebar.narrow-sidebar .new-workspace-button:hover::before,
@@ -468,6 +493,36 @@
 #app-sidebar.narrow-sidebar .close:hover::after {
   opacity: 1;
   visibility: visible;
+}
+
+/* Dynamic positioning based on available space */
+@media (max-height: 600px) {
+  #app-sidebar.narrow-sidebar .workspace-item::before,
+  #app-sidebar.narrow-sidebar .tab::before,
+  #app-sidebar.narrow-sidebar .new-workspace-button::before,
+  #app-sidebar.narrow-sidebar .new-tab-button::before,
+  #app-sidebar.narrow-sidebar .workspace-actions button::before,
+  #app-sidebar.narrow-sidebar .expand-button::before,
+  #app-sidebar.narrow-sidebar .close::before {
+    bottom: auto;
+    top: 100%;
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+
+  #app-sidebar.narrow-sidebar .workspace-item::after,
+  #app-sidebar.narrow-sidebar .tab::after,
+  #app-sidebar.narrow-sidebar .new-workspace-button::after,
+  #app-sidebar.narrow-sidebar .new-tab-button::after,
+  #app-sidebar.narrow-sidebar .workspace-actions button::after,
+  #app-sidebar.narrow-sidebar .expand-button::after,
+  #app-sidebar.narrow-sidebar .close::after {
+    bottom: auto;
+    top: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+    border-color: var(--body-backGround) transparent transparent transparent;
+  }
 }
 
 /* Ensure tooltips don't get cut off */

@@ -24,6 +24,7 @@ import {
 import { ADD_TAB } from "../../../constants/renderer/actions";
 import { defaultTab } from "../../utils/tabs";
 import "./WorkspaceList.css";
+import { BsPersonWorkspace } from "react-icons/bs";
 
 const TAB_LIMIT = 5;
 
@@ -250,6 +251,7 @@ const WorkspaceList = ({
                     e.stopPropagation();
                     handleSaveWorkspace();
                   }}
+                  data-tooltip="Save"
                 >
                   <FaCheck />
                 </button>
@@ -259,6 +261,7 @@ const WorkspaceList = ({
                     e.stopPropagation();
                     handleCancelEdit();
                   }}
+                  data-tooltip="Cancel"
                 >
                   <FaTimes />
                 </button>
@@ -359,13 +362,17 @@ const WorkspaceList = ({
               (tab) => (tab.workspaceId || "default") === activeWorkspace
             ).length >= TAB_LIMIT
           }
+          data-tooltip="New Tab"
         >
           <FaPlus />
           <span>New Tab</span>
         </button>
       </div>
       <div className="workspace-header">
-        <h2>Workspaces</h2>
+        <h2>
+          <BsPersonWorkspace className="workspace-icon" />
+          Workspaces
+        </h2>
       </div>
       <div className="workspaces">
         <div className="workspace-buttons">
@@ -373,6 +380,7 @@ const WorkspaceList = ({
             className="new-workspace-button"
             onClick={handleCreateWorkspace}
             disabled={editingWorkspace !== null}
+            data-tooltip="New Workspace"
           >
             <FaPlus />
             <span>New Workspace</span>

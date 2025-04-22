@@ -40,6 +40,7 @@ const Tab = ({
       id={`tab-${id}`}
       onClick={handleActivateTab}
       className={`tab ${active && "active-tab"}`}
+      data-tooltip={title || url}
     >
       {loading ? (
         <LoadingIndicator />
@@ -47,7 +48,7 @@ const Tab = ({
         <img src={handleFavicon(url, type, fail)} alt="favicon" />
       )}
       <p>{title}</p>
-      <button className="close">
+      <button className="close" data-tooltip="Close tab">
         <FaTimes />
       </button>
     </div>
