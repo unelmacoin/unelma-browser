@@ -1,84 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { RESIZE_WINDOW } from "../../constants/global/channels";
 import "./ResizableDivider.css";
 
-const ResizableDivider = ({
-  position,
-  onResize,
-  minWidth,
-  collapseThreshold,
-  collapsedWidth,
-}) => {
+const ResizableDivider = ({ position, onResize, minWidth }) => {
   const [isResizing, setIsResizing] = useState(false);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback(
+    (e) => {
       if (!isResizing) return;
+      const newWidth = Math.max(minWidth, e.clientX);
+      onResize(newWidth);
+    },
+    [isResizing, minWidth, onResize]
+  );
 
-      const newWidth = Math.max(0, e.clientX);
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(false);
+    document.body.style.cursor = "default";
+  }, []);
 
-      // Handle collapsing
-      if (newWidth <= collapseThreshold) {
-        onResize(collapsedWidth);
-        document
-          .getElementById("app-sidebar")
-          ?.classList.add("toggled-sidebar");
-        window.api.send(RESIZE_WINDOW, {
-          windowId: window.id,
-          width: collapsedWidth,
-        });
-        return;
-      }
-
-      // Handle expanding
-      if (newWidth > collapseThreshold && newWidth >= minWidth) {
-        onResize(newWidth);
-        document
-          .getElementById("app-sidebar")
-          ?.classList.remove("toggled-sidebar");
-        window.api.send(RESIZE_WINDOW, {
-          windowId: window.id,
-          width: newWidth,
-        });
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsResizing(false);
-      document.body.style.cursor = "default";
-
-      // Send final resize event
-      window.api.send(RESIZE_WINDOW, {
-        windowId: window.id,
-        width: position,
-      });
-    };
-
+  useEffect(() => {
     if (isResizing) {
       document.addEventListener("mousemove", handleMouseMove, {
         passive: true,
       });
       document.addEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "col-resize";
     }
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
+      document.body.style.cursor = "default";
     };
-  }, [
-    isResizing,
-    position,
-    onResize,
-    minWidth,
-    collapseThreshold,
-    collapsedWidth,
-  ]);
+  }, [isResizing, handleMouseMove, handleMouseUp]);
 
-  const startResizing = (e) => {
+  const startResizing = useCallback((e) => {
     e.preventDefault();
     setIsResizing(true);
-    document.body.style.cursor = "col-resize";
-  };
+  }, []);
 
   return (
     <div

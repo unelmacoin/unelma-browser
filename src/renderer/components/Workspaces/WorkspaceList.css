@@ -1,0 +1,659 @@
+/* Base Workspace List Styles */
+.workspace-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--root-background);
+  width: 100%;
+  max-width: 300px;
+  min-width: 80px;
+  overflow-y: auto;
+}
+
+.workspace-header {
+  padding: 12px 16px;
+  background-color: var(--root-background);
+  border-bottom: 1px solid var(--body-font-grey-shade);
+}
+
+.workspace-header h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--body-font-color);
+  font-weight: 500;
+}
+
+.workspaces {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px;
+  background-color: var(--root-background);
+}
+
+/* Workspace Item Styles */
+.workspace-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+  position: relative;
+  background-color: var(--workspace-list-bg);
+}
+
+.workspace-item:hover {
+  background-color: var(--accent-color);
+  opacity: 0.8;
+}
+
+.active-workspace {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+.workspace-icon {
+  font-size: 16px;
+  margin-right: 10px;
+  color: var(--body-font-color);
+  opacity: 0.8;
+  min-width: 16px;
+}
+
+.workspace-name {
+  font-size: 13px;
+  color: var(--body-font-color);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-count {
+  font-size: 11px;
+  color: var(--body-font-color);
+  background-color: var(--body-font-grey-shade);
+  opacity: 0.7;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: 8px;
+  min-width: 32px;
+  text-align: center;
+}
+
+/* Button Styles */
+.workspace-buttons {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.new-workspace-button,
+.new-tab-button {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  margin: 2px 0;
+  width: 100%;
+  background-color: var(--whiteAndBlack);
+  color: var(--body-font-color);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 13px;
+}
+.workspace-buttons .new-tab-button {
+  width: calc(100% - 14px);
+  padding: 8px;
+}
+
+.new-workspace-button:hover,
+.new-tab-button:hover {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+.new-workspace-button svg,
+.new-tab-button svg {
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+/* Narrow Sidebar Styles */
+#app-sidebar.narrow-sidebar {
+  overflow: visible;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .workspace-icon,
+#app-sidebar.narrow-sidebar .tab img,
+#app-sidebar.narrow-sidebar .tab svg {
+  margin: 0;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-name,
+#app-sidebar.narrow-sidebar .tab-count,
+#app-sidebar.narrow-sidebar .workspace-actions,
+#app-sidebar.narrow-sidebar .workspace-edit-form,
+#app-sidebar.narrow-sidebar .tab p,
+#app-sidebar.narrow-sidebar .tab .close {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-header h2,
+#app-sidebar.narrow-sidebar .tabs-header,
+#app-sidebar.narrow-sidebar .workspace-footer,
+#app-sidebar.narrow-sidebar .tabs-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button span,
+#app-sidebar.narrow-sidebar .new-tab-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button svg,
+#app-sidebar.narrow-sidebar .new-tab-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspaces,
+#app-sidebar.narrow-sidebar .tabs {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible;
+}
+
+/* Active States */
+#app-sidebar.narrow-sidebar .active-workspace,
+#app-sidebar.narrow-sidebar .active-tab {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+#app-sidebar.narrow-sidebar .active-workspace .workspace-icon,
+#app-sidebar.narrow-sidebar .active-tab img,
+#app-sidebar.narrow-sidebar .active-tab svg {
+  color: var(--whiteAndBlack);
+  opacity: 1;
+}
+
+/* Tooltip Styles */
+#app-sidebar.narrow-sidebar [data-tooltip] {
+  position: relative;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: var(--body-backGround);
+  color: var(--body-font-color);
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: normal;
+  max-width: 200px;
+  word-wrap: break-word;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+  bottom: 100%;
+  margin-bottom: 8px;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--body-backGround);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+  bottom: 100%;
+  margin-bottom: 4px;
+}
+
+#app-sidebar.narrow-sidebar [data-tooltip]:hover::before,
+#app-sidebar.narrow-sidebar [data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dynamic Tooltip Position */
+@media (max-height: 600px) {
+  #app-sidebar.narrow-sidebar [data-tooltip]::before {
+    bottom: auto;
+    top: 100%;
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+
+  #app-sidebar.narrow-sidebar [data-tooltip]::after {
+    bottom: auto;
+    top: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+    border-color: transparent;
+    border-bottom-color: var(--body-backGround);
+  }
+}
+
+/* Transitions */
+.workspace-item,
+.workspace-icon,
+.workspace-name,
+.tab-count,
+.new-workspace-button,
+.new-tab-button,
+.tab,
+.tab img,
+.tab svg,
+.tab p,
+.tab .close {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Additional styles for the narrow-sidebar class */
+.workspace-list.narrow-sidebar .workspace-item {
+  padding: 8px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.workspace-list.narrow-sidebar .workspace-actions {
+  flex-direction: column;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.workspace-list.narrow-sidebar .workspace-action-btn {
+  padding: 2px;
+}
+
+.workspace-list.narrow-sidebar .workspace-action-btn svg {
+  width: 10px;
+  height: 10px;
+}
+
+.workspace-list.narrow-sidebar .tab-count {
+  display: none;
+}
+
+.workspace-list.narrow-sidebar .workspace-name {
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.workspace-list.narrow-sidebar .workspace-icon {
+  font-size: 14px;
+  margin-right: 8px;
+}
+
+.workspace-list.narrow-sidebar .workspace-header h2 {
+  font-size: 14px;
+  text-align: center;
+}
+
+.workspace-list.narrow-sidebar .workspace-footer {
+  padding: 8px;
+}
+
+.workspace-list.narrow-sidebar .new-workspace-button,
+.workspace-list.narrow-sidebar .new-tab-button {
+  padding: 6px;
+}
+
+.workspace-list.narrow-sidebar .new-workspace-button span,
+.workspace-list.narrow-sidebar .new-tab-button span {
+  font-size: 12px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .workspace-icon {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspace-name,
+#app-sidebar.narrow-sidebar .tab-count,
+#app-sidebar.narrow-sidebar .workspace-actions {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-header h2 {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .workspace-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-workspace-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+#app-sidebar.narrow-sidebar .workspaces {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-sidebar.narrow-sidebar .active-workspace {
+  background-color: var(--accent-color);
+  color: var(--whiteAndBlack);
+}
+
+#app-sidebar.narrow-sidebar .active-workspace .workspace-icon {
+  color: var(--whiteAndBlack);
+}
+
+/* Tab styles in narrow sidebar */
+#app-sidebar.narrow-sidebar .tab {
+  padding: 8px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 4px auto;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .tab img {
+  width: 20px;
+  height: 20px;
+  margin: 0;
+}
+
+#app-sidebar.narrow-sidebar .tab p,
+#app-sidebar.narrow-sidebar .tab .close {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .active-tab {
+  background-color: var(--accent-color);
+}
+
+#app-sidebar.narrow-sidebar .active-tab img {
+  filter: brightness(0) invert(1);
+}
+
+#app-sidebar.narrow-sidebar .tabs {
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-sidebar.narrow-sidebar .tabs-header {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .tabs-footer {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button {
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  margin: 4px auto;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button span {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .new-tab-button svg {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* Tooltip styles */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  position: relative;
+}
+
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background-color: var(--body-backGround);
+  color: var(--body-font-color);
+  font-size: 12px;
+  border-radius: 4px;
+  white-space: normal;
+  max-width: 200px;
+  word-wrap: break-word;
+  text-align: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+/* Position tooltips above by default */
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before {
+  bottom: 100%;
+  margin-bottom: 8px;
+}
+
+/* Arrow styles */
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px;
+  border-style: solid;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+/* Arrow pointing up by default */
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  bottom: 100%;
+  margin-bottom: 4px;
+  border-color: transparent transparent var(--body-backGround) transparent;
+}
+
+/* Show tooltips on hover */
+#app-sidebar.narrow-sidebar .workspace-item:hover::before,
+#app-sidebar.narrow-sidebar .tab:hover::before,
+#app-sidebar.narrow-sidebar .new-workspace-button:hover::before,
+#app-sidebar.narrow-sidebar .new-tab-button:hover::before,
+#app-sidebar.narrow-sidebar .workspace-actions button:hover::before,
+#app-sidebar.narrow-sidebar .expand-button:hover::before,
+#app-sidebar.narrow-sidebar .close:hover::before,
+#app-sidebar.narrow-sidebar .workspace-item:hover::after,
+#app-sidebar.narrow-sidebar .tab:hover::after,
+#app-sidebar.narrow-sidebar .new-workspace-button:hover::after,
+#app-sidebar.narrow-sidebar .new-tab-button:hover::after,
+#app-sidebar.narrow-sidebar .workspace-actions button:hover::after,
+#app-sidebar.narrow-sidebar .expand-button:hover::after,
+#app-sidebar.narrow-sidebar .close:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dynamic positioning based on available space */
+@media (max-height: 600px) {
+  #app-sidebar.narrow-sidebar .workspace-item::before,
+  #app-sidebar.narrow-sidebar .tab::before,
+  #app-sidebar.narrow-sidebar .new-workspace-button::before,
+  #app-sidebar.narrow-sidebar .new-tab-button::before,
+  #app-sidebar.narrow-sidebar .workspace-actions button::before,
+  #app-sidebar.narrow-sidebar .expand-button::before,
+  #app-sidebar.narrow-sidebar .close::before {
+    bottom: auto;
+    top: 100%;
+    margin-top: 8px;
+    margin-bottom: 0;
+  }
+
+  #app-sidebar.narrow-sidebar .workspace-item::after,
+  #app-sidebar.narrow-sidebar .tab::after,
+  #app-sidebar.narrow-sidebar .new-workspace-button::after,
+  #app-sidebar.narrow-sidebar .new-tab-button::after,
+  #app-sidebar.narrow-sidebar .workspace-actions button::after,
+  #app-sidebar.narrow-sidebar .expand-button::after,
+  #app-sidebar.narrow-sidebar .close::after {
+    bottom: auto;
+    top: 100%;
+    margin-top: 4px;
+    margin-bottom: 0;
+    border-color: var(--body-backGround) transparent transparent transparent;
+  }
+}
+
+/* Ensure tooltips don't get cut off */
+#app-sidebar.narrow-sidebar {
+  overflow: visible;
+}
+
+#app-sidebar.narrow-sidebar .workspaces,
+#app-sidebar.narrow-sidebar .tabs {
+  overflow: visible;
+}
+
+/* Add some spacing to prevent tooltips from overlapping */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-tab-button,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  margin-bottom: 8px;
+}
+
+/* Ensure tabs container is properly positioned */
+#app-sidebar.narrow-sidebar .tabs {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure workspace items and tabs have proper stacking context */
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .tab,
+#app-sidebar.narrow-sidebar .workspace-actions button,
+#app-sidebar.narrow-sidebar .expand-button,
+#app-sidebar.narrow-sidebar .close {
+  z-index: 2;
+}
+
+/* Ensure tooltips appear above other elements */
+#app-sidebar.narrow-sidebar .workspace-item::before,
+#app-sidebar.narrow-sidebar .tab::before,
+#app-sidebar.narrow-sidebar .new-workspace-button::before,
+#app-sidebar.narrow-sidebar .new-tab-button::before,
+#app-sidebar.narrow-sidebar .workspace-actions button::before,
+#app-sidebar.narrow-sidebar .expand-button::before,
+#app-sidebar.narrow-sidebar .close::before,
+#app-sidebar.narrow-sidebar .workspace-item::after,
+#app-sidebar.narrow-sidebar .tab::after,
+#app-sidebar.narrow-sidebar .new-workspace-button::after,
+#app-sidebar.narrow-sidebar .new-tab-button::after,
+#app-sidebar.narrow-sidebar .workspace-actions button::after,
+#app-sidebar.narrow-sidebar .expand-button::after,
+#app-sidebar.narrow-sidebar .close::after {
+  z-index: 1000;
+}

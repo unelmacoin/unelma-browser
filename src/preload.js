@@ -19,6 +19,11 @@ contextBridge.exposeInMainWorld("api", {
       ipcRenderer.on(channel, (_, ...args) => func(...args));
     }
   },
+  remove: (channel) => {
+    if (RECIEVE_CHANNELS.find((c) => channel.includes(c))) {
+      ipcRenderer.removeAllListeners(channel);
+    }
+  },
   clearCacheAndCookies: () => {
     ipcRenderer.invoke('clear-cache-and-cookies');
   },
