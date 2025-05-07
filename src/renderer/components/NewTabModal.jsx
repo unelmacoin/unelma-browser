@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { createPortal } from "react-dom";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import {
@@ -19,10 +25,20 @@ const SUGGESTED_SITES = [
 
 const NewTabModal = ({ onClose, onSelect }) => {
   const [searchValue, setSearchValue] = useState("");
-  const [filteredSites, setFilteredSites] = useState(SUGGESTED_SITES);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const inputRef = useRef(null);
   const modalRef = useRef(null);
-  const [highlightedIndex, setHighlightedIndex] = useState(-1);
+
+  // Memoize filtered sites to prevent unnecessary re-renders
+  const filteredSites = useMemo(() => {
+    return SUGGESTED_SITES.filter(
+      (site) =>
+        site.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+        site.url.toLowerCase().includes(searchValue.toLowerCase())
+    );
+  }, [searchValue]);
 
   useEffect(() => {
     // Hide views when modal opens
@@ -49,44 +65,86 @@ const NewTabModal = ({ onClose, onSelect }) => {
     };
   }, []);
 
-  useEffect(() => {
-    // Filter suggested sites based on search
-    const filtered = SUGGESTED_SITES.filter(
-      (site) =>
-        site.name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        site.url.toLowerCase().includes(searchValue.toLowerCase())
-    );
-    setFilteredSites(filtered);
-  }, [searchValue]);
-
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     onClose();
-  };
+  }, [onClose]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (highlightedIndex >= 0 && highlightedIndex < filteredSites.length) {
-      onSelect(filteredSites[highlightedIndex]);
-    } else if (searchValue.trim()) {
-      let url = searchValue.trim();
-      if (!/^https?:\/\//i.test(url)) {
-        // Not a URL, treat as Unelma Search query
-        url = `https://unelmas.com/web?q=${encodeURIComponent(searchValue)}`;
+  const handleKeyDown = useCallback(
+    (e) => {
+      switch (e.key) {
+        case "ArrowDown":
+          e.preventDefault();
+          setHighlightedIndex((prev) =>
+            prev < filteredSites.length - 1 ? prev + 1 : prev
+          );
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          break;
+        case "Escape":
+          handleClose();
+          break;
+        default:
+          break;
       }
-      onSelect({ url });
-    }
-  };
+    },
+    [filteredSites.length, handleClose]
+  );
 
-  const handleSiteSelect = (site) => {
-    onSelect(site);
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setError(null);
+      setIsLoading(true);
+
+      try {
+        if (highlightedIndex >= 0 && highlightedIndex < filteredSites.length) {
+          onSelect(filteredSites[highlightedIndex]);
+        } else if (searchValue.trim()) {
+          let url = searchValue.trim();
+          if (!/^https?:\/\//i.test(url)) {
+            // Not a URL, treat as Unelma Search query
+            url = `https://unelmas.com/web?q=${encodeURIComponent(
+              searchValue
+            )}`;
+          }
+          onSelect({ url });
+        }
+      } catch (err) {
+        setError("Failed to process the request. Please try again.");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [highlightedIndex, filteredSites, searchValue, onSelect]
+  );
+
+  const handleSiteSelect = useCallback(
+    (site) => {
+      onSelect(site);
+    },
+    [onSelect]
+  );
 
   return createPortal(
-    <div className="new-tab-modal-overlay">
+    <div
+      className="new-tab-modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="new-tab-title"
+    >
       <div className="new-tab-modal" ref={modalRef}>
-        <button className="close-button" onClick={handleClose}>
+        <button
+          className="close-button"
+          onClick={handleClose}
+          aria-label="Close modal"
+        >
           <FaTimes />
         </button>
+        <h2 id="new-tab-title" className="visually-hidden">
+          New Tab
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="search-container">
             <FaSearch className="search-icon" />
@@ -95,27 +153,44 @@ const NewTabModal = ({ onClose, onSelect }) => {
               type="text"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search or enter URL"
               className="search-input"
+              aria-label="Search or enter URL"
             />
           </div>
+          {error && (
+            <div className="error-message" role="alert">
+              {error}
+            </div>
+          )}
         </form>
-        <div className="suggested-sites">
-          {filteredSites.map((site, index) => (
-            <button
-              key={site.url}
-              className={`suggested-site ${
-                index === highlightedIndex ? "highlighted" : ""
-              }`}
-              onClick={() => {
-                setHighlightedIndex(index);
-                handleSiteSelect(site);
-              }}
-            >
-              <span className="site-name">{site.name}</span>
-              <span className="site-url">{site.url}</span>
-            </button>
-          ))}
+        <div
+          className="suggested-sites"
+          role="listbox"
+          aria-label="Suggested sites"
+        >
+          {isLoading ? (
+            <div className="loading">Loading...</div>
+          ) : (
+            filteredSites.map((site, index) => (
+              <button
+                key={site.url}
+                className={`suggested-site ${
+                  index === highlightedIndex ? "highlighted" : ""
+                }`}
+                onClick={() => {
+                  setHighlightedIndex(index);
+                  handleSiteSelect(site);
+                }}
+                role="option"
+                aria-selected={index === highlightedIndex}
+              >
+                <span className="site-name">{site.name}</span>
+                <span className="site-url">{site.url}</span>
+              </button>
+            ))
+          )}
         </div>
       </div>
     </div>,
