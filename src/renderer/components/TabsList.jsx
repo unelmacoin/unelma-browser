@@ -1,25 +1,9 @@
 import React from "react";
-import { FaPlus } from "react-icons/fa";
-import { ADD_TAB, SET_TABS } from "../../constants/renderer/actions";
-import { defaultTab } from "../utils/tabs";
+import { SET_TABS } from "../../constants/renderer/actions";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Tab from "./Tab.jsx";
-import {
-  ADD_VIEW,
-  mergeChannel,
-  RE_ORDER_VIEWS,
-} from "../../constants/global/channels";
-const TabsList = ({ tabs, tabsDispatch }) => {
-  const handleAddTab = () => {
-    const newTab = defaultTab(window.id);
-    window.api.send(mergeChannel(ADD_VIEW, window.id), { ...newTab });
-    tabsDispatch({
-      type: ADD_TAB,
-      payload: {
-        tab: { ...newTab },
-      },
-    });
-  };
+import { mergeChannel, RE_ORDER_VIEWS } from "../../constants/global/channels";
+const TabsList = ({ tabs, tabsDispatch, workspaceId }) => {
   function handleOnDragEnd(result) {
     if (!result.destination) return;
     const items = Array.from(tabs);
@@ -37,45 +21,54 @@ const TabsList = ({ tabs, tabsDispatch }) => {
       items.map(({ id }) => id)
     );
   }
-  const renderTabs = () =>
-    tabs.map(({ id, active, title, url, type, loading, fail }, index) => (
-      <Draggable key={id} draggableId={`${id}`} index={index}>
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <Tab
-              id={id}
-              active={active}
-              title={title}
-              tabsDispatch={tabsDispatch}
-              loading={loading}
-              url={url}
-              type={type}
-              fail={fail}
-            />
-          </div>
-        )}
-      </Draggable>
-    ));
 
   return (
-    <div id="tabs">
-      <button id="add-tab" onClick={handleAddTab}>
-        <FaPlus />
-        <span>New Tab</span>
-      </button>
+    <div className="workspace-tabs">
       <DragDropContext onDragEnd={handleOnDragEnd}>
-        <Droppable droppableId="characters">
+        <Droppable droppableId={`workspace-${workspaceId}`}>
           {(provided) => (
             <div
-              id="actual-tabs"
+              className="tabs-container"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {renderTabs()}
+              {tabs.map(
+                (
+                  {
+                    id,
+                    active,
+                    title,
+                    url,
+                    type,
+                    loading,
+                    fail,
+                    workspaceId: tabWorkspaceId,
+                  },
+                  index
+                ) => (
+                  <Draggable key={id} draggableId={`${id}`} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                      >
+                        <Tab
+                          id={id}
+                          active={active}
+                          title={title}
+                          tabsDispatch={tabsDispatch}
+                          loading={loading}
+                          url={url}
+                          type={type}
+                          fail={fail}
+                          workspaceId={tabWorkspaceId || workspaceId}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                )
+              )}
               {provided.placeholder}
             </div>
           )}

@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
   background-color: var(--body-backGround-transparent);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body {
@@ -82,26 +83,38 @@ webview {
   color: rgba(255, 255, 255, 0.7);
 }
 #app-sidebar {
-  background-color: var(--body-backGround-transparent);
-  color: var(--body-font-color);
-  -webkit-app-region: no-drag;
-  position: relative;
-  border-radius: inherit;
-  height: 100%;
+  position: fixed;
+  top: 40px;
+  left: 0;
+  height: calc(100vh - 40px);
+  background-color: var(--sidebar-bg);
+  z-index: 1000;
+  transition: width 0.3s ease, transform 0.3s ease;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  /* transition: 0.3s; */
+  overflow: hidden;
+  -webkit-app-region: no-drag;
 }
 
-#app-sidebar.toggled-sidebar #tabs {
+#app-sidebar.toggled-sidebar {
+  width: 80px !important;
+  transform: translateX(0);
+}
+
+#app-sidebar.toggled-sidebar .sidebar-content {
   display: none;
 }
+
+#app-sidebar.toggled-sidebar .sidebar-header {
+  justify-content: center;
+}
+
 #app-sidebar #controllers {
   display: flex;
   width: 100%;
   justify-content: space-between;
   align-items: center;
+  transition: all 0.3s ease;
 }
 #app-sidebar.toggled-sidebar #controllers {
   flex-direction: column;
@@ -134,7 +147,7 @@ webview {
   align-items: center;
   justify-content: space-between;
   width: 42%;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 #app-sidebar.toggled-sidebar #navigation-controllers {
   flex-direction: column;
@@ -144,7 +157,7 @@ webview {
   font-size: 16px;
   color: var(--body-font-grey-shade);
   cursor: pointer;
-  transition: 0.3s;
+  transition: all 0.3s ease;
 }
 
 #menu-button {
@@ -291,14 +304,22 @@ input {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px;
-  width: 100%;
+  padding: 8px 12px;
+  width: calc(100% - 32px);
   font-size: 12px;
   cursor: pointer;
   height: 35px;
   -webkit-app-region: no-drag;
   border-radius: 4px;
-  /* animation: slide-up 0.1s; */
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  background-color: var(--active-tab-bg);
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 4px;
+}
+.tab:hover {
+  background-color: var(--redish-shade-background);
 }
 .tab img {
   width: 18px;
@@ -312,7 +333,8 @@ input {
   word-wrap: normal;
   line-height: 35px;
   width: 80%;
-  margin: 15px;
+  margin: 0;
+  padding-left: 8px;
   animation: slide-up 0.1s;
   background-color: transparent;
 }
@@ -324,25 +346,46 @@ input {
   font-size: 10px;
   padding: 8px 3px;
   color: var(--accent-color-reversed);
+  transition: all 0.2s ease;
+}
+.tab .close:hover {
+  opacity: 1;
+  background-color: var(--body-font-grey-shade);
+  opacity: 0.1;
+  border-radius: 50%;
 }
 .active-tab {
-  background-color: var(--active-tab-bg);
+  background-color: var(--redish-shade-background);
+  color: var(--accent-color-reversed);
+  font-weight: 500;
+}
+.active-tab p,
+.active-tab img {
+  color: var(--accent-color-reversed);
+  opacity: 1;
 }
 #webviews-container {
-  border-radius: 7px;
-  width: 78%;
+  position: fixed;
+  top: 40px;
+  left: 0;
+  height: calc(100vh - 40px);
+  transition: all 0.3s ease;
+  transform-origin: left;
+  will-change: transform, width;
+  -webkit-app-region: no-drag;
+}
+#webviews-container.toggled-container {
+  width: calc(100% - 80px) !important;
+  transform: translateX(80px) !important;
+}
+#webviews-container > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
   -webkit-app-region: no-drag;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  will-change: left;
-}
-#webviews-container.toggled-container {
-  width: 96%;
-  left: 40px;
 }
 #options-bar {
   width: 100%;
@@ -443,4 +486,137 @@ input {
   100% {
     height: 35px;
   }
+}
+/* Hide old tab styles */
+#add-tab {
+  display: none !important;
+}
+
+#root #tabs {
+  display: none !important;
+}
+
+/* Narrow sidebar styles */
+#app-sidebar.narrow-sidebar #controllers {
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#app-sidebar.narrow-sidebar #navigation-controllers {
+  flex-direction: column;
+  width: 100%;
+}
+
+#app-sidebar.narrow-sidebar #navigation-controllers button {
+  margin: 10px 0;
+}
+
+#app-sidebar.narrow-sidebar #window-controllers {
+  flex-direction: column;
+}
+
+#app-sidebar.narrow-sidebar #toggle-btn {
+  margin: 10px 0 !important;
+}
+
+/* Prevent conflicts between toggle and narrow modes */
+#app-sidebar.toggled-sidebar.narrow-sidebar {
+  width: 80px !important;
+}
+
+#app-sidebar.toggled-sidebar.narrow-sidebar .sidebar-content {
+  display: none;
+}
+
+/* Sidebar item styles */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.sidebar-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.sidebar-item-icon {
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.sidebar-item-text {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Narrow mode styles */
+#app-sidebar.narrow-sidebar {
+  width: 80px !important;
+}
+
+#app-sidebar.narrow-sidebar .sidebar-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app-sidebar.narrow-sidebar .sidebar-item {
+  padding: 8px;
+  justify-content: center;
+}
+
+#app-sidebar.narrow-sidebar .sidebar-item-text {
+  display: none;
+}
+
+#app-sidebar.narrow-sidebar .sidebar-item-icon {
+  margin-right: 0;
+}
+
+/* Ensure smooth transitions */
+* {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Prevent conflicts between toggle and narrow modes */
+#app-sidebar.toggled-sidebar.narrow-sidebar {
+  width: 80px !important;
+}
+
+#app-sidebar.toggled-sidebar.narrow-sidebar .sidebar-content {
+  display: none;
+}
+
+/* Sidebar item styles */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  -webkit-app-region: no-drag;
+}
+
+.sidebar-item:hover {
+  background-color: var(--hover-bg);
+}
+
+.sidebar-item-icon {
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.sidebar-item-text {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
