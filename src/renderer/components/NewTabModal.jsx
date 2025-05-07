@@ -142,7 +142,7 @@ const NewTabModal = ({ onClose, onSelect }) => {
         >
           <FaTimes />
         </button>
-        <h2 id="new-tab-title" className="visually-hidden">
+        <h2 id="new-tab-title" className="new-tab-title">
           New Tab
         </h2>
         <form onSubmit={handleSubmit}>
