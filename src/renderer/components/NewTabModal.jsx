@@ -24,14 +24,13 @@ const NewTabModal = ({ onClose, onSelect }) => {
   const modalRef = useRef(null);
 
   useEffect(() => {
+    // Hide views when modal opens
+    window.api.send(mergeChannel(HIDE_VIEWS, window.id));
+
     // Focus the input when modal opens
     if (inputRef.current) {
       inputRef.current.focus();
     }
-
-    // Hide web content when modal opens
-    const viewId = window.id;
-    window.api.send(mergeChannel(HIDE_VIEWS, viewId));
 
     // Handle click outside to close
     const handleClickOutside = (event) => {
@@ -44,8 +43,8 @@ const NewTabModal = ({ onClose, onSelect }) => {
 
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
-      // Show web content when modal closes
-      window.api.send(mergeChannel(SHOW_VIEWS, viewId));
+      // Show views when modal closes
+      window.api.send(mergeChannel(SHOW_VIEWS, window.id));
     };
   }, []);
 
