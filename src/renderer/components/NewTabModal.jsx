@@ -22,6 +22,7 @@ const NewTabModal = ({ onClose, onSelect }) => {
   const [filteredSites, setFilteredSites] = useState(SUGGESTED_SITES);
   const inputRef = useRef(null);
   const modalRef = useRef(null);
+  const [highlightedIndex, setHighlightedIndex] = useState(-1);
 
   useEffect(() => {
     // Hide views when modal opens
@@ -64,10 +65,14 @@ const NewTabModal = ({ onClose, onSelect }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (searchValue.trim()) {
-      const url = searchValue.startsWith("http")
-        ? searchValue
-        : `https://${searchValue}`;
+    if (highlightedIndex >= 0 && highlightedIndex < filteredSites.length) {
+      onSelect(filteredSites[highlightedIndex]);
+    } else if (searchValue.trim()) {
+      let url = searchValue.trim();
+      if (!/^https?:\/\//i.test(url)) {
+        // Not a URL, treat as Unelma Search query
+        url = `https://unelmas.com/web?q=${encodeURIComponent(searchValue)}`;
+      }
       onSelect({ url });
     }
   };
@@ -96,11 +101,16 @@ const NewTabModal = ({ onClose, onSelect }) => {
           </div>
         </form>
         <div className="suggested-sites">
-          {filteredSites.map((site) => (
+          {filteredSites.map((site, index) => (
             <button
               key={site.url}
-              className="suggested-site"
-              onClick={() => handleSiteSelect(site)}
+              className={`suggested-site ${
+                index === highlightedIndex ? "highlighted" : ""
+              }`}
+              onClick={() => {
+                setHighlightedIndex(index);
+                handleSiteSelect(site);
+              }}
             >
               <span className="site-name">{site.name}</span>
               <span className="site-url">{site.url}</span>
