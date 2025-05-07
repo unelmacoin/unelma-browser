@@ -25,6 +25,7 @@ import { ADD_TAB } from "../../../constants/renderer/actions";
 import { defaultTab } from "../../utils/tabs";
 import "./WorkspaceList.css";
 import { BsPersonWorkspace } from "react-icons/bs";
+import NewTabModal from "../NewTabModal.jsx";
 
 const TAB_LIMIT = 5;
 
@@ -43,6 +44,7 @@ const WorkspaceList = ({
   const [customWorkspaces, setCustomWorkspaces] = useState([]);
   const [editingWorkspace, setEditingWorkspace] = useState(null);
   const [newWorkspaceName, setNewWorkspaceName] = useState("");
+  const [showNewTabModal, setShowNewTabModal] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -103,7 +105,15 @@ const WorkspaceList = ({
       return;
     }
 
-    const newTab = defaultTab(window.id, null, activeWorkspace);
+    setShowNewTabModal(true);
+  };
+
+  const handleModalClose = () => {
+    setShowNewTabModal(false);
+  };
+
+  const handleModalSelect = (site) => {
+    const newTab = defaultTab(window.id, site.url, activeWorkspace);
     window.api.send(mergeChannel(ADD_VIEW, window.id), {
       ...newTab,
       workspaceId: activeWorkspace,
@@ -117,6 +127,7 @@ const WorkspaceList = ({
         },
       },
     });
+    setShowNewTabModal(false);
   };
 
   const handleCreateWorkspace = () => {
@@ -354,6 +365,12 @@ const WorkspaceList = ({
   return (
     <div className="workspace-list">
       <div className="workspace-buttons">
+        {showNewTabModal && (
+          <NewTabModal
+            onClose={handleModalClose}
+            onSelect={handleModalSelect}
+          />
+        )}
         <button
           className="new-tab-button"
           onClick={handleAddTab}
