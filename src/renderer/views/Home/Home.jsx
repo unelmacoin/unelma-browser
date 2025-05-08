@@ -111,7 +111,6 @@ const Home = ({
   );
 
   useEffect(() => {
- 
     // Delayed resize to ensure BrowserView is properly positioned
     setTimeout(() => {
       handleResize(sidebarWidth);
