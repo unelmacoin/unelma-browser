@@ -110,6 +110,13 @@ const Home = ({
     [setOpenSidebar, setIsNarrowMode, window.api]
   );
 
+  useEffect(() => {
+    // Delayed resize to ensure BrowserView is properly positioned
+    setTimeout(() => {
+      handleResize(sidebarWidth);
+    }, 50);
+  }, []);
+
   // Calculate webviews container styles based on sidebar state
   const getWebviewsContainerStyle = () => {
     const width = openSidebar ? sidebarWidth : COLLAPSED_WIDTH;

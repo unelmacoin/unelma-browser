@@ -31,6 +31,11 @@ import {
   DELETE_CUSTOM_WORKSPACE,
 } from "../../constants/global/channels";
 import { UNELMA_DEFAULT_URL } from "../../constants/global/urls";
+import {
+  PADDING,
+  SIDE_BAR_RIGHT_MARGIN,
+  TOP_BAR_HEIGHT,
+} from "../../constants/global/dimensions";
 import { getBookmarks } from "../controllers/bookmarks";
 import { addAuthInfo, getAuthInfo } from "../controllers/passwords";
 import { addHistory, getSearchHistory } from "../controllers/searchHistory";
@@ -137,8 +142,14 @@ export class MainWindow {
       ipcMain.on(RESIZE_WINDOW, (_, { windowId, width }) => {
         if (this.window && this.window.windowId === windowId) {
           const activeView = this.views.find((v) => v.isActive && !v.hidden);
-          if (activeView) {
-            activeView.fitToWidth(width);
+          if (activeView && activeView.view) {
+            const bounds = this.window.getBounds();
+            activeView.view.setBounds({
+              x: width + PADDING + SIDE_BAR_RIGHT_MARGIN,
+              y: TOP_BAR_HEIGHT,
+              width: bounds.width - width - PADDING * 2 - SIDE_BAR_RIGHT_MARGIN,
+              height: bounds.height - TOP_BAR_HEIGHT - PADDING,
+            });
           }
         }
       });
