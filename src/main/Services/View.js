@@ -192,25 +192,19 @@ export class View {
       const newHeight =
         this.parentWindow.getBounds().height - TOP_BAR_HEIGHT - PADDING;
 
-      // Only update if dimensions have changed
-      if (
-        this.width !== newWidth ||
-        this.x !== newX ||
-        this.height !== newHeight
-      ) {
-        this.width = newWidth;
-        this.x = newX;
-        this.height = newHeight;
+      // Always update bounds to ensure proper positioning
+      this.width = newWidth;
+      this.x = newX;
+      this.height = newHeight;
 
-        // Use setPosition and setSize separately for better performance
-        if (this.view) {
-          this.view.setBounds({
-            x: this.x,
-            y: this.y,
-            width: this.width,
-            height: this.height,
-          });
-        }
+      // Use setBounds for atomic update
+      if (this.view) {
+        this.view.setBounds({
+          x: this.x,
+          y: this.y,
+          width: this.width,
+          height: this.height,
+        });
       }
     }
   }
