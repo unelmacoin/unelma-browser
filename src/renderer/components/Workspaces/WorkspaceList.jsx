@@ -236,7 +236,7 @@ const WorkspaceList = ({
     const isEditing = editingWorkspace === workspace.id;
 
     return (
-      <div key={workspace.id}>
+      <div key={workspace.id} className="sidebar-block">
         <div
           className={`workspace-item ${
             activeWorkspace === workspace.id ? "active-workspace" : ""
@@ -364,7 +364,7 @@ const WorkspaceList = ({
 
   return (
     <div className="workspace-list">
-      <div className="workspace-buttons">
+      <div className="workspace-buttons sidebar-block">
         {showNewTabModal && (
           <NewTabModal
             onClose={handleModalClose}
@@ -391,8 +391,8 @@ const WorkspaceList = ({
           Workspaces
         </h2>
       </div>
-      <div className="workspaces">
-        <div className="workspace-buttons">
+      <div className="workspaces sidebar-block">
+        <div className="workspace-buttons sidebar-block">
           <button
             className="new-workspace-button"
             onClick={handleCreateWorkspace}
