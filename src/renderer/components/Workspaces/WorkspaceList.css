@@ -2,12 +2,21 @@
 .workspace-list {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 12px;
   height: 100%;
   background-color: var(--root-background);
-  width: 100%;
-  max-width: 300px;
-  min-width: 80px;
   overflow-y: auto;
+}
+.sidebar-block {
+  width: 100%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .sidebar-block {
+    max-width: 100%;
+  }
 }
 
 .workspace-header {
@@ -28,12 +37,16 @@
   overflow-y: auto;
   padding: 4px;
   background-color: var(--root-background);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 }
 
 /* Workspace Item Styles */
 .workspace-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   padding: 8px 12px;
   cursor: pointer;
   border-radius: 6px;
@@ -89,7 +102,6 @@
   flex-direction: column;
   align-items: center;
 }
-
 
 .new-workspace-button,
 .new-tab-button {
