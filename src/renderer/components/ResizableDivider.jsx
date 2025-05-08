@@ -8,11 +8,13 @@ const ResizableDivider = ({ position, onResize, minWidth }) => {
   const handleMouseMove = useCallback(
     (e) => {
       if (!isResizing) return;
-      const newWidth = Math.max(minWidth, e.clientX);
-      onResize(newWidth);
+      const maxWidth = window.innerWidth * 0.4;
+      const clampedWidth = Math.max(minWidth, Math.min(e.clientX, maxWidth));
+      onResize(clampedWidth);
     },
     [isResizing, minWidth, onResize]
   );
+  
 
   const handleMouseUp = useCallback(() => {
     setIsResizing(false);
