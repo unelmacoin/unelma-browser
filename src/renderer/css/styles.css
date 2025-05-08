@@ -387,6 +387,11 @@ input {
   overflow: hidden;
   -webkit-app-region: no-drag;
 }
+#webviews-container.blurred {
+  filter: blur(8px) brightness(0.9);
+  transition: filter 0.2s;
+  pointer-events: none;
+}
 #options-bar {
   width: 100%;
   margin-bottom: 15px;
