@@ -51,13 +51,37 @@ import {
 const uniqid = require("uniqid");
 const path = require("path");
 const Store = require("electron-store");
+const { enableAdBlocking, enableAggressiveAdBlocking } = require("./adblock");
 
 const store = new Store();
+let adblockEnabled = false;
+
+let aggressiveAdblockActivated = false;
+
 export class MainWindow {
   window;
   views;
   isToggled;
   constructor(id, initialUrl) {
+    // Enable ad-blocking once per app start
+    if (!adblockEnabled) {
+      adblockEnabled = true;
+      (async () => {
+        try {
+          await enableAdBlocking();
+        } catch (err) {
+          console.error('Failed to initialize ad-blocker:', err);
+        }
+      })();
+      // Listen for YouTube video start event to enable aggressive ad-blocking
+      const { ipcMain } = require('electron');
+      ipcMain.on('youtube-video-started', async () => {
+        if (!aggressiveAdblockActivated) {
+          aggressiveAdblockActivated = true;
+          await enableAggressiveAdBlocking();
+        }
+      });
+    }
     this.views = [];
     this.isToggled = false;
     this.window = new BrowserWindow({
