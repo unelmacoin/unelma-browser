@@ -132,7 +132,7 @@ const Home = ({
 
   return (
     <Layout setMenu={setMenu} menu={menu}>
-      <div id="home" ref={homeRef}>
+      <div id="home">
         <Sidebar
           tabs={tabs}
           tabsDispatch={tabsDispatch}
@@ -144,10 +144,10 @@ const Home = ({
           setLoginDialogInfo={setLoginDialogInfo}
           setMenu={setMenu}
           menu={menu}
-          style={{ width: `calc(${sidebarWidth}px - 20px)` }}
+          style={{ width: sidebarWidth }}
         />
         <ResizableDivider
-          position={sidebarWidth - 40}
+          position={sidebarWidth}
           onResize={handleResize}
           minWidth={COLLAPSED_WIDTH}
         />
@@ -157,6 +157,7 @@ const Home = ({
             isNarrowMode ? "narrow-container" : ""
           }`}
           style={getWebviewsContainerStyle()}
+          ref={homeRef}
         ></div>
       </div>
     </Layout>

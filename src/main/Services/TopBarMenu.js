@@ -103,6 +103,26 @@ export const topBarMenuList = [
     submenu: [{ role: "minimize" }, { role: "zoom" }, { role: "close" }],
   },
   {
+    label: "Bookmark",
+    submenu: [
+      {
+        label: "Show All Bookmarks",
+        click: () => {
+          const { getBookmarks } = require("../controllers/bookmarks.js");
+          const bookmarks = getBookmarks();
+          const { dialog } = require("electron");
+          dialog.showMessageBox({
+            type: 'info',
+            title: 'Bookmarks',
+            message: 'All Bookmarks',
+            detail: bookmarks.length ? bookmarks.map(b => `${b.title || b.url || b}`).join('\n') : 'No bookmarks found.',
+            buttons: ['OK'],
+          });
+        },
+      },
+    ],
+  },
+  {
     label: "Help",
     submenu: [
       {

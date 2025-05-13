@@ -1,5 +1,5 @@
 // Ad blocking logic for Electron (Unelma Browser)
-const { session } = require('electron');
+const { session, app } = require('electron');
 const { ElectronBlocker } = require('@cliqz/adblocker-electron');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
@@ -19,7 +19,7 @@ const FILTER_LISTS = [
 
 // Helper to initialize adblocker and apply to all sessions
 async function enableAdBlocking() {
-  const { session } = require('electron');
+
   // Disable ad-blocking for all YouTube-related domains by skipping ad-blocker logic for these URLs
   const youtubeDomains = [
     'youtube.com',
@@ -41,9 +41,27 @@ async function enableAdBlocking() {
   // (ad-blocker logic remains unchanged below)
 
   try {
-    // Use prebuilt lists for ads and tracking
+    // Use prebuilt lists for ads and tracking, with disk cache
     const { ElectronBlocker } = require('@cliqz/adblocker-electron');
-    const blocker = await ElectronBlocker.fromPrebuiltAdsAndTracking(fetch, false);
+    const fs = require('fs');
+    const path = require('path');
+    // Store cache in user's appData directory
+    const cachePath = path.join(app.getPath('userData'), 'adblock-cache.bin');
+    // Provide both sync and async cache methods for compatibility
+    const read = () => {
+      try {
+        return fs.existsSync(cachePath) ? fs.readFileSync(cachePath) : null;
+      } catch (e) {
+        return null;
+      }
+    };
+    const write = (data) => {
+      try {
+        fs.writeFileSync(cachePath, data);
+      } catch (e) {}
+    };
+
+    const blocker = await ElectronBlocker.fromPrebuiltAdsAndTracking(fetch, false, { read, write });
     // Enable ad-blocking for main session
     blocker.enableBlockingInSession(session.defaultSession);
     blocker.on('request-blocked', ({ url, type }) => {

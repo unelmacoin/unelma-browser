@@ -5,13 +5,178 @@
   padding: 0;
   box-sizing: border-box;
   background-color: var(--body-backGround-transparent);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, border 0.2s;
 }
 
-body {
-  font-family: Lucida Grande, Arial, sans-serif;
-  background-color: var(--body-backGround-transparent);
+/* --- Modern Sidebar Styles --- */
+#app-sidebar, .sidebar, .workspaces-sidebar {
+  background: linear-gradient(135deg, rgba(245,245,255,0.87), rgba(220,225,255,0.72));
+  backdrop-filter: blur(22px);
+  border-radius: 22px;
+  box-shadow: 0 6px 32px rgba(60,60,120,0.08);
+  padding: 32px 18px 18px 18px;
+  min-width: 250px;
+  max-width: 320px;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: width 0.25s cubic-bezier(0.4,0,0.2,1), min-width 0.25s cubic-bezier(0.4,0,0.2,1), max-width 0.25s cubic-bezier(0.4,0,0.2,1);
+  overflow: hidden;
 }
+
+#app-sidebar.toggled-sidebar, #app-sidebar.narrow-sidebar {
+  min-width: 56px !important;
+  max-width: 56px !important;
+  width: 56px !important;
+  padding: 20px 4px 10px 4px;
+  border-radius: 18px;
+}
+
+#app-sidebar.toggled-sidebar .sidebar-title,
+#app-sidebar.narrow-sidebar .sidebar-title,
+#app-sidebar.toggled-sidebar .workspaces-title,
+#app-sidebar.narrow-sidebar .workspaces-title,
+#app-sidebar.toggled-sidebar .sidebar-btn span,
+#app-sidebar.narrow-sidebar .sidebar-btn span,
+#app-sidebar.toggled-sidebar .workspace-item span,
+#app-sidebar.narrow-sidebar .workspace-item span,
+#app-sidebar.toggled-sidebar .new-tab-button span,
+#app-sidebar.narrow-sidebar .new-tab-button span,
+#app-sidebar.toggled-sidebar .new-workspace-button span,
+#app-sidebar.narrow-sidebar .new-workspace-button span {
+  display: none !important;
+}
+
+#app-sidebar.toggled-sidebar .sidebar-btn svg,
+#app-sidebar.narrow-sidebar .sidebar-btn svg,
+#app-sidebar.toggled-sidebar .workspace-item svg,
+#app-sidebar.narrow-sidebar .workspace-item svg,
+#app-sidebar.toggled-sidebar .new-tab-button svg,
+#app-sidebar.narrow-sidebar .new-tab-button svg,
+#app-sidebar.toggled-sidebar .new-workspace-button svg,
+#app-sidebar.narrow-sidebar .new-workspace-button svg {
+  margin: 0 auto !important;
+  display: block;
+  font-size: 1.5em;
+}
+
+#app-sidebar.toggled-sidebar .workspace-item,
+#app-sidebar.narrow-sidebar .workspace-item,
+#app-sidebar.toggled-sidebar .sidebar-btn,
+#app-sidebar.narrow-sidebar .sidebar-btn,
+#app-sidebar.toggled-sidebar .new-tab-button,
+#app-sidebar.narrow-sidebar .new-tab-button,
+#app-sidebar.toggled-sidebar .new-workspace-button,
+#app-sidebar.narrow-sidebar .new-workspace-button {
+  justify-content: center;
+  padding: 10px 0 !important;
+  width: 44px !important;
+  min-width: 44px !important;
+  margin: 8px auto !important;
+  border-radius: 12px !important;
+}
+
+#app-sidebar.toggled-sidebar .workspace-list,
+#app-sidebar.narrow-sidebar .workspace-list {
+  gap: 4px;
+}
+
+/* Ensure divider stays visible and main content fills space */
+#main-content {
+  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
+  margin-left: 250px;
+}
+#app-sidebar.toggled-sidebar ~ #main-content,
+#app-sidebar.narrow-sidebar ~ #main-content {
+  margin-left: 56px !important;
+}
+
+
+.sidebar-section, .workspaces-section {
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid rgba(120,130,180,0.08);
+}
+
+/* Sidebar Action Buttons */
+.sidebar-btn, .new-tab-button, .new-workspace-button {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #e0e7ff 60%, #f1f5ff 100%);
+  border: none;
+  border-radius: 14px;
+  padding: 13px 20px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #2d3150;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(120,130,180,0.06);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
+  cursor: pointer;
+  outline: none;
+}
+.sidebar-btn svg, .new-tab-button svg, .new-workspace-button svg {
+  margin-right: 11px;
+  font-size: 1.2em;
+}
+.sidebar-btn:hover, .sidebar-btn:focus,
+.new-tab-button:hover, .new-workspace-button:hover {
+  background: linear-gradient(90deg, #b5c6ff 60%, #e0e7ff 100%);
+  box-shadow: 0 4px 16px rgba(120,130,180,0.14);
+  transform: scale(1.035);
+}
+
+/* Workspace/Tab List */
+.workspace-list, .sidebar-workspace-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.workspace-item, .sidebar-workspace-item {
+  display: flex;
+  align-items: center;
+  padding: 11px 16px;
+  border-radius: 12px;
+  margin-bottom: 4px;
+  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #3a4060;
+  background: transparent;
+  border: none;
+}
+.workspace-item:hover, .sidebar-workspace-item:hover, .workspace-item.active, .sidebar-workspace-item.active {
+  background: rgba(120,130,255,0.13);
+  box-shadow: 0 2px 8px rgba(120,130,180,0.08);
+}
+.workspace-item.active, .sidebar-workspace-item.active {
+  background: linear-gradient(90deg, #c7d2fe 60%, #e0e7ff 100%);
+  color: #2d3150;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(120,130,180,0.16);
+  border-left: 4px solid #6366f1;
+}
+
+.sidebar-title, .workspaces-title {
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: #2d3150;
+  margin-bottom: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* --- End Modern Sidebar Styles --- */
+
+
+body {
+  font-family: 'Inter', 'SF Pro', 'Roboto', Arial, sans-serif;
+  background-color: var(--body-backGround-transparent);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body::-webkit-scrollbar {
   width: 0px;
 }
