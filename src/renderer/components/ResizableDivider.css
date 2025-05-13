@@ -2,23 +2,30 @@
   position: fixed;
   top: 40px;
   bottom: 40px;
-  width: 4px;
+  left: unset;
+  width: 7px;
   height: calc(100vh - 40px);
-  margin-left: 30px;
-  background-color: var(--redish-shade-background);
+  margin-left: 0;
+  background: linear-gradient(135deg, rgba(180,190,255,0.42), rgba(210,220,255,0.16));
+  backdrop-filter: blur(8px) saturate(120%);
+  border-radius: 8px;
+  box-shadow: 0 2px 16px 0 rgba(80,90,140,0.10);
   cursor: col-resize;
-  z-index: 1001;
-  opacity: 0.5;
+  z-index: 2001;
+  opacity: 0.82;
   user-select: none;
   -webkit-user-select: none;
   -webkit-app-region: no-drag;
-  transition: all 0.2s ease;
+  transition: background 0.18s, box-shadow 0.18s, opacity 0.18s;
+  border: 1.5px solid rgba(120,130,180,0.11);
 }
 
 .resizer:hover,
 .resizer.dragging {
   opacity: 1;
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, #b5c6ff 60%, #e0e7ff 100%);
+  box-shadow: 0 4px 24px 0 rgba(80,90,140,0.18);
+  border: 1.5px solid #6366f1;
 }
 
 /* Prevent text selection during drag */

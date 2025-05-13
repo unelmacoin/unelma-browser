@@ -60,11 +60,13 @@ export class View {
         const path = require('path');
         preloadScript = path.join(__dirname, 'preload_youtube.js');
       }
-      this.view = new BrowserView({
-        webPreferences: {
-          preload: preloadScript,
-        },
-      });
+      // Electron >=27: use preloadScripts, fallback to preload for older versions
+        this.view = new BrowserView({
+          webPreferences: {
+            preloadScripts: [preloadScript], // New API
+            // preload: preloadScript, // Uncomment if you want to support older Electron
+          },
+        });
       this.view.setBackgroundColor("white");
       this.view.setBounds({
         x: this.x,
