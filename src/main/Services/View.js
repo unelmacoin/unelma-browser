@@ -55,9 +55,14 @@ export class View {
             SIDE_BAR_RIGHT_MARGIN;
         }
       }
+      let preloadScript = UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY;
+      if (typeof url === 'string' && url.includes('youtube.com')) {
+        const path = require('path');
+        preloadScript = path.join(__dirname, 'preload_youtube.js');
+      }
       this.view = new BrowserView({
         webPreferences: {
-          preload: UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY,
+          preload: preloadScript,
         },
       });
       this.view.setBackgroundColor("white");

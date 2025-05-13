@@ -1,63 +1,35 @@
 {
   "name": "Unelma_Browser",
-  "version": "3.2.0",
+  "version": "3.2.6",
   "description": "Unelma Browser - a browser for free world ",
   "main": ".webpack/main",
   "scripts": {
+    "prestart": "node scripts/generateAppMetadata.js",
+    "prepackage": "node scripts/generateAppMetadata.js",
+    "premake": "node scripts/generateAppMetadata.js",
     "start": "electron-forge start",
-    "package": "electron-builder -p never",
+    "package": "electron-forge package",
     "make": "electron-forge make",
-    "dist": "electron-builder --win",
-    "pack": "electron-builder -mwl",
-    "publish": "electron-builder --mac --win --linux -p always"
-  },
-  "repository": "https://github.com/unelmacoin/unelma-browser",
-  "publish": {
-    "provider": "github",
-    "releaseType": "release"
+    "dist": "electron-forge make --platform win32",
+    "pack": "electron-forge package",
+    "publish": "electron-forge publish"
   },
   "files": [
     "package.json",
     "app/**/*",
     "node_modules"
   ],
-  "postinstall": "electron-builder install-app-deps",
-  "build": {
-    "appId": "com.unelmas.browser",
-    "afterSign": "./build/notarize.js",
-    "mac": {
-      "category": "public.app-category.productivity",
-      "type": "distribution",
-      "hardenedRuntime": true,
-      "entitlements": "build/entitlements.mac.plist",
-      "entitlementsInherit": "build/entitlements.mac.plist",
-      "gatekeeperAssess": false
-    },
-    "linux": {
-      "category": "public.app-category.productivity",
-      "target": "AppImage"
-    },
-    "productName": "Unelma Browser",
-    "icon": "./src/img/unp.png",
-    "target": "nsis",
-    "win": {
-      "target": "nsis"
-    },
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "createStartMenuShortcut": true,
-      "oneClick": false
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "unelmacoin",
-        "repo": "unelma-browser"
-      }
-    ]
+  "author": "Unelma Platforms Inc. <info@unelmaplatforms.com>",
+  "license": "Apache-2.0",
+  "homepage": "https://unelmas.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unelmacoin/unelma-browser.git"
   },
-  "author": "Unelma Platforms Inc.",
-  "license": "Apache 2.0",
+  "bugs": {
+    "url": "https://github.com/unelmacoin/unelma-browser/issues",
+    "email": "info@unelmaplatforms.com"
+  },
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-react": "^7.26.3",
@@ -185,6 +157,7 @@
     }
   },
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2"
   }
 }

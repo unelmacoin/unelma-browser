@@ -1,25 +1,55 @@
 #settingsSidebar {
   width: 22%;
   height: 100%;
-  padding:15px;
+  padding: 22px 18px 18px 18px;
   overflow-y: scroll;
   position: relative;
+  /* Modern dark gradient/glassmorphism */
+  background: linear-gradient(135deg, rgba(34,40,49,0.95) 70%, rgba(44,62,80,0.92) 100%);
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.25);
+  border-radius: 24px 24px 32px 8px;
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: background 0.5s, box-shadow 0.3s;
 }
 #settingsSidebar ul {
   width: 100%;
 }
 #settingsSidebar ul li {
   font-weight: 500;
-  border-radius: 7px 50px 50px 7px;
+  border-radius: 16px;
   display: flex;
   width: 100%;
-  padding: 10px;
-  font-size: 15px;
+  padding: 14px 18px;
+  font-size: 16px;
   align-items: center;
   cursor: pointer;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+  background: transparent;
+  transition: background 0.25s, color 0.25s, box-shadow 0.2s;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,0.03);
+}
+
+#settingsSidebar ul li:hover {
+  background: linear-gradient(90deg, #3a8dde 0%, #1e2a78 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(58,141,222,0.12);
+}
+
+#settingsSidebar ul li.active {
+  color: #fff;
+  background: linear-gradient(90deg, #ff6a00 0%, #ee0979 100%);
+  box-shadow: 0 6px 24px 0 rgba(255,106,0,0.12);
+  font-weight: 600;
+  border-radius: 20px;
 }
 #settingsSidebar ul li span {
-  margin-right: 10px;
+  margin-right: 12px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
 }
 #settingsSidebar ul li.active {
   color: #e87874;
@@ -27,13 +57,16 @@
 }
 
 #settingsSidebar::-webkit-scrollbar {
-  width: 3px;
+  width: 8px;
+  border-radius: 8px;
+  background: transparent;
 }
-
 #settingsSidebar::-webkit-scrollbar-track {
-  background: rgba(211, 211, 211, 0.589);
+  background: transparent;
 }
-
 #settingsSidebar::-webkit-scrollbar-thumb {
-  background: rgba(51, 51, 51, 0.349);
+  background: linear-gradient(135deg, #222831 60%, #3a8dde 100%);
+  border-radius: 8px;
+  min-height: 40px;
+  border: 2px solid rgba(255,255,255,0.08);
 }
