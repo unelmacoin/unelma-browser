@@ -9,11 +9,17 @@
 }
 
 /* --- Modern Sidebar Styles --- */
-#app-sidebar, .sidebar, .workspaces-sidebar {
-  background: linear-gradient(135deg, rgba(245,245,255,0.87), rgba(220,225,255,0.72));
+#app-sidebar,
+.sidebar,
+.workspaces-sidebar {
+  background: linear-gradient(
+    135deg,
+    rgba(245, 245, 255, 0.87),
+    rgba(220, 225, 255, 0.72)
+  );
   backdrop-filter: blur(22px);
   border-radius: 22px;
-  box-shadow: 0 6px 32px rgba(60,60,120,0.08);
+  box-shadow: 0 6px 32px rgba(60, 60, 120, 0.08);
   padding: 32px 18px 18px 18px;
   min-width: 250px;
   max-width: 320px;
@@ -21,14 +27,17 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  transition: width 0.25s cubic-bezier(0.4,0,0.2,1), min-width 0.25s cubic-bezier(0.4,0,0.2,1), max-width 0.25s cubic-bezier(0.4,0,0.2,1);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    min-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 
-#app-sidebar.toggled-sidebar, #app-sidebar.narrow-sidebar {
-  min-width: 56px !important;
-  max-width: 56px !important;
-  width: 56px !important;
+#app-sidebar.toggled-sidebar,
+#app-sidebar.narrow-sidebar {
+  min-width: 80px !important;
+  max-width: 80px !important;
+  width: 80px !important;
   padding: 20px 4px 10px 4px;
   border-radius: 18px;
 }
@@ -84,23 +93,25 @@
 
 /* Ensure divider stays visible and main content fills space */
 #main-content {
-  transition: margin-left 0.25s cubic-bezier(0.4,0,0.2,1);
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   margin-left: 250px;
 }
 #app-sidebar.toggled-sidebar ~ #main-content,
 #app-sidebar.narrow-sidebar ~ #main-content {
-  margin-left: 56px !important;
+  margin-left: 80px !important;
 }
 
-
-.sidebar-section, .workspaces-section {
+.sidebar-section,
+.workspaces-section {
   margin-bottom: 20px;
   padding-bottom: 10px;
-  border-bottom: 1.5px solid rgba(120,130,180,0.08);
+  border-bottom: 1.5px solid rgba(120, 130, 180, 0.08);
 }
 
 /* Sidebar Action Buttons */
-.sidebar-btn, .new-tab-button, .new-workspace-button {
+.sidebar-btn,
+.new-tab-button,
+.new-workspace-button {
   display: flex;
   align-items: center;
   background: linear-gradient(90deg, #e0e7ff 60%, #f1f5ff 100%);
@@ -111,30 +122,36 @@
   font-weight: 500;
   color: #2d3150;
   margin-bottom: 10px;
-  box-shadow: 0 2px 8px rgba(120,130,180,0.06);
+  box-shadow: 0 2px 8px rgba(120, 130, 180, 0.06);
   transition: background 0.2s, box-shadow 0.2s, transform 0.18s;
   cursor: pointer;
   outline: none;
 }
-.sidebar-btn svg, .new-tab-button svg, .new-workspace-button svg {
+.sidebar-btn svg,
+.new-tab-button svg,
+.new-workspace-button svg {
   margin-right: 11px;
   font-size: 1.2em;
 }
-.sidebar-btn:hover, .sidebar-btn:focus,
-.new-tab-button:hover, .new-workspace-button:hover {
+.sidebar-btn:hover,
+.sidebar-btn:focus,
+.new-tab-button:hover,
+.new-workspace-button:hover {
   background: linear-gradient(90deg, #b5c6ff 60%, #e0e7ff 100%);
-  box-shadow: 0 4px 16px rgba(120,130,180,0.14);
+  box-shadow: 0 4px 16px rgba(120, 130, 180, 0.14);
   transform: scale(1.035);
 }
 
 /* Workspace/Tab List */
-.workspace-list, .sidebar-workspace-list {
+.workspace-list,
+.sidebar-workspace-list {
   margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
-.workspace-item, .sidebar-workspace-item {
+.workspace-item,
+.sidebar-workspace-item {
   display: flex;
   align-items: center;
   padding: 11px 16px;
@@ -147,19 +164,24 @@
   background: transparent;
   border: none;
 }
-.workspace-item:hover, .sidebar-workspace-item:hover, .workspace-item.active, .sidebar-workspace-item.active {
-  background: rgba(120,130,255,0.13);
-  box-shadow: 0 2px 8px rgba(120,130,180,0.08);
+.workspace-item:hover,
+.sidebar-workspace-item:hover,
+.workspace-item.active,
+.sidebar-workspace-item.active {
+  background: rgba(120, 130, 255, 0.13);
+  box-shadow: 0 2px 8px rgba(120, 130, 180, 0.08);
 }
-.workspace-item.active, .sidebar-workspace-item.active {
+.workspace-item.active,
+.sidebar-workspace-item.active {
   background: linear-gradient(90deg, #c7d2fe 60%, #e0e7ff 100%);
   color: #2d3150;
   font-weight: 600;
-  box-shadow: 0 4px 18px rgba(120,130,180,0.16);
+  box-shadow: 0 4px 18px rgba(120, 130, 180, 0.16);
   border-left: 4px solid #6366f1;
 }
 
-.sidebar-title, .workspaces-title {
+.sidebar-title,
+.workspaces-title {
   font-size: 1.12rem;
   font-weight: 600;
   color: #2d3150;
@@ -169,9 +191,8 @@
 
 /* --- End Modern Sidebar Styles --- */
 
-
 body {
-  font-family: 'Inter', 'SF Pro', 'Roboto', Arial, sans-serif;
+  font-family: "Inter", "SF Pro", "Roboto", Arial, sans-serif;
   background-color: var(--body-backGround-transparent);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
