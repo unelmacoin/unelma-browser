@@ -62,6 +62,7 @@ export class MainWindow {
   window;
   views;
   isToggled;
+  latestSidebarWidth = 250; // Default sidebar width
   constructor(id, initialUrl) {
     // Enable ad-blocking once per app start
     if (!adblockEnabled) {
@@ -165,6 +166,7 @@ export class MainWindow {
       });
       ipcMain.on(RESIZE_WINDOW, (_, { windowId, width }) => {
         if (this.window && this.window.windowId === windowId) {
+          this.latestSidebarWidth = width; // Store the latest sidebar width
           const activeView = this.views.find((v) => v.isActive && !v.hidden);
           if (activeView && activeView.view) {
             const bounds = this.window.getBounds();
@@ -220,7 +222,22 @@ export class MainWindow {
       });
       this.window.webContents.on("did-finish-load", () => {
         this.window.addListener("resize", () => {
-          this.views.find((v) => v.isActive && !v.hidden)?.fit(!this.isToggled);
+          // Always use the latest sidebar width
+          const sidebarWidth = this.latestSidebarWidth || 250;
+          const bounds = this.window.getBounds();
+          const activeView = this.views.find((v) => v.isActive && !v.hidden);
+          if (activeView && activeView.view) {
+            activeView.view.setBounds({
+              x: sidebarWidth + PADDING + SIDE_BAR_RIGHT_MARGIN,
+              y: TOP_BAR_HEIGHT,
+              width:
+                bounds.width -
+                sidebarWidth -
+                PADDING * 2 -
+                SIDE_BAR_RIGHT_MARGIN,
+              height: bounds.height - TOP_BAR_HEIGHT - PADDING,
+            });
+          }
         });
         this.send(WINDOW_READY, this.window.windowId);
         this.send(IS_MAXIMIZED, this.window.isMaximized());
