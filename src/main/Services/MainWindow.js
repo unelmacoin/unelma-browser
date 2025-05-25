@@ -71,12 +71,12 @@ export class MainWindow {
         try {
           await enableAdBlocking();
         } catch (err) {
-          console.error('Failed to initialize ad-blocker:', err);
+          console.error("Failed to initialize ad-blocker:", err);
         }
       })();
       // Listen for YouTube video start event to enable aggressive ad-blocking
-      const { ipcMain } = require('electron');
-      ipcMain.on('youtube-video-started', async () => {
+      const { ipcMain } = require("electron");
+      ipcMain.on("youtube-video-started", async () => {
         if (!aggressiveAdblockActivated) {
           aggressiveAdblockActivated = true;
           await enableAggressiveAdBlocking();
@@ -470,7 +470,20 @@ export class MainWindow {
   }
   showViews() {
     const activeView = this.views.find((v) => v.isActive);
-    activeView?.show();
+    if (activeView) {
+      const bounds = this.window.getBounds();
+      activeView.view.setBounds({
+        x: this.latestSidebarWidth + PADDING + SIDE_BAR_RIGHT_MARGIN,
+        y: TOP_BAR_HEIGHT,
+        width:
+          bounds.width -
+          this.latestSidebarWidth -
+          PADDING * 2 -
+          SIDE_BAR_RIGHT_MARGIN,
+        height: bounds.height - TOP_BAR_HEIGHT - PADDING,
+      });
+      activeView.hidden = false;
+    }
   }
   mapView(props) {
     return {
