@@ -65,12 +65,6 @@
   background-color: var(--accent-color);
   opacity: 0.8;
 }
-
-.active-workspace {
-  background-color: var(--accent-color);
-  color: var(--whiteAndBlack);
-}
-
 .workspace-icon {
   font-size: 16px;
   margin-right: 10px;
@@ -90,48 +84,14 @@
 
 .tab-count {
   font-size: 11px;
-  color: var(--body-font-color);
-  background-color: var(--body-font-grey-shade);
+  color: var(--button-text);
+  background-color: var(--button-bg);
   opacity: 0.7;
   padding: 2px 6px;
   border-radius: 10px;
   margin-left: 8px;
   min-width: 32px;
   text-align: center;
-}
-
-/* Button Styles */
-.workspace-buttons {
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.new-workspace-button,
-.new-tab-button {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  margin: 2px 0;
-  width: 100%;
-  background-color: var(--whiteAndBlack);
-  color: var(--body-font-color);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 13px;
-}
-
-.workspace-buttons .new-tab-button {
-  width: calc(100% - 14px);
-  padding: 8px;
-}
-
-.new-workspace-button:hover,
-.new-tab-button:hover {
-  background-color: var(--accent-color);
-  color: var(--whiteAndBlack);
 }
 
 .new-workspace-button svg,
@@ -150,7 +110,6 @@
 
 #app-sidebar.narrow-sidebar .workspace-list {
   align-items: center;
-  /* Center all children horizontally */
 }
 
 #app-sidebar.narrow-sidebar .workspaces,
@@ -194,7 +153,7 @@
 }
 
 #app-sidebar.narrow-sidebar .active-workspace {
-  background-color: var(--accent-color);
+  background-color: var(--accent-color) !important;
   color: var(--whiteAndBlack);
   box-shadow: 0 0 0 2px var(--whiteAndBlack);
 }
