@@ -26,6 +26,7 @@ import { defaultTab } from "../../utils/tabs";
 import "./WorkspaceList.css";
 import { BsPersonWorkspace } from "react-icons/bs";
 import NewTabModal from "../NewTabModal.jsx";
+import NewWorkspaceModal from "../NewWorkspaceModal.jsx";
 
 const TAB_LIMIT = 5;
 
@@ -45,6 +46,7 @@ const WorkspaceList = ({
   const [editingWorkspace, setEditingWorkspace] = useState(null);
   const [newWorkspaceName, setNewWorkspaceName] = useState("");
   const [showNewTabModal, setShowNewTabModal] = useState(false);
+  const [showNewWorkspaceModal, setShowNewWorkspaceModal] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -131,8 +133,33 @@ const WorkspaceList = ({
   };
 
   const handleCreateWorkspace = () => {
-    setEditingWorkspace("new");
-    setNewWorkspaceName("");
+    setShowNewWorkspaceModal(true);
+  };
+
+  const handleWorkspaceModalClose = () => {
+    setShowNewWorkspaceModal(false);
+  };
+
+  const handleWorkspaceModalSelect = (workspace) => {
+    const newWorkspace = {
+      name: workspace.name,
+      id: `custom-${Date.now()}`,
+      icon: FaBox,
+    };
+
+    // Send the request to the main process
+    window.api.send(ADD_CUSTOM_WORKSPACE, newWorkspace);
+
+    // Update local state
+    setCustomWorkspaces([...customWorkspaces, newWorkspace]);
+
+    // Initialize expanded state for the new workspace
+    setExpandedWorkspaces((prev) => ({
+      ...prev,
+      [newWorkspace.id]: true,
+    }));
+
+    setShowNewWorkspaceModal(false);
   };
 
   const handleRenameWorkspace = (workspaceId, currentName) => {
@@ -371,6 +398,12 @@ const WorkspaceList = ({
             onSelect={handleModalSelect}
           />
         )}
+        {showNewWorkspaceModal && (
+          <NewWorkspaceModal
+            onClose={handleWorkspaceModalClose}
+            onSelect={handleWorkspaceModalSelect}
+          />
+        )}
         <button
           className="new-tab-button"
           onClick={handleAddTab}
@@ -396,7 +429,6 @@ const WorkspaceList = ({
           <button
             className="new-workspace-button"
             onClick={handleCreateWorkspace}
-            disabled={editingWorkspace !== null}
             data-tooltip="New Workspace"
           >
             <FaPlus />
