@@ -56,17 +56,21 @@ export class View {
         }
       }
       let preloadScript = UNELMA_BROWSER_PRELOAD_WEBPACK_ENTRY;
-      if (typeof url === 'string' && url.includes('youtube.com')) {
-        const path = require('path');
-        preloadScript = path.join(__dirname, 'preload_youtube.js');
+      if (typeof url === "string" && url.includes("youtube.com")) {
+        const path = require("path");
+        preloadScript = path.join(__dirname, "preload_youtube.js");
       }
       // Electron >=27: use preloadScripts, fallback to preload for older versions
-        this.view = new BrowserView({
-          webPreferences: {
-            preloadScripts: [preloadScript], // New API
-            // preload: preloadScript, // Uncomment if you want to support older Electron
-          },
-        });
+      this.view = new BrowserView({
+        webPreferences: {
+          preloadScripts: [preloadScript], // New API
+          // preload: preloadScript, // Uncomment if you want to support older Electron
+        },
+      });
+      // Set custom user agent to mimic Chrome
+      const customUserAgent =
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36";
+      this.view.webContents.setUserAgent(customUserAgent);
       this.view.setBackgroundColor("white");
       this.view.setBounds({
         x: this.x,
