@@ -1,47 +1,75 @@
 :root {
+  /* Backgrounds */
   --root-background: #c1c2fa;
   --root-background-grad-1: #dddce0;
   --root-background-grad-2: #f0f0b2;
   --body-backGround: white;
   --body-backGround-transparent: transparent;
+
+  /* Text & Fonts */
   --body-font-color: black;
   --body-font-grey-shade: #333333ab;
+  --accent-color-reversed: black;
+
+  /* Buttons */
   --top-bar-button-bg: #0000001a;
+  --button-bg: linear-gradient(90deg, #e0e7ff 60%, #f1f5ff 100%);
+  --button-text: #2d3150;
+  --button-hover-bg: linear-gradient(90deg, #b5c6ff 60%, #e0e7ff 100%);
+
+  /* Tabs and Highlights */
   --redish-shade-background: #f2f2f2;
+  --active-tab-bg: #ffffff4b;
   --accent-color: #e87874;
   --accent-color-hover: #e87874;
-  --accent-color-reversed: black;
+
+  /* UI Decorations */
   --white-shadow-border: none;
-  --active-tab-bg: #ffffff4b;
   --empty-list-font: #1b274b;
   --window-controllers-icon-font: #333333b2;
   --search-location-container: #333333b2;
   --search-location-container-bg: #33333321;
   --whiteAndBlack: white;
   --workspace-list-bg: #beb8dd;
+  --sidebar-bg: linear-gradient(135deg, rgba(245, 245, 255, 0.87), rgba(220, 225, 255, 0.72));
   --invert: 0.5;
 }
 
 [data-theme="dark"] {
+  /* Backgrounds */
   --root-background: black;
   --root-background-grad-1: #7e7d7e;
   --root-background-grad-2: #252525;
-  --top-bar-button-bg: white;
-  --accent-color-hover: #562b29;
-  --accent-color-reversed: #e87874;
   --body-backGround: #000000d4;
+  --body-backGround-transparent: transparent;
+
+  /* Text & Fonts */
   --body-font-color: #ffffffda;
-  --body-backGround-transparent: #000000d4;
-  --redish-shade-background: #000000d4;
-  --border-thin: 1px solid #302c2c76;
   --body-font-grey-shade: #cccccc;
+  --accent-color-reversed: #e87874;
+
+  /* Buttons */
+  --top-bar-button-bg: white;
+  --sidebar-btn-bg: linear-gradient(90deg, #333333, #1a1a1a);
+  --button-bg: #ffffff10;
+  --button-text: #ffffffd9;
+  --button-hover-bg: linear-gradient(90deg, #3a3a3a 60%, #222222 100%);
+
+  /* Tabs and Highlights */
+  --redish-shade-background: #000000d4;
+  --active-tab-bg: #1a1a1a;
+  --accent-color-hover: #562b29;
+
+  /* UI Decorations */
+  --border-thin: 1px solid #302c2c76;
   --empty-list-font: #ffffffda;
   --window-controllers-icon-font: #333333b2;
-  --search-location-container: #a49a9ad7;
-  --search-location-container-bg: #33333321;
+  --search-location-container: #a49a9af9;
+  --search-location-container-bg: #333333;
   --whiteAndBlack: black;
+  --workspace-list-bg: #2c2c2c;
+  --sidebar-bg: linear-gradient(135deg, #1a1a1a, #111111);
   --invert: 1;
-  --workspace-list-bg: #beb8dd;
 }
 
 .popMenu {

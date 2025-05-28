@@ -50,10 +50,8 @@ const WorkspaceList = ({
   const inputRef = useRef(null);
 
   useEffect(() => {
-    // Load custom workspaces
     const handler = (workspaces) => {
       setCustomWorkspaces(workspaces);
-      // Initialize expanded state for custom workspaces
       const newExpandedState = { ...expandedWorkspaces };
       workspaces.forEach((ws) => {
         newExpandedState[ws.id] = true;
@@ -62,10 +60,7 @@ const WorkspaceList = ({
     };
     window.api.receive(GET_CUSTOM_WORKSPACES, handler);
     window.api.send(GET_CUSTOM_WORKSPACES);
-
-    return () => {
-      window.api.remove(GET_CUSTOM_WORKSPACES, handler);
-    };
+    return () => window.api.remove(GET_CUSTOM_WORKSPACES, handler);
   }, []);
 
   useEffect(() => {
@@ -74,7 +69,7 @@ const WorkspaceList = ({
     }
   }, [editingWorkspace]);
 
-  const workspsaceData = [
+  const workspaceData = [
     { id: "default", name: "Default", icon: FaHome },
     { id: "work", name: "Work", icon: FaBriefcase },
     { id: "personal", name: "Personal", icon: FaUser },
@@ -82,9 +77,7 @@ const WorkspaceList = ({
   ];
 
   const handleWorkspaceClick = (workspaceId) => {
-    if (onWorkspaceSelect) {
-      onWorkspaceSelect(workspaceId);
-    }
+    if (onWorkspaceSelect) onWorkspaceSelect(workspaceId);
   };
 
   const handleToggleWorkspace = (workspaceId, event) => {
@@ -99,20 +92,16 @@ const WorkspaceList = ({
     const currentWorkspaceTabs = tabs.filter(
       (tab) => (tab.workspaceId || "default") === activeWorkspace
     );
-
     if (currentWorkspaceTabs.length >= TAB_LIMIT) {
       alert(
         `You've reached the maximum limit of ${TAB_LIMIT} tabs for this workspace.`
       );
       return;
     }
-
     setShowNewTabModal(true);
   };
 
-  const handleModalClose = () => {
-    setShowNewTabModal(false);
-  };
+  const handleModalClose = () => setShowNewTabModal(false);
 
   const handleModalSelect = (site) => {
     const newTab = defaultTab(window.id, site.url, activeWorkspace);
@@ -122,23 +111,14 @@ const WorkspaceList = ({
     });
     tabsDispatch({
       type: ADD_TAB,
-      payload: {
-        tab: {
-          ...newTab,
-          workspaceId: activeWorkspace,
-        },
-      },
+      payload: { tab: { ...newTab, workspaceId: activeWorkspace } },
     });
     setShowNewTabModal(false);
   };
 
-  const handleCreateWorkspace = () => {
-    setShowNewWorkspaceModal(true);
-  };
+  const handleCreateWorkspace = () => setShowNewWorkspaceModal(true);
 
-  const handleWorkspaceModalClose = () => {
-    setShowNewWorkspaceModal(false);
-  };
+  const handleWorkspaceModalClose = () => setShowNewWorkspaceModal(false);
 
   const handleWorkspaceModalSelect = (workspace) => {
     const newWorkspace = {
@@ -146,19 +126,9 @@ const WorkspaceList = ({
       id: `custom-${Date.now()}`,
       icon: FaBox,
     };
-
-    // Send the request to the main process
     window.api.send(ADD_CUSTOM_WORKSPACE, newWorkspace);
-
-    // Update local state
-    setCustomWorkspaces([...customWorkspaces, newWorkspace]);
-
-    // Initialize expanded state for the new workspace
-    setExpandedWorkspaces((prev) => ({
-      ...prev,
-      [newWorkspace.id]: true,
-    }));
-
+    setCustomWorkspaces((prev) => [...prev, newWorkspace]);
+    setExpandedWorkspaces((prev) => ({ ...prev, [newWorkspace.id]: true }));
     setShowNewWorkspaceModal(false);
   };
 
@@ -170,20 +140,12 @@ const WorkspaceList = ({
   const handleDeleteWorkspace = (workspaceId) => {
     if (confirm("Are you sure you want to delete this workspace?")) {
       try {
-        // Send the request to the main process
         window.api.send(DELETE_CUSTOM_WORKSPACE, workspaceId);
-
-        // Optimistically update the UI
-        setCustomWorkspaces(
-          customWorkspaces.filter((ws) => ws.id !== workspaceId)
+        setCustomWorkspaces((prev) =>
+          prev.filter((ws) => ws.id !== workspaceId)
         );
-
-        // If the deleted workspace was active, switch to default
-        if (activeWorkspace === workspaceId) {
-          onWorkspaceSelect("default");
-        }
+        if (activeWorkspace === workspaceId) onWorkspaceSelect("default");
       } catch (error) {
-        // Handle any errors that might occur during the process
         console.error("Error deleting workspace:", error);
         alert(
           `Failed to delete workspace: ${error.message || "Unknown error"}`
@@ -194,46 +156,22 @@ const WorkspaceList = ({
 
   const handleSaveWorkspace = () => {
     if (!newWorkspaceName.trim()) return;
-
     try {
-      if (editingWorkspace === "new") {
-        // Create new workspace
-        const newWorkspace = {
-          id: `custom-${Date.now()}`,
-          name: newWorkspaceName.trim(),
-          icon: FaBox,
-        };
-
-        // Send the request to the main process
-        window.api.send(ADD_CUSTOM_WORKSPACE, newWorkspace);
-
-        // Optimistically update the UI
-        setCustomWorkspaces([...customWorkspaces, newWorkspace]);
-      } else {
-        // Rename existing workspace
-        const updatedWorkspace = {
-          id: editingWorkspace,
-          name: newWorkspaceName.trim(),
-        };
-
-        // Send the request to the main process
-        window.api.send(UPDATE_CUSTOM_WORKSPACE, updatedWorkspace);
-
-        // Optimistically update the UI
-        setCustomWorkspaces(
-          customWorkspaces.map((ws) =>
-            ws.id === editingWorkspace
-              ? { ...ws, name: newWorkspaceName.trim() }
-              : ws
-          )
-        );
-      }
-
-      // Clear the editing state
+      const updatedWorkspace = {
+        id: editingWorkspace,
+        name: newWorkspaceName.trim(),
+      };
+      window.api.send(UPDATE_CUSTOM_WORKSPACE, updatedWorkspace);
+      setCustomWorkspaces((prev) =>
+        prev.map((ws) =>
+          ws.id === editingWorkspace
+            ? { ...ws, name: newWorkspaceName.trim() }
+            : ws
+        )
+      );
       setEditingWorkspace(null);
       setNewWorkspaceName("");
     } catch (error) {
-      // Handle any errors that might occur during the process
       console.error("Error saving workspace:", error);
       alert(`Failed to save workspace: ${error.message || "Unknown error"}`);
     }
@@ -338,9 +276,7 @@ const WorkspaceList = ({
             </>
           )}
           <button
-            className={`toggle-button ${
-              expandedWorkspaces[workspace.id] ? "expanded" : ""
-            }`}
+            className={`toggle-button ${isExpanded ? "expanded" : ""}`}
             onClick={(e) => handleToggleWorkspace(workspace.id, e)}
             data-tooltip={isExpanded ? "Collapse" : "Expand"}
           >
@@ -354,37 +290,6 @@ const WorkspaceList = ({
             workspaceId={workspace.id}
           />
         )}
-      </div>
-    );
-  };
-
-  const renderNewWorkspaceForm = () => {
-    if (editingWorkspace !== "new") return null;
-
-    return (
-      <div className="workspace-item new-workspace-form">
-        <FaBox className="workspace-icon" />
-        <div className="workspace-edit-form">
-          <input
-            ref={inputRef}
-            type="text"
-            value={newWorkspaceName}
-            onChange={(e) => setNewWorkspaceName(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Enter workspace name"
-          />
-          <div className="workspace-edit-actions">
-            <button
-              className="workspace-action-btn"
-              onClick={handleSaveWorkspace}
-            >
-              <FaCheck />
-            </button>
-            <button className="workspace-action-btn" onClick={handleCancelEdit}>
-              <FaTimes />
-            </button>
-          </div>
-        </div>
       </div>
     );
   };
@@ -425,18 +330,15 @@ const WorkspaceList = ({
         </h2>
       </div>
       <div className="workspaces sidebar-block">
-        <div className="workspace-buttons sidebar-block">
-          <button
-            className="new-workspace-button"
-            onClick={handleCreateWorkspace}
-            data-tooltip="New Workspace"
-          >
-            <FaPlus />
-            <span>New Workspace</span>
-          </button>
-        </div>
-        {workspsaceData.map((workspace) => renderWorkspaceItem(workspace))}
-        {renderNewWorkspaceForm()}
+        <button
+          className="new-workspace-button"
+          onClick={handleCreateWorkspace}
+          data-tooltip="New Workspace"
+        >
+          <FaPlus />
+          <span>New Workspace</span>
+        </button>
+        {workspaceData.map((workspace) => renderWorkspaceItem(workspace))}
         {customWorkspaces.map((workspace) =>
           renderWorkspaceItem(workspace, true)
         )}
